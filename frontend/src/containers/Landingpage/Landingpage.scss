@@ -5,6 +5,12 @@
     left: 0;
     width: 100%;
     height: 100%;
+    margin:0px;
+    background-image: url('../../utils/background.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: black;
     .header{
         background-color: black;
         padding-top: 20px;

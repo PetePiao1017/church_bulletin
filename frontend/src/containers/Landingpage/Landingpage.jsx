@@ -1,11 +1,14 @@
 import React from 'react'
 import './Landingpage.scss'
+import { useNavigate } from "react-router-dom";
 
 
-const Landingpage = () => {
+const Landingpage = (props) => {
+
+    const navigate = useNavigate();
 
     const signin = () => {
-        alert("O")
+        navigate('./signin')
     }
     return(
         <div className='container'>

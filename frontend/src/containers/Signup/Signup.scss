@@ -1,0 +1,19 @@
+.signup-container{
+    padding-left:25%;
+    padding-right:25%;
+    .signup{
+        padding: 5%;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        .title{
+            text-align: center;
+        }
+        .signin-link{
+            color: black;
+            span{
+                color: #03a9f4;
+                margin-left: 30px;
+                cursor: pointer;
+            }
+        }
+    }
+}
