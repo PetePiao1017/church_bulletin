@@ -1,0 +1,14 @@
+html {
+    height: 100%;
+    margin:0px;
+    background-image: url('./utils/background.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: black;
+}
+
+body{
+    height: 100%;
+    margin:0px;
+}
