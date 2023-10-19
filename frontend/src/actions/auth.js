@@ -17,6 +17,7 @@ import {
  JSON.stringify or JSON.parse
 */
 
+
 // Load User
 export const loadUser = () => async (dispatch) => {
   try {
@@ -35,30 +36,30 @@ export const loadUser = () => async (dispatch) => {
 
 // Register User
 export const register = (formData) => async (dispatch) => {
-  try {
     const res = await api.post('/users', formData);
-
-    dispatch({
-      type: REGISTER_SUCCESS,
-      payload: res.data
-    });
-    dispatch(loadUser());
-  } catch (err) {
-    const errors = err.response.data.errors;
-
-    if (errors) {
-      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
+    console.log(res.data.errors)
+    
+    if( res.data.errors.length != 0){
+      console.log(res.data.errors)
+      dispatch({
+        type: REGISTER_FAIL,
+        payload: res.data.errors
+      });
     }
-
-    dispatch({
-      type: REGISTER_FAIL
-    });
-  }
+    else{
+      dispatch({
+        type: REGISTER_SUCCESS,
+        payload: res.data
+      });
+  
+      dispatch(loadUser());
+    }
+    
 };
 
 // Login User
-export const login = (username, password) => async (dispatch) => {
-  const body = { username, password };
+export const login = (email, password) => async (dispatch) => {
+  const body = { email, password };
 
   try {
     const res = await api.post('/auth', body);
@@ -72,12 +73,9 @@ export const login = (username, password) => async (dispatch) => {
   } catch (err) {
     const errors = err.response.data.errors;
 
-    if (errors) {
-      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
-    }
-
     dispatch({
-      type: LOGIN_FAIL
+      type: LOGIN_FAIL,
+      payload: errors
     });
   }
 };

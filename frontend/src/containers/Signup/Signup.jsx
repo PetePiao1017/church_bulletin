@@ -1,12 +1,32 @@
-import React, {useState} from 'react';
-import {Form, Input, Button} from 'antd';
+import React, {useState, useEffect} from 'react';
+import {Form, Input, Button, notification} from 'antd';
 import { useNavigate } from "react-router-dom";
 import {connect} from 'react-redux';
 import { register } from '../../actions/auth';
 import { setAlert } from '../../actions/alert';
 import './Signup.scss';
 
-const Signup = () => {
+const Signup = (props) => {
+    const [api, contextHolder] = notification.useNotification();
+
+    const openNotificationWithIcon = (type, error, title) => {
+        console.log(error)
+        api[type]({
+          message: title,
+          description: error.msg,
+        });
+    };
+    useEffect(() => {
+        props.errors.map((item, index) => openNotificationWithIcon('error',props.errors[index], "Errors"))
+    }, [props.errors])
+
+
+    useEffect(() => {
+        if(props.isAuthenticated === true) {
+            navigate('./main', {replace: true})
+        }
+    }, [props.isAuthenticated])
+
     const navigate = useNavigate();
 
     const signin = () => {
@@ -36,12 +56,12 @@ const Signup = () => {
     const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
     
     const onFinish = (e) => {
-        console.log(formData)
-        register(formData);
+        props.register(formData);
     };
     
     return(
         <div className='signup-container'>
+            {contextHolder}
             <div className='signup'>
                 <h3 className='title'>Let's get Started</h3>
                 <Form
@@ -170,7 +190,6 @@ const Signup = () => {
                     </p>
                     <Button 
                         type = "primary" 
-                        style={{marginBottom: "30px"}}
                         htmlType='submit'
                     >
                         Create First BulletIn
@@ -183,7 +202,8 @@ const Signup = () => {
 
 
 const mapStateToProps = (state) => ({
-    isAuthenticated: state.auth.isAuthenticated
+    isAuthenticated: state.auth.isAuthenticated,
+    errors: state.auth.errors
 });
   
 

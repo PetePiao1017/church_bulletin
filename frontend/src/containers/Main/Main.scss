@@ -1,0 +1,35 @@
+.main-container{
+    .header{
+        background-color: rgb(247, 87, 87);
+        height: 6vh;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 12px;
+        .logo{
+            color: white;
+            font-size: 25px;
+            margin-left: 20px;
+        }
+        .avatar{
+            width: 20px;
+            float: right;
+            margin-right: 20px;
+            cursor: pointer;
+        }
+    }
+    .main{
+        .tab{
+            border: solid;
+            border-bottom: outset rgb(29, 27, 27);
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            font-size:20px;
+            padding-top: 20px;
+            padding-bottom: 15px;
+            span{
+                padding:10px;
+            }
+        }
+    }
+}

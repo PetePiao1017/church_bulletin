@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Landingpage, Signin, Signup } from "../containers";
+import { Landingpage, Signin, Signup, Main } from "../containers";
 
 const MyRoutes = () => {
     return (
@@ -8,6 +8,7 @@ const MyRoutes = () => {
                 <Route exact path = "/" element = {<Landingpage />} />
                 <Route path = "/signin" element = {<Signin />} />
                 <Route path = "/signup" element = {<Signup />} />
+                <Route path = "/main" element = {<Main />} />
             </Routes>
         </BrowserRouter>
     )

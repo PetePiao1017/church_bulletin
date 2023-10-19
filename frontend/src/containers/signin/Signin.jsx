@@ -1,34 +1,57 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import './Signin.scss'
-import { Input, Button, Form } from 'antd';
+import { Input, Button, Form, notification } from 'antd';
 import { useNavigate } from "react-router-dom";
 import { connect } from 'react-redux';
 import { login } from '../../actions/auth';
 
-const Signin = () => {
+const Signin = (props) => {
+
+    const [api, contextHolder] = notification.useNotification();
+
+    const openNotificationWithIcon = (type, error, title) => {
+        console.log(error)
+        api[type]({
+          message: title,
+          description: error.msg,
+        });
+    };
+
+    useEffect(() => {
+        props.errors.map((item, index) => openNotificationWithIcon('error',props.errors[index], "Errors"))
+    }, [props.errors])
+
+    useEffect(() => {
+        if(props.isAuthenticated === true){
+            navigate('/main', {replace: true})
+        }
+    }, [props.isAuthenticated])
 
     const navigate = useNavigate();
+    
     
     const signup = () => {
         navigate('/signup', {replace: true})
     }
 
     const [formData, setFormData] = useState({
-        username: '',
+        email: '',
         password: ''
     });
 
-    const { username, password } = formData;
+    const { email, password } = formData;
 
-    const onChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const onChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    }
 
     const onFinish = (e) => {
-        login(username, password);
+        props.login(email, password);
     };
 
     return(
         <div className='login-container'>
+            {contextHolder}
             <div className="box">
                 <h2>Login</h2>
                 <Form
@@ -38,26 +61,25 @@ const Signin = () => {
                     layout = {"vertical"}
                 >
                     <Form.Item
-                        label = "Username"
-                        name = "username"
+                        label = "Email"
                         rules={[
                             {
                               required: true,
-                              message: 'Please input your username!',
+                              message: 'Please input your email!',
                             },
                         ]}
                     >
                         <Input 
-                            type="text"
-                            placeholder='Input Username'
-                            value = {username}
+                            type="email"
+                            name = "email"
+                            placeholder='Input Email'
+                            value = {email}
                             onChange = {onChange}
                         
                         />
                     </Form.Item>
                     <Form.Item
                         label = "Password"
-                        name = "password"
                         rules={[
                             {
                               required: true,
@@ -66,7 +88,8 @@ const Signin = () => {
                         ]}
                     >
                         <Input 
-                            type="text"
+                            type="password"
+                            name = "password"
                             placeholder='Input Password'
                             value = {password}
                             onChange = {onChange}
@@ -95,6 +118,7 @@ const Signin = () => {
 
 const mapStateToProps = (state) => ({
     isAuthenticated: state.auth.isAuthenticated,
+    errors: state.auth.errors
 })
 
 export default connect(mapStateToProps, {login} )(Signin)
