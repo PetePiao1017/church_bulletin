@@ -1,49 +1,73 @@
-import React from 'react';
-import "./Main.scss";
+import React, {useEffect, useState} from 'react';
 import { Link } from "react-router-dom";
-import { Dropdown,Tabs } from 'antd';
+import { Button, Dropdown,Tabs, Modal, DatePicker, Row, Col, Card } from 'antd';
+import { useNavigate } from "react-router-dom";
+import {connect} from 'react-redux';
+import {ArrowLeftOutlined} from '@ant-design/icons';
+import { Announcement } from '../../components/SVG';
+import "./Main.scss";
 
-const Main = () => {
-    const onChange = (key) => {
-        console.log(key);
-    };
-    const items = [
-        {
-          key: '1',
-          label: (
-            <Link>My Account</Link>
-          ),
-        },
-        {
-          key: '2',
-          label: (
-            <Link>Help</Link>
-          ),
-        },
-        {
-          key: '3',
-          label: (
-            <Link>Log out</Link>
-          ),
-        },
-    ];
-    const items2 = [
-        {
-          key: '1',
-          label: 'Upcoming',
-          children: 'Content of Tab Pane 1',
-        },
-        {
-          key: '2',
-          label: 'Past',
-          children: 'Content of Tab Pane 2',
-        },
-        {
-          key: '3',
-          label: 'Responses',
-          children: 'Content of Tab Pane 3',
-        },
-    ];
+const {TabPane} = Tabs;
+
+const Main = (props) => {
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if(!props.token){
+      navigate('/signin', {replace: true})
+    }
+  },[])
+
+  const [open, setOpen] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [date, setDate] = useState("");
+  const [newbulletin, setNewbulletin] = useState(false)
+
+  const showModal = () => {
+    setOpen(true);
+  };
+
+  const handleOk = () => {
+    setConfirmLoading(true);
+    setTimeout(() => {
+      setOpen(false);
+      setConfirmLoading(false);
+      setNewbulletin(true);
+    }, 2000);
+  };
+
+  const handleCancel = () => {
+    setOpen(false);
+  };
+
+  const onChange = (key) => {
+      console.log(key);
+  };
+
+  const onDateChange = (date, dateString) => {
+    setDate(dateString)
+  };
+  const items = [
+      {
+        key: '1',
+        label: (
+          <Link>My Account</Link>
+        ),
+      },
+      {
+        key: '2',
+        label: (
+          <Link>Help</Link>
+        ),
+      },
+      {
+        key: '3',
+        label: (
+          <Link>Log out</Link>
+        ),
+      },
+  ];
     return(
         <div className='main-container'>
             <div className='header'>
@@ -60,18 +84,188 @@ const Main = () => {
                       />
                 </Dropdown>
             </div>
-            <div className='main'>
+            {newbulletin 
+              ?
+              <div className='new_bulletin'>
+                <Row className='main'>
+                    <Col span = {12} className='control-panel'>
+                      <div> 
+                        <p className='back-link'><ArrowLeftOutlined />   Back to Bulletin</p>
+                      </div>
+                        <Row>
+                            <Col span = {4} className='menu'>
+                                <div className='plus'>
+                                </div>
+                                <div className='customize' />
+                            </Col>
+                            <Col span = {20} className='add-section'>
+                                <h3>Add a section</h3>
+                                <p className='subtitle'>Drag any section below into the phone on the right.</p>
+                                <Row gutter={16}>
+                                  <Col span = {1} />
+                                  <Col span={11}>
+                                    <Card size={"small"}>
+                                      <Announcement />
+                                      <p className='category'>Announcement</p>
+                                    </Card>
+                                  </Col>
+                                  <Col span={11}>
+                                    <Card size={"small"}>
+                                      <Announcement />
+                                      <p className='category'>Announcement</p>
+                                    </Card>
+                                  </Col>
+                                  <Col span = {1} />
+                                </Row>
+                                <br />
+                                <Row gutter={16}>
+                                  <Col span = {1} />
+                                  <Col span={11}>
+                                    <Card size={"small"}>
+                                      <Announcement />
+                                      <p className='category'>Announcement</p>
+                                    </Card>
+                                  </Col>
+                                  <Col span={11}>
+                                    <Card size={"small"}>
+                                      <Announcement />
+                                      <p className='category'>Announcement</p>
+                                    </Card>
+                                  </Col>
+                                  <Col span = {1} />
+                                </Row>
+                                <br />
+                                <Row gutter={16}>
+                                  <Col span = {1} />
+                                  <Col span={11}>
+                                    <Card size={"small"}>
+                                      <Announcement />
+                                      <p className='category'>Announcement</p>
+                                    </Card>
+                                  </Col>
+                                  <Col span={11}>
+                                    <Card size={"small"}>
+                                      <Announcement />
+                                      <p className='category'>Announcement</p>
+                                    </Card>
+                                  </Col>
+                                  <Col span = {1} />
+                                </Row>
+                                <br />
+                                <Row gutter={16}>
+                                  <Col span = {1} />
+                                  <Col span={11}>
+                                    <Card size={"small"}>
+                                      <Announcement />
+                                      <p className='category'>Announcement</p>
+                                    </Card>
+                                  </Col>
+                                  <Col span={11}>
+                                    <Card size={"small"}>
+                                      <Announcement />
+                                      <p className='category'>Announcement</p>
+                                    </Card>
+                                  </Col>
+                                  <Col span = {1} />
+                                </Row>
+                                <br />
+                                <Row gutter={16}>
+                                  <Col span = {1} />
+                                  <Col span={11}>
+                                    <Card size={"small"}>
+                                      <Announcement />
+                                      <p className='category'>Announcement</p>
+                                    </Card>
+                                  </Col>
+                                  <Col span={11}>
+                                    <Card size={"small"}>
+                                      <Announcement />
+                                      <p className='category'>Announcement</p>
+                                    </Card>
+                                  </Col>
+                                  <Col span = {1} />
+                                </Row>
+                                <br />
+                                <Row gutter={16}>
+                                  <Col span = {1} />
+                                  <Col span={11}>
+                                    <Card size={"small"}>
+                                      <Announcement />
+                                      <p className='category'>Announcement</p>
+                                    </Card>
+                                  </Col>
+                                  <Col span={11}>
+                                    <Card size={"small"}>
+                                      <Announcement />
+                                      <p className='category'>Announcement</p>
+                                    </Card>
+                                  </Col>
+                                  <Col span = {1} />
+                                </Row>
+                            </Col>
+                        </Row>
+                    </Col>
+                    <Col span = {12} className='show-panel'>
+                      <div className='button-group'>
+                        <Button type = "primary">Edit</Button>
+                        <Button type = "default">Preview</Button>
+                      </div>
+                    </Col>
+                </Row>
+              </div>
+              :
+              <div className='main'>
                 <Tabs 
                     defaultActiveKey="1" 
-                    items={items2} 
                     onChange={onChange}
                     tabBarGutter={40}
                     size = {"large"}
                     style={{marginLeft:"20px"}}
-                />
-            </div>
+                >
+                  <TabPane tab="UPCOMING" key="1">
+                    <div className='button-bar'>
+                      <Button 
+                        type='primary' 
+                        style={{float:"right",marginRight:"20px"}}
+                        onClick={showModal}
+                      >
+                        Add New BulletIn
+                      </Button>
+                    </div>
+                  </TabPane>
+                  <TabPane tab="PAST" key="2">
+                    Content of Tab Pane 2
+                  </TabPane>
+                  <TabPane tab="RESPONSES" key="3">
+                    Content of Tab Pane 3
+                  </TabPane>  
+                </Tabs>
+                <Modal
+                  title="Add new Bulletin"
+                  open={open}
+                  onOk={handleOk}
+                  confirmLoading={confirmLoading}
+                  onCancel={handleCancel}
+                >
+                  <h4>When will this bulletin become active?</h4>
+                  <p>This is the date when your bulletin will become publicly visible to anyone who has access to the link or QR code. You can change this later if you’d like.</p>
+                  <DatePicker
+                    status={!date ? "error" : ""}
+                    onChange={onDateChange} 
+                    size = {"large"}
+                    />
+                </Modal>
+              </div>
+            }
+            
         </div>
     )
 }
 
-export default Main
+
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+  token: state.auth.token,
+})
+
+export default connect(mapStateToProps)(Main)

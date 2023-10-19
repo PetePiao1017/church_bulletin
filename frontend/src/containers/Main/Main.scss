@@ -31,5 +31,55 @@
                 padding:10px;
             }
         }
+        .control-panel{
+            .back-link {
+                cursor: pointer;
+                padding-left: 20px;
+                padding-top: 20px;
+                margin-top: 0px;
+                height: 40px;
+                font-size: 14px;
+                font-weight: 400;
+                background-color: white;
+            }
+            background-color: rgb(226, 232, 240);
+            .plus{
+                .plus_btn{
+                    width:30px;
+                    margin-left:20px;
+                    cursor: pointer;
+                }
+            }
+            .menu{
+                background-color: rgb(250, 255, 253);
+            }
+            .add-section{
+                h3{
+                    text-align: left;
+                    font-weight: 500;
+                    font-size: 20px;
+                    margin-left: 20px;
+                }
+                .subtitle{
+                    margin-left: 20px;
+                }
+                .icon_group{
+                    padding-left: 34%;
+                    padding-right: 34%;
+                }
+                .category{
+                    font-size:14px;
+                    font-weight: 400;
+                    text-align: center;
+                }
+            }
+        }
+        .button-group{
+            margin-top: 20px;
+            margin-right: 20px;
+            float: right;
+        }
+
+        
     }
 }
