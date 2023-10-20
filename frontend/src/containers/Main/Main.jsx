@@ -4,7 +4,7 @@ import { Button, Dropdown,Tabs, Modal, DatePicker, Row, Col, Card } from 'antd';
 import { useNavigate } from "react-router-dom";
 import {connect} from 'react-redux';
 import {ArrowLeftOutlined} from '@ant-design/icons';
-import { Announcement } from '../../components/SVG';
+import { Announcement, ConnectCard, Event, OnlineGiving, OrderOfService, PrayerRequest, Video, Website } from '../../components/SVG';
 import "./Main.scss";
 
 const {TabPane} = Tabs;
@@ -90,7 +90,11 @@ const Main = (props) => {
                 <Row className='main'>
                     <Col span = {12} className='control-panel'>
                       <div> 
-                        <p className='back-link'><ArrowLeftOutlined />   Back to Bulletin</p>
+                        <p 
+                          className='back-link'
+                          onClick={ () => setNewbulletin(false)}
+                          ><ArrowLeftOutlined />   Back to Bulletin
+                        </p>
                       </div>
                         <Row>
                             <Col span = {4} className='menu'>
@@ -104,15 +108,15 @@ const Main = (props) => {
                                 <Row gutter={16}>
                                   <Col span = {1} />
                                   <Col span={11}>
-                                    <Card size={"small"}>
+                                    <Card className='draggable' draggable size={"small"}>
                                       <Announcement />
                                       <p className='category'>Announcement</p>
                                     </Card>
                                   </Col>
                                   <Col span={11}>
-                                    <Card size={"small"}>
-                                      <Announcement />
-                                      <p className='category'>Announcement</p>
+                                    <Card className='draggable' draggable size={"small"}>
+                                      <OrderOfService />
+                                      <p className='category'>Order of Service</p>
                                     </Card>
                                   </Col>
                                   <Col span = {1} />
@@ -121,15 +125,15 @@ const Main = (props) => {
                                 <Row gutter={16}>
                                   <Col span = {1} />
                                   <Col span={11}>
-                                    <Card size={"small"}>
-                                      <Announcement />
-                                      <p className='category'>Announcement</p>
+                                    <Card className='draggable' draggable size={"small"}>
+                                      <Event />
+                                      <p className='category'>Event</p>
                                     </Card>
                                   </Col>
                                   <Col span={11}>
-                                    <Card size={"small"}>
-                                      <Announcement />
-                                      <p className='category'>Announcement</p>
+                                    <Card className='draggable' draggable size={"small"}>
+                                      <ConnectCard />
+                                      <p className='category'>Connect Card</p>
                                     </Card>
                                   </Col>
                                   <Col span = {1} />
@@ -138,15 +142,15 @@ const Main = (props) => {
                                 <Row gutter={16}>
                                   <Col span = {1} />
                                   <Col span={11}>
-                                    <Card size={"small"}>
-                                      <Announcement />
-                                      <p className='category'>Announcement</p>
+                                    <Card className='draggable' draggable size={"small"}>
+                                      <PrayerRequest />
+                                      <p className='category'>Prayer Request</p>
                                     </Card>
                                   </Col>
                                   <Col span={11}>
-                                    <Card size={"small"}>
-                                      <Announcement />
-                                      <p className='category'>Announcement</p>
+                                    <Card className='draggable' draggable size={"small"}>
+                                      <OnlineGiving />
+                                      <p className='category'>Online Giving</p>
                                     </Card>
                                   </Col>
                                   <Col span = {1} />
@@ -155,53 +159,20 @@ const Main = (props) => {
                                 <Row gutter={16}>
                                   <Col span = {1} />
                                   <Col span={11}>
-                                    <Card size={"small"}>
-                                      <Announcement />
-                                      <p className='category'>Announcement</p>
+                                    <Card className='draggable' draggable size={"small"}>
+                                      <Website />
+                                      <p className='category'>Website</p>
                                     </Card>
                                   </Col>
                                   <Col span={11}>
-                                    <Card size={"small"}>
-                                      <Announcement />
-                                      <p className='category'>Announcement</p>
+                                    <Card className='draggable' draggable size={"small"}>
+                                      <Video />
+                                      <p className='category'>Video</p>
                                     </Card>
                                   </Col>
                                   <Col span = {1} />
                                 </Row>
                                 <br />
-                                <Row gutter={16}>
-                                  <Col span = {1} />
-                                  <Col span={11}>
-                                    <Card size={"small"}>
-                                      <Announcement />
-                                      <p className='category'>Announcement</p>
-                                    </Card>
-                                  </Col>
-                                  <Col span={11}>
-                                    <Card size={"small"}>
-                                      <Announcement />
-                                      <p className='category'>Announcement</p>
-                                    </Card>
-                                  </Col>
-                                  <Col span = {1} />
-                                </Row>
-                                <br />
-                                <Row gutter={16}>
-                                  <Col span = {1} />
-                                  <Col span={11}>
-                                    <Card size={"small"}>
-                                      <Announcement />
-                                      <p className='category'>Announcement</p>
-                                    </Card>
-                                  </Col>
-                                  <Col span={11}>
-                                    <Card size={"small"}>
-                                      <Announcement />
-                                      <p className='category'>Announcement</p>
-                                    </Card>
-                                  </Col>
-                                  <Col span = {1} />
-                                </Row>
                             </Col>
                         </Row>
                     </Col>
@@ -209,6 +180,9 @@ const Main = (props) => {
                       <div className='button-group'>
                         <Button type = "primary">Edit</Button>
                         <Button type = "default">Preview</Button>
+                      </div>
+                      <div className='show-app'>
+                        <h1> </h1>
                       </div>
                     </Col>
                 </Row>

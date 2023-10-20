@@ -1,5 +1,5 @@
 import api from '../utils/api';
-import { setAlert } from './alert';
+import _ from 'lodash';
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
@@ -37,22 +37,20 @@ export const loadUser = () => async (dispatch) => {
 // Register User
 export const register = (formData) => async (dispatch) => {
     const res = await api.post('/users', formData);
-    console.log(res.data.errors)
-    
-    if( res.data.errors.length != 0){
-      console.log(res.data.errors)
+    if(_.hasIn(res.data, 'token')){
+      
+      dispatch({
+        type: REGISTER_SUCCESS,
+        payload:res.data
+      });
+
+      dispatch(loadUser());
+    }
+    else{
       dispatch({
         type: REGISTER_FAIL,
         payload: res.data.errors
       });
-    }
-    else{
-      dispatch({
-        type: REGISTER_SUCCESS,
-        payload: res.data
-      });
-  
-      dispatch(loadUser());
     }
     
 };

@@ -28,6 +28,12 @@ import {
           user: payload
         };
       case REGISTER_SUCCESS:
+        return {
+          ...state,
+          ...payload,
+          isAuthenticated: true,
+          loading: false
+        };
       case LOGIN_FAIL:  
         return {
           ...state,

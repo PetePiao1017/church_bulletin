@@ -8,7 +8,6 @@ const UserSchema = new mongoose.Schema({
   church_url: {
     type: String,
     required: true,
-    unique: true
   },
   firstname: {
     type: String,

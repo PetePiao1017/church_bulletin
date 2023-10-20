@@ -10,7 +10,6 @@ const Signup = (props) => {
     const [api, contextHolder] = notification.useNotification();
 
     const openNotificationWithIcon = (type, error, title) => {
-        console.log(error)
         api[type]({
           message: title,
           description: error.msg,
@@ -23,7 +22,7 @@ const Signup = (props) => {
 
     useEffect(() => {
         if(props.isAuthenticated === true) {
-            navigate('./main', {replace: true})
+            navigate('/main', {replace: true})
         }
     }, [props.isAuthenticated])
 

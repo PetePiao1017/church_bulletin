@@ -1,4 +1,5 @@
 .main-container{
+    // height: 100vh;
     .header{
         background-color: rgb(247, 87, 87);
         height: 6vh;
@@ -54,6 +55,9 @@
                 background-color: rgb(250, 255, 253);
             }
             .add-section{
+                height: 100vh;
+                overflow-y: scroll;
+                overflow-x: hidden;
                 h3{
                     text-align: left;
                     font-weight: 500;
@@ -63,22 +67,46 @@
                 .subtitle{
                     margin-left: 20px;
                 }
-                .icon_group{
-                    padding-left: 34%;
-                    padding-right: 34%;
+                .draggable {
+                    cursor: grab;
+
+                    .icon_group{
+                        padding-left: 34%;
+                        padding-right: 34%;
+                    }
+                    .category{
+                        font-size:14px;
+                        font-weight: 400;
+                        text-align: center;
+                    }
                 }
-                .category{
-                    font-size:14px;
-                    font-weight: 400;
-                    text-align: center;
-                }
+                
             }
         }
-        .button-group{
-            margin-top: 20px;
-            margin-right: 20px;
-            float: right;
+        .show-panel{
+            display: flex;
+            flex-direction: column;
+            .button-group{
+                margin-top: 20px;
+                margin-right: 20px;
+                align-self: end;
+            }
+
+            .show-app{
+                margin-top: 10%;
+                // border: 1px solid black;
+                // border-radius: 3px;
+                // height: 70%;
+                // width: 50%;
+                align-self: center;
+                width: 60%;
+                height: 80%;
+                background-image: url('../../utils/phone.jpg');
+                background-position: center;
+                background-size: cover;
+            }
         }
+        
 
         
     }
