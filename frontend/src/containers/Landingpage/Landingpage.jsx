@@ -27,7 +27,7 @@ const Landingpage = (props) => {
             </div>
             <div className='main-word'>
                 <p className='main-sentence'>Inspiring people to follow Jesus with </p>
-                <h1>Digital BulleteIn</h1>
+                <h1 style={{margin:0}}>Digital BulleteIn</h1>
             </div>
         </div>
     )

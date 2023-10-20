@@ -1,6 +1,7 @@
 .main-container{
-    // height: 100vh;
+    height: 100vh;
     .header{
+        height: 10vh;
         background-color: rgb(247, 87, 87);
         height: 6vh;
         padding-top: 10px;
@@ -34,6 +35,7 @@
         }
         .control-panel{
             .back-link {
+                height: 10vh;
                 cursor: pointer;
                 padding-left: 20px;
                 padding-top: 20px;
@@ -55,7 +57,7 @@
                 background-color: rgb(250, 255, 253);
             }
             .add-section{
-                height: 100vh;
+                height: 80vh;
                 overflow-y: scroll;
                 overflow-x: hidden;
                 h3{
@@ -71,8 +73,8 @@
                     cursor: grab;
 
                     .icon_group{
-                        padding-left: 34%;
-                        padding-right: 34%;
+                        display: flex;
+                        justify-content: center;
                     }
                     .category{
                         font-size:14px;
@@ -81,6 +83,26 @@
                     }
                 }
                 
+            }
+            .edit-bulletin{
+                height: 80vh;
+                .add-image{
+                    display: flex;
+                    flex-direction: column;
+                    height: 20vh;
+                    border: 1px dashed gray;
+                    border-radius: 10%;
+                    .datepicker{
+                        width: 100%;
+                        padding: 0;
+                        margin: 0;
+                    }
+                    Button{
+                        width: 85%;
+                        color: black;
+                        background-color: white;
+                    }
+                }
             }
         }
         .show-panel{
@@ -93,17 +115,48 @@
             }
 
             .show-app{
-                margin-top: 10%;
-                // border: 1px solid black;
-                // border-radius: 3px;
-                // height: 70%;
-                // width: 50%;
-                align-self: center;
-                width: 60%;
-                height: 80%;
-                background-image: url('../../utils/phone.jpg');
-                background-position: center;
-                background-size: cover;
+               margin: 0 auto;
+               background-size: cover;
+               background-repeat: no-repeat;
+               background-position: center;
+               background-image: url("../../utils/phone.jpg");
+               width: 30vw;
+               height: 100vh;
+               .app-header{
+                    margin-top: 20%;
+                    text-align: center;
+               }
+               .app-date{
+                    text-align: center;
+               }
+               .app-image{
+                    display: flex;
+                    background-color: rgb(245, 247, 250);
+                    border-radius: 15px;    
+                    height: 200px;
+                    width: 83%;
+                    margin-left: 2vw;
+                    align-items: center;
+                    cursor: pointer;
+                    img{
+                        margin: 0 auto;
+                    }
+               }
+               .bulletins{
+                    width: 83%;
+                    height: 40%;
+                    margin-left: 2vw;
+                    overflow: auto;
+                    .bulletin {
+                        width: 100%;
+                        margin-top: 1vw;
+                        Button {
+                            width: 100%;
+                            background-color: rgb(135, 137, 139);
+                        }
+                    }
+               }
+               
             }
         }
         

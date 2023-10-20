@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import { Link } from "react-router-dom";
-import { Button, Dropdown,Tabs, Modal, DatePicker, Row, Col, Card } from 'antd';
+import { Button, Dropdown,Tabs, Modal, DatePicker, Row, Col, Card, Input, Upload, Form} from 'antd';
 import { useNavigate } from "react-router-dom";
 import {connect} from 'react-redux';
-import {ArrowLeftOutlined} from '@ant-design/icons';
-import { Announcement, ConnectCard, Event, OnlineGiving, OrderOfService, PrayerRequest, Video, Website } from '../../components/SVG';
+import {ArrowLeftOutlined, ArrowRightOutlined, UploadOutlined} from '@ant-design/icons';
+
+import { Addsection, Headerediting, Sectionediting } from '../../components';
+
 import "./Main.scss";
 
 const {TabPane} = Tabs;
@@ -22,7 +24,10 @@ const Main = (props) => {
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [date, setDate] = useState("");
+  const [section, setSection] = useState(false);
   const [newbulletin, setNewbulletin] = useState(false)
+  const [localbulletins, setLocalbulletins] = useState([]);
+  const [editingPanel, setEditingPanel] = useState("");
 
   const showModal = () => {
     setOpen(true);
@@ -45,9 +50,34 @@ const Main = (props) => {
       console.log(key);
   };
 
+
+  const onDrop = (ev, method) => {
+    if(method == "add") {
+      let id = ev.dataTransfer.getData("id");
+      setLocalbulletins([...localbulletins, id])
+    }
+  }
+
+
   const onDateChange = (date, dateString) => {
     setDate(dateString)
   };
+
+  const onSectionChange = () => {
+    if(!section)
+      setSection(!section);
+  }
+
+  const normFile = (e) => {
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e?.fileList;
+  };
+  const getValueCallback = (id) => {
+    setLocalbulletins([...localbulletins, id])
+  }
+  
   const items = [
       {
         key: '1',
@@ -88,7 +118,7 @@ const Main = (props) => {
               ?
               <div className='new_bulletin'>
                 <Row className='main'>
-                    <Col span = {12} className='control-panel'>
+                   { !section ? (<Col span = {8} className='control-panel'>
                       <div> 
                         <p 
                           className='back-link'
@@ -102,87 +132,68 @@ const Main = (props) => {
                                 </div>
                                 <div className='customize' />
                             </Col>
-                            <Col span = {20} className='add-section'>
-                                <h3>Add a section</h3>
-                                <p className='subtitle'>Drag any section below into the phone on the right.</p>
-                                <Row gutter={16}>
-                                  <Col span = {1} />
-                                  <Col span={11}>
-                                    <Card className='draggable' draggable size={"small"}>
-                                      <Announcement />
-                                      <p className='category'>Announcement</p>
-                                    </Card>
-                                  </Col>
-                                  <Col span={11}>
-                                    <Card className='draggable' draggable size={"small"}>
-                                      <OrderOfService />
-                                      <p className='category'>Order of Service</p>
-                                    </Card>
-                                  </Col>
-                                  <Col span = {1} />
-                                </Row>
-                                <br />
-                                <Row gutter={16}>
-                                  <Col span = {1} />
-                                  <Col span={11}>
-                                    <Card className='draggable' draggable size={"small"}>
-                                      <Event />
-                                      <p className='category'>Event</p>
-                                    </Card>
-                                  </Col>
-                                  <Col span={11}>
-                                    <Card className='draggable' draggable size={"small"}>
-                                      <ConnectCard />
-                                      <p className='category'>Connect Card</p>
-                                    </Card>
-                                  </Col>
-                                  <Col span = {1} />
-                                </Row>
-                                <br />
-                                <Row gutter={16}>
-                                  <Col span = {1} />
-                                  <Col span={11}>
-                                    <Card className='draggable' draggable size={"small"}>
-                                      <PrayerRequest />
-                                      <p className='category'>Prayer Request</p>
-                                    </Card>
-                                  </Col>
-                                  <Col span={11}>
-                                    <Card className='draggable' draggable size={"small"}>
-                                      <OnlineGiving />
-                                      <p className='category'>Online Giving</p>
-                                    </Card>
-                                  </Col>
-                                  <Col span = {1} />
-                                </Row>
-                                <br />
-                                <Row gutter={16}>
-                                  <Col span = {1} />
-                                  <Col span={11}>
-                                    <Card className='draggable' draggable size={"small"}>
-                                      <Website />
-                                      <p className='category'>Website</p>
-                                    </Card>
-                                  </Col>
-                                  <Col span={11}>
-                                    <Card className='draggable' draggable size={"small"}>
-                                      <Video />
-                                      <p className='category'>Video</p>
-                                    </Card>
-                                  </Col>
-                                  <Col span = {1} />
-                                </Row>
-                                <br />
-                            </Col>
+                            <Addsection getValueCallback = {getValueCallback} />
                         </Row>
-                    </Col>
-                    <Col span = {12} className='show-panel'>
+                    </Col>) : (
+                      <Col span={8} className='control-panel'>
+                        <div> 
+                          <p 
+                            className='back-link'
+                            onClick={ () => setSection(!section)}
+                            ><ArrowLeftOutlined />   Back to Sections
+                          </p>
+                        </div>
+                        <Row>
+                          <Col span={4} className='menu'>
+                            <div className='plus'></div>
+                            <div className='customize' />
+                          </Col>
+                          <Headerediting />
+                        </Row>
+                      </Col>
+                    )}
+                    <Col 
+                      span = {16} 
+                      className='show-panel' 
+                      onDragOver={(e) => {e.preventDefault()}} 
+                      onDrop={(e) => {onDrop(e, "add")}}
+                    >
                       <div className='button-group'>
                         <Button type = "primary">Edit</Button>
                         <Button type = "default">Preview</Button>
                       </div>
                       <div className='show-app'>
-                        <h1> </h1>
+                        { 
+                          !editingPanel ?
+                          <>
+                            <h1 className='app-header'>Jesus Bulletin</h1>
+                            <h5 className='app-date'>October 24, 2023</h5>
+                            <div 
+                              className='app-image' 
+                              onClick={onSectionChange}
+                            >
+                              <img src = "./gallery.png"  style={{width:"50px"}} />
+                            </div>
+                            <div className='bulletins'>
+                              {
+                                localbulletins.map((item, index) => {
+                                  return (
+                                  <div className='bulletin' key = {index}>
+                                    <Button 
+                                      type = "primary" 
+                                      size='large' 
+                                      onClick={() => setEditingPanel(item)}
+                                    >
+                                      {item}
+                                      <ArrowRightOutlined />
+                                    </Button>
+                                  </div>)
+                                })
+                              }
+                              </div>
+                          </>
+                          : <Sectionediting category = {editingPanel} />
+                        }
                       </div>
                     </Col>
                 </Row>

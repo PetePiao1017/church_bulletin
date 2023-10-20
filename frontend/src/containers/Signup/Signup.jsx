@@ -71,7 +71,6 @@ const Signup = (props) => {
                 >
                     <Form.Item 
                         label="Church Name"
-                        name="church_name"
                         rules = {[
                             {   required: true, 
                                 message: 'Please input your Church name!'
