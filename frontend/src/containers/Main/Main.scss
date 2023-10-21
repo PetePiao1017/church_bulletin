@@ -1,7 +1,6 @@
 .main-container{
     height: 100vh;
     .header{
-        height: 10vh;
         background-color: rgb(247, 87, 87);
         height: 6vh;
         padding-top: 10px;
@@ -57,7 +56,6 @@
                 background-color: rgb(250, 255, 253);
             }
             .add-section{
-                height: 80vh;
                 overflow-y: scroll;
                 overflow-x: hidden;
                 h3{
@@ -122,40 +120,52 @@
                background-image: url("../../utils/phone.jpg");
                width: 30vw;
                height: 100vh;
-               .app-header{
-                    margin-top: 20%;
-                    text-align: center;
-               }
-               .app-date{
-                    text-align: center;
-               }
-               .app-image{
-                    display: flex;
-                    background-color: rgb(245, 247, 250);
-                    border-radius: 15px;    
-                    height: 200px;
-                    width: 83%;
-                    margin-left: 2vw;
-                    align-items: center;
-                    cursor: pointer;
-                    img{
-                        margin: 0 auto;
-                    }
-               }
-               .bulletins{
-                    width: 83%;
-                    height: 40%;
-                    margin-left: 2vw;
-                    overflow: auto;
-                    .bulletin {
-                        width: 100%;
-                        margin-top: 1vw;
-                        Button {
-                            width: 100%;
-                            background-color: rgb(135, 137, 139);
+               .scroll-bar{
+                margin-top: 18%;
+                height: 85%;
+                width: 93%;
+                overflow: auto;
+                overflow-x: hidden;
+                .app-header{
+                        text-align: center;
+                        margin-left: 4vw;
+                }
+                .app-date{
+                        text-align: center;
+                }
+                .app-image{
+                        display: flex;
+                        background-color: rgb(245, 247, 250);
+                        border-radius: 15px;    
+                        height: 200px;
+                        width: 83%;
+                        margin-left: 3vw;
+                        align-items: center;
+                        cursor: pointer;
+                        img{
+                            margin: 0 auto;
                         }
-                    }
-               }
+                }
+                .bulletins{
+                        width: 83%;
+                        margin-left: 2vw;
+                        .bulletin {
+                            width: 100%;
+                            margin-top: 1vw;
+                            Button {
+                                width: 100%;
+                                background-color: rgb(135, 137, 139);
+                            }
+                        }
+                }
+            }
+            .preview{
+                .app-back{
+                    cursor: pointer;
+                    padding-top: 15%;
+                    padding-left: 10%
+                }
+            }
                
             }
         }

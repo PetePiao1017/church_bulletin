@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import { Link } from "react-router-dom";
-import { Button, Dropdown,Tabs, Modal, DatePicker, Row, Col, Card, Input, Upload, Form} from 'antd';
+import { Button, Dropdown,Tabs, Modal, DatePicker, Row, Col,} from 'antd';
 import { useNavigate } from "react-router-dom";
 import {connect} from 'react-redux';
-import {ArrowLeftOutlined, ArrowRightOutlined, UploadOutlined} from '@ant-design/icons';
-
-import { Addsection, Headerediting, Sectionediting } from '../../components';
+import {ArrowLeftOutlined } from '@ant-design/icons';
+import { Addsection, Sectionediting, PreviewSecton, BulletIns } from '../../components';
 
 import "./Main.scss";
 
@@ -68,14 +67,14 @@ const Main = (props) => {
       setSection(!section);
   }
 
-  const normFile = (e) => {
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e?.fileList;
-  };
+
+
   const getValueCallback = (id) => {
     setLocalbulletins([...localbulletins, id])
+  }
+
+  const setEditingpanelCallback = (item) => {
+    setEditingPanel(item.content);
   }
   
   const items = [
@@ -118,81 +117,82 @@ const Main = (props) => {
               ?
               <div className='new_bulletin'>
                 <Row className='main'>
-                   { !section ? (<Col span = {8} className='control-panel'>
-                      <div> 
-                        <p 
-                          className='back-link'
-                          onClick={ () => setNewbulletin(false)}
-                          ><ArrowLeftOutlined />   Back to Bulletin
-                        </p>
+                    <Col span = {8} className='control-panel'>
+                      <div>
+                        {
+                          !editingPanel
+                            ? 
+                              <p 
+                              className='back-link'
+                              onClick={ () => setNewbulletin(false)}
+                              ><ArrowLeftOutlined />   Back to Bulletin
+                              </p>
+                            :
+                              <p 
+                              className='back-link'
+                              onClick={ () => setEditingPanel("")}
+                              ><ArrowLeftOutlined />   Back to Section
+                              </p>
+                        }
+                        
                       </div>
-                        <Row>
-                            <Col span = {4} className='menu'>
-                                <div className='plus'>
-                                </div>
-                                <div className='customize' />
-                            </Col>
-                            <Addsection getValueCallback = {getValueCallback} />
-                        </Row>
-                    </Col>) : (
-                      <Col span={8} className='control-panel'>
-                        <div> 
-                          <p 
-                            className='back-link'
-                            onClick={ () => setSection(!section)}
-                            ><ArrowLeftOutlined />   Back to Sections
-                          </p>
-                        </div>
-                        <Row>
-                          <Col span={4} className='menu'>
-                            <div className='plus'></div>
-                            <div className='customize' />
+                      <Row>
+                          <Col span = {4} className='menu'>
+                              <div className='plus'>
+                              </div>
+                              <div className='customize' />
                           </Col>
-                          <Headerediting />
-                        </Row>
-                      </Col>
-                    )}
+                          {
+                            !editingPanel 
+                              ? <Addsection getValueCallback = {getValueCallback} />
+                              : <Sectionediting category = {editingPanel} />
+                          }
+                      </Row>
+                    </Col>
                     <Col 
                       span = {16} 
                       className='show-panel' 
-                      onDragOver={(e) => {e.preventDefault()}} 
-                      onDrop={(e) => {onDrop(e, "add")}}
                     >
                       <div className='button-group'>
                         <Button type = "primary">Edit</Button>
                         <Button type = "default">Preview</Button>
                       </div>
-                      <div className='show-app'>
+                      <div 
+                        className='show-app' 
+                        onDragOver={(e) => {e.preventDefault()}} 
+                        onDrop={(e) => {onDrop(e, "add")}}
+                      >
                         { 
-                          !editingPanel ?
-                          <>
+                          !editingPanel || editingPanel === "Headerediting" ?
+                          <div className='scroll-bar'>
                             <h1 className='app-header'>Jesus Bulletin</h1>
                             <h5 className='app-date'>October 24, 2023</h5>
                             <div 
-                              className='app-image' 
-                              onClick={onSectionChange}
-                            >
-                              <img src = "./gallery.png"  style={{width:"50px"}} />
+                              className='app-image'
+                              onClick={() => setEditingPanel("Headerediting")}
+                              >
+                              <img 
+                                src = "./gallery.png"  
+                                style={{width:"50px"}}
+                                alt = "Gallery Image"
+                              />
                             </div>
                             <div className='bulletins'>
                               {
-                                localbulletins.map((item, index) => {
-                                  return (
-                                  <div className='bulletin' key = {index}>
-                                    <Button 
-                                      type = "primary" 
-                                      size='large' 
-                                      onClick={() => setEditingPanel(item)}
-                                    >
-                                      {item}
-                                      <ArrowRightOutlined />
-                                    </Button>
-                                  </div>)
-                                })
+                                  <BulletIns 
+                                    bulletins = {localbulletins}
+                                    setEditingpanelCallback = {setEditingpanelCallback}
+                                  />
                               }
                               </div>
-                          </>
-                          : <Sectionediting category = {editingPanel} />
+                          </div>
+                          : 
+                          <div className='preview'>
+                            <p className='app-back' onClick={ () => setEditingPanel("")}>
+                              <ArrowLeftOutlined />   Back
+                            </p> 
+                            <PreviewSecton category = {editingPanel} />
+                          </div>
                         }
                       </div>
                     </Col>

@@ -1,12 +1,11 @@
-import LoopCard  from "./Card/card";
 import Addsection from "./Addsection/Addsection";
-import Headerediting from "./Headerediting/Headerediting";
 import Sectionediting from "./Sectionediting/Sectionediting";
-
+import PreviewSecton from './PreviewSection/PreviewSection';
+import BulletIns from "./Bulletins/Bulletins";
 
 export {
-    LoopCard,
     Addsection,
-    Headerediting,
     Sectionediting,
+    PreviewSecton,
+    BulletIns,
 }
