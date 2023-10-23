@@ -1,42 +1,25 @@
-import React, { useState } from 'react';
-import {Form, Input, DatePicker, Button, message, Upload} from 'antd';
-import { UploadOutlined, PictureOutlined} from '@ant-design/icons';
+import React from 'react';
+import {Form, Input, DatePicker, Button} from 'antd';
+import {connect} from 'react-redux';
+import { setHeaderDate, setHeaderTitle } from '../../../actions/bulletins';
+
+import CustomUpload from "../../CustomUpload/CustomUpload"; 
 import "./Headerediting.scss"
 
 
-const Headerediting = () => {
+const Headerediting = (props) => {
     
-    const [formData, setFormData] = useState({
-        title: '',
-        date: '',
-    });
 
-    const {title, date} = formData;
-
-
-    const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
     const onDateChange = (date, dateString) => {
-        console.log(date, dateString)
+        props.setHeaderDate(dateString)
     }
 
-    const props = {
-        name: 'file',
-        action: 'https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188',
-        headers: {
-          authorization: 'authorization-text',
-        },
-        onChange(info) {
-          if (info.file.status !== 'uploading') {
-            console.log(info.file, info.fileList);
-          }
-          if (info.file.status === 'done') {
-            message.success(`${info.file.name} file uploaded successfully`);
-          } else if (info.file.status === 'error') {
-            message.error(`${info.file.name} file upload failed.`);
-          }
-        },
-    };
+    const ontitleChange = (e) => {
+        props.setHeaderTitle(e.target.value);
+    }
+
+    
     return(
         <div>
             <h3>Edit Header</h3>
@@ -45,49 +28,36 @@ const Headerediting = () => {
                     <Input 
                         type = "text"
                         name = "title"
-                        value={title}
-                        onChange={onChange}
+                        value={props.title}
+                        onChange={ontitleChange}
                     />
                 </Form.Item>
                 <Form.Item label = "DATE">
                     <DatePicker
-                        onChange={onChange}
+                        onChange={onDateChange}
                         style={{width:"100%"}}
                     />
                 </Form.Item>
                 <Form.Item label = "IMAGE">
-                    <div className='upload-container'>
-                        <Upload 
-                            {...props} 
-                            className='upload-btn'
-                        >
-                            <Button 
-                                icon={<UploadOutlined />}
-                                style={{width: "95%"}}
-                            >
-                                Upload Image
-                            </Button>
-                        </Upload>
-                        <br />
-                        <br />
-                        <br />
-                        <Button 
-                            icon={<PictureOutlined />}
-                            style={{width: "95%"}}
-                        >
-                            Stock Image
-                        </Button>
-                    </div>
+                    <CustomUpload 
+                        type = {"Headerediting"}
+                    />
                 </Form.Item>
                 <Button 
                     type = "primary"
                     style={{float:"right"}}    
-                >Done Editing</Button>
+                >
+                    Done Editing
+                </Button>
             </Form>
         </div>
         
     )
 }
 
+const mapStateToProps = (state) =>  ({
+    title: state.builletins.header_title,
+})
 
-export default Headerediting
+
+export default connect(mapStateToProps, {setHeaderDate, setHeaderTitle})(Headerediting)

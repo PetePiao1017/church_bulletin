@@ -1,18 +1,19 @@
 import React from "react";
 import {Button} from 'antd'
 import { GiftFilled } from "@ant-design/icons";
+import { connect } from "react-redux";
 
 
-const Onlinegivingpreview = () => {
+const Onlinegivingpreview = (props) => {
     return(
         <div className='scroll-bar' style={{margin:"0"}} >
-            <h3 className='app-header'>Online Giving</h3>
+            <h3 className='app-header'>{props.title}</h3>
             <div className='app-image'>
                 <img src = "./gallery.png"  style={{width:"50px"}} alt = "Gallery Image" />
             </div>
             
             <div className="body-text">
-                <p> Type into the Body Text field on the left for your text to show up here.</p>
+                <p> {props.online_bodyText}</p>
             </div>
             <div style={{height:"20vh", backgroundColor:"rgb(245, 247, 250)", width:"90%", marginLeft:"20px"}}>
                 
@@ -24,4 +25,9 @@ const Onlinegivingpreview = () => {
     )
 }
 
-export default Onlinegivingpreview
+const mapStateToProps = (state) => ({
+    title: state.builletins.online_Title,
+    online_bodyText: state.builletins.online_bodyText,
+})
+
+export default connect(mapStateToProps)(Onlinegivingpreview)

@@ -1,7 +1,15 @@
 import React,{useState} from "react";
 import { Button,  Form, Input, Select,message} from 'antd';
+import {connect} from 'react-redux';
 
-const Videoediting = () => {
+import {
+    setVideoTitle,
+    setVideoBodyText,
+    setVideoPlatform,
+    setVideoLink
+} from '../../../actions/bulletins';
+
+const Videoediting = (props) => {
     const [formData, setFormData] = useState({
         title: '',
         bodyText: ''
@@ -11,25 +19,26 @@ const Videoediting = () => {
 
 
     const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+    const onStateChange = (e) => {
+        switch(e.target.name) {
+            case "title":
+                props.setVideoTitle(e.target.value);
+                break
+            case "bodyText":
+                props.setVideoBodyText(e.target.value);
+                break
+            case "video_Link":
+                props.setVideoLink(e.target.value);
+                break
+        }
+    }
+
+    const onPlaformChage = (value) => {
+        console.log("value=====",value)
+        props.setVideoPlatform(value);
+    }
 
 
-    const props = {
-        name: 'file',
-        action: 'https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188',
-        headers: {
-          authorization: 'authorization-text',
-        },
-        onChange(info) {
-          if (info.file.status !== 'uploading') {
-            console.log(info.file, info.fileList);
-          }
-          if (info.file.status === 'done') {
-            message.success(`${info.file.name} file uploaded successfully`);
-          } else if (info.file.status === 'error') {
-            message.error(`${info.file.name} file upload failed.`);
-          }
-        },
-    };
     return(
         <div className="announcment">
             <h4 className="top-header">Edit Video</h4>
@@ -38,24 +47,30 @@ const Videoediting = () => {
                     <Input 
                         type = "text"
                         name = "title"
-                        value={title}
-                        onChange={onChange}
+                        value={props.title}
+                        onChange={onStateChange}
                     />
                 </Form.Item>
                 <Form.Item label = "BODY TEXT">
-                    <Input.TextArea rows = {4} />
+                    <Input.TextArea name="bodyText" value={props.bodyText} onChange={onStateChange} rows = {4} />
                 </Form.Item>
                 <Form.Item label = "Video Platform">
-                    <Select value="Other">
-                        <Select.Option value="demo">Facebook</Select.Option>
-                        <Select.Option value="demo">Twitter</Select.Option>
-                        <Select.Option value="demo">Youtube</Select.Option>
-                        <Select.Option value="demo">Vimeo</Select.Option>
-                        <Select.Option value="demo">Other</Select.Option>
+                    <Select value={props.video_Platform} onChange={onPlaformChage}>
+                        <Select.Option value="Facebook">Facebook</Select.Option>
+                        <Select.Option value="Twitter">Twitter</Select.Option>
+                        <Select.Option value="Youtube">Youtube</Select.Option>
+                        <Select.Option value="Vimeo">Vimeo</Select.Option>
+                        <Select.Option value="Other">Other</Select.Option>
                     </Select>
                 </Form.Item>
                 <Form.Item label = "Video Link">
-                    <Input type = "text" placeholder="yourwebsite.com" />
+                    <Input 
+                        type = "text" 
+                        name="video_Link" 
+                        value={props.vidoe_Link} 
+                        onChange={onStateChange} 
+                        placeholder="yourwebsite.com" 
+                    />
                 </Form.Item>
                 <Button 
                     type = "primary"
@@ -66,4 +81,16 @@ const Videoediting = () => {
     )
 }
 
-export default Videoediting
+const mapStateToProps = (state) => ({
+    title: state.builletins.Video_Title,
+    bodyText: state.builletins.video_bodyText,
+    video_Platform: state.builletins.video_Platform,
+    video_Link: state.builletins.video_Link
+})
+
+export default connect(mapStateToProps,{
+    setVideoTitle,
+    setVideoBodyText,
+    setVideoPlatform,
+    setVideoLink
+})(Videoediting)

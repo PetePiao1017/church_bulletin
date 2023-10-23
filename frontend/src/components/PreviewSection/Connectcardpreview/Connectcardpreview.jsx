@@ -1,40 +1,67 @@
 import React from "react";
 import {Button, Checkbox, Form, Input} from 'antd'
+import {connect} from 'react-redux';
 
-const Connectcardpreview = () => {
+const Connectcardpreview = (props) => {
 
+    console.log(props.connectcard_checkedvalues)
     return(
-        <div className='scroll-bar' style={{marginLeft:"10%", width:"80%", marginTop:"0", height:"80vh"}} >
-            <h3 className='app-header'>Connect Card</h3>
+        <div >
+            <h3 className='app-header'>{props.title}</h3>
             <div className='app-image'>
                 <img src = "./gallery.png"  style={{width:"50px"}} alt = "Gallery Image" />
             </div>
             <div className="body-text">
-            <p> Type into the Body Text field on the left for your text to show up here.</p>
+            <p> {props.bodyText}</p>
             </div>
-            <label>Name</label>
-                <Input type = "text" />
-            <label>Email</label>
-                <Input type = "text" />
-            <p>I made a decision today</p>
-            <Form.Item>
-                <Checkbox>To follow Jesus</Checkbox>
-            </Form.Item>
-            <Form.Item>
-                <Checkbox>To rededicate my life to Jesus</Checkbox>
-            </Form.Item>
-            <p>How did you hear about us?</p>
-            <Form.Item>
-                <Checkbox>Friend/Family</Checkbox>
-            </Form.Item>
-            <Form.Item>
-                <Checkbox>Church Website</Checkbox>
-            </Form.Item>
-            <div className="btn-link">   
+            {
+                props.connectcard_checkedvalues.length === 0
+                ?
+                <>
+                    <label>Name</label>
+                        <Input type = "text" />
+                    <br />
+                    <label>Email</label>
+                        <Input type = "text" />
+                    <br />
+                </>
+
+                : props.connectcard_checkedvalues.map((item, index) => {
+                    return(
+                        <>
+                        <div key = {index}>
+                            <label>{item}</label>
+                                <Input type = "text" />
+                        </div>
+                        <br />
+                        </>
+                    )
+                })
+            }
+           
+            <p>{props.questionOne}</p>
+                <Checkbox>{props.questionOneOptionOne}</Checkbox>
+                <Checkbox>{props.questionOneOptionTwo}</Checkbox>
+            <p>{props.questionTwo}</p>
+                <Checkbox>{props.questionTwoOptionOne}</Checkbox>
+                <Checkbox>{props.questionTwoOptionTwo}</Checkbox>
+            <div className="btn-link">
                 <Button type="primary">Submit</Button>
             </div>
         </div>
     )
 }
 
-export default Connectcardpreview
+const mapStateToProps = (state) => ({
+    title: state.builletins.connectcard_Title,
+    bodyText: state.builletins.connectcard_bodyText,
+    questionOne: state.builletins.connectcard_Question_One,
+    questionOneOptionOne: state.builletins.connectcard_Question_One_Option_One,
+    questionOneOptionTwo: state.builletins.connectcard_Question_One_Option_Two,
+    questionTwo: state.builletins.connectcard_Question_Two,
+    questionTwoOptionOne: state.builletins.connectcard_Question_Two_Option_One,
+    questionTwoOptionTwo: state.builletins.connectcard_Question_Two_Option_Two,
+    connectcard_checkedvalues : state.builletins.connectcard_checkedvalues,
+})
+
+export default connect(mapStateToProps)(Connectcardpreview)

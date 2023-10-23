@@ -1,37 +1,49 @@
-import React,{useState} from "react";
-import { Button,  Form, Input, Upload,message} from 'antd';
-import { PictureOutlined, UploadOutlined } from "@ant-design/icons";
+import React from "react";
+import {connect} from 'react-redux';
+import { Button,  Form, Input} from 'antd';
+
+import {    setAnnouncementTitle, 
+            setAnnouncementBodyText, 
+            setAnnouncementImage, 
+            setAnnouncementButtonLink, 
+            setAnnouncementButtonText,
+        } from '../../../actions/bulletins';
+
+import CustomUpload from "../../CustomUpload/CustomUpload";
 import './Announceediting.scss';
 
-const Announceediting = () => {
-    const [formData, setFormData] = useState({
-        title: '',
-        bodyText: ''
-    });
 
-    const {title, bodyText} = formData;
+const getBase64 = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
 
+const Announceediting = (props) => {
+    
 
-    const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+    
+    const onChange = (e) => {
+        switch(e.target.name){
+            case "title":
+                props.setAnnouncementTitle(e.target.value);
+                break
+            case "bodyText":
+                props.setAnnouncementBodyText(e.target.value);
+                break;
+            case "buttonLink":
+                props.setAnnouncementButtonLink(e.target.value);
+                break;
+            case "buttonText":
+                props.setAnnouncementButtonText(e.target.value);
+                break;
+        
+        }
 
+    }
 
-    const props = {
-        name: 'file',
-        action: 'https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188',
-        headers: {
-          authorization: 'authorization-text',
-        },
-        onChange(info) {
-          if (info.file.status !== 'uploading') {
-            console.log(info.file, info.fileList);
-          }
-          if (info.file.status === 'done') {
-            message.success(`${info.file.name} file uploaded successfully`);
-          } else if (info.file.status === 'error') {
-            message.error(`${info.file.name} file upload failed.`);
-          }
-        },
-    };
     return(
         <div className="announcment">
             <h4 className="top-header">Edit Announcement</h4>
@@ -40,39 +52,39 @@ const Announceediting = () => {
                     <Input 
                         type = "text"
                         name = "title"
-                        value={title}
+                        value={props.title}
                         onChange={onChange}
                     />
                 </Form.Item>
                 <Form.Item label = "IMAGE">
-                    <div className='upload-container'>
-                        <Upload 
-                            {...props} 
-                            className='upload-btn'
-                        >
-                            <Button 
-                                icon={<UploadOutlined />}
-                            >
-                                Click to Upload
-                            </Button>
-                        </Upload>
-                        <br />
-                        <br />
-                        <br />
-                        <Button 
-                            icon={<PictureOutlined />}
-                            style={{width: "95%"}}
-                        >
-                            Stock Image
-                        </Button>
-                    </div>
+                    <CustomUpload 
+                        type = {"Announcement"}
+                    />
                 </Form.Item>
                 <Form.Item label = "BODY TEXT">
-                    <Input.TextArea rows = {4} />
+                    <Input.TextArea
+                        name = "bodyText"
+                        value = {props.bodyText}
+                        onChange={onChange}
+                        rows = {4} 
+                        />
                 </Form.Item>
                 <Form.Item label = "BUTTON">
-                    <Input  type="text" placeholder="Button Text" style = {{marginBottom:"20px"}}/>
-                    <Input  type="text" placeholder="Button Link" />
+                    <Input  
+                        type="text"
+                        name = "buttonText"
+                        placeholder="Button Text" 
+                        style = {{marginBottom:"20px"}}
+                        value={props.buttonText}
+                        onChange={onChange}
+                    />
+                    <Input  
+                        type="text"
+                        name = "buttonLink"
+                        placeholder="Button Link"
+                        value={props.buttonLink}
+                        onChange={onChange}
+                    />
                 </Form.Item>
                 <Button 
                     type = "primary"
@@ -83,4 +95,16 @@ const Announceediting = () => {
     )
 }
 
-export default Announceediting
+const mapStateToProps = (state) => ({
+    title: state.builletins.announcement_Title,
+    bodyText: state.builletins.announcement_bodyText,
+    buttonText: state.builletins.announcement_buttonText,
+    buttonLink: state.builletins.announcement_buttonLink,
+})
+
+export default connect(mapStateToProps, {
+    setAnnouncementTitle,
+    setAnnouncementBodyText,
+    setAnnouncementButtonText,
+    setAnnouncementButtonLink,
+})(Announceediting)

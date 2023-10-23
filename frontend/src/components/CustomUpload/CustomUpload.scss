@@ -1,0 +1,10 @@
+.custom-file-upload {
+    border: 1px dashed #ccc;
+    display: flex;
+    width: 200px;
+    height: 200px;
+    cursor: pointer;
+}
+input[type="file"] {
+    display: none;
+}

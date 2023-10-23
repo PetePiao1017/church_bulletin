@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Landingpage, Signin, Signup, Main,} from "../containers";
+import { Landingpage, Signin, Signup, Main} from "../containers";
 
 const MyRoutes = () => {
     return (

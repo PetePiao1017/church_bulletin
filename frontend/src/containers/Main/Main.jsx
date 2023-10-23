@@ -4,7 +4,7 @@ import { Button, Dropdown,Tabs, Modal, DatePicker, Row, Col,} from 'antd';
 import { useNavigate } from "react-router-dom";
 import {connect} from 'react-redux';
 import {ArrowLeftOutlined } from '@ant-design/icons';
-import { Addsection, Sectionediting, PreviewSecton, BulletIns } from '../../components';
+import { Addsection, Sectionediting, PreviewSecton, BulletIns, Headerpreview } from '../../components';
 
 import "./Main.scss";
 
@@ -14,16 +14,18 @@ const Main = (props) => {
 
   const navigate = useNavigate();
 
+  let today;
   useEffect(() => {
-    if(!props.token){
-      navigate('/signin', {replace: true})
-    }
+
+    // if(props.isAuthenticated !== true){
+    //   navigate('/signin', {replace: true})
+    // }
+
   },[])
 
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [date, setDate] = useState("");
-  const [section, setSection] = useState(false);
+  const [date, setDate] = useState("a");
   const [newbulletin, setNewbulletin] = useState(false)
   const [localbulletins, setLocalbulletins] = useState([]);
   const [editingPanel, setEditingPanel] = useState("");
@@ -59,14 +61,8 @@ const Main = (props) => {
 
 
   const onDateChange = (date, dateString) => {
-    setDate(dateString)
+    setDate(dateString);
   };
-
-  const onSectionChange = () => {
-    if(!section)
-      setSection(!section);
-  }
-
 
 
   const getValueCallback = (id) => {
@@ -100,7 +96,7 @@ const Main = (props) => {
     return(
         <div className='main-container'>
             <div className='header'>
-                <span className='logo'>Church Bulletin</span>
+                {/* <span className='logo'>Church Bulletin</span> */}
                 <Dropdown
                     menu={{
                         items,
@@ -110,6 +106,7 @@ const Main = (props) => {
                       className = "avatar" 
                       src = "./user.png" 
                       alt = "User Avatar"
+                      style={{marginTop:"10px"}}
                       />
                 </Dropdown>
             </div>
@@ -157,43 +154,51 @@ const Main = (props) => {
                         <Button type = "primary">Edit</Button>
                         <Button type = "default">Preview</Button>
                       </div>
-                      <div 
-                        className='show-app' 
+                      <div
+                        className='device-preview'
                         onDragOver={(e) => {e.preventDefault()}} 
                         onDrop={(e) => {onDrop(e, "add")}}
                       >
-                        { 
-                          !editingPanel || editingPanel === "Headerediting" ?
-                          <div className='scroll-bar'>
-                            <h1 className='app-header'>Jesus Bulletin</h1>
-                            <h5 className='app-date'>October 24, 2023</h5>
-                            <div 
-                              className='app-image'
-                              onClick={() => setEditingPanel("Headerediting")}
-                              >
-                              <img 
-                                src = "./gallery.png"  
-                                style={{width:"50px"}}
-                                alt = "Gallery Image"
-                              />
-                            </div>
-                            <div className='bulletins'>
-                              {
-                                  <BulletIns 
-                                    bulletins = {localbulletins}
-                                    setEditingpanelCallback = {setEditingpanelCallback}
-                                  />
+                        <div className='device'>
+                          <div className='border-screen-extra'>
+                            <div className='tool-right' />
+                            <div className='tool-up' />
+                            <div className='tool-down' />
+                            <div className='border-screen'>
+                              <div className='device__screen'>
+                              { 
+                                  !editingPanel || editingPanel === "Headerediting" ?
+                                    <div className='scroll-bar'>
+                                      <div onClick={() => setEditingPanel("Headerediting")}>
+                                        <Headerpreview 
+                                          
+                                        />
+                                      </div>
+                                      <div className='bulletins'>
+                                        {
+                                            <BulletIns 
+                                              bulletins = {localbulletins}
+                                              setEditingpanelCallback = {setEditingpanelCallback}
+                                            />
+                                        }
+                                        </div>
+                                    </div>
+                                  : 
+                                  <div className='preview'>
+                                  <p 
+                                    className='app-back' 
+                                    onClick={ () => setEditingPanel("")}
+                                    style={{float: "left", marginLeft:"7%", fontSize:"8px"}}
+                                  >
+                                    <ArrowLeftOutlined />   Back
+                                  </p> 
+                                  <PreviewSecton category = {editingPanel} />
+                                </div>
                               }
                               </div>
+                            </div>
                           </div>
-                          : 
-                          <div className='preview'>
-                            <p className='app-back' onClick={ () => setEditingPanel("")}>
-                              <ArrowLeftOutlined />   Back
-                            </p> 
-                            <PreviewSecton category = {editingPanel} />
-                          </div>
-                        }
+                        </div>
                       </div>
                     </Col>
                 </Row>
@@ -238,6 +243,7 @@ const Main = (props) => {
                     status={!date ? "error" : ""}
                     onChange={onDateChange} 
                     size = {"large"}
+                    disabledDate={(date) => date && date.valueOf() < Date.now()}
                     />
                 </Modal>
               </div>
@@ -251,6 +257,7 @@ const Main = (props) => {
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
   token: state.auth.token,
+  // user: state.auth.user
 })
 
 export default connect(mapStateToProps)(Main)

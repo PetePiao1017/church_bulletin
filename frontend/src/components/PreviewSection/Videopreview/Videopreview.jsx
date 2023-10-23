@@ -1,11 +1,12 @@
 import React from "react";
+import { connect } from "react-redux";
 
-const Videopreview = () => {
+const Videopreview = (props) => {
     return (
         <div className='scroll-bar' style={{margin:"0"}} >
-            <h3 className='app-header'>Video</h3>
+            <h3 className='app-header'>{props.title}</h3>
             <div className="body-text">
-                <p> Type into the Body Text field on the left for your text to show up here.</p>
+                <p>{props.bodyText}</p>
             </div>
             <div style={{height:"20vh", backgroundColor:"rgb(245, 247, 250)", width:"90%", marginLeft:"20px"}}>
             </div>
@@ -13,4 +14,9 @@ const Videopreview = () => {
     )
 }
 
-export default Videopreview
+const mapStateToProps = (state) => ({
+    title: state.builletins.video_Title,
+    bodyText: state.builletins.video_bodyText
+})
+
+export default connect(mapStateToProps)(Videopreview)

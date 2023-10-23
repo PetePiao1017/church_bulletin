@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import {Button} from 'antd';
-import { ArrowRightOutlined } from "@ant-design/icons";
+import {connect} from 'react-redux';
+
+import { RightOutlined } from "@ant-design/icons";
 import * as S from "./Styles";
 import "./Bulletins.scss"
 
@@ -77,15 +78,14 @@ const BulletIns = (props) => {
     
     const getItemStyle = (isDragging, draggableStyle) => ({
         userSelect: "none",
-        padding: "5px 0",
+        padding: "2px 0",
         background: "transparent",
         ...draggableStyle,
     });
 
     const getListStyle = (isDraggingOver) => ({
         background: "transparent",
-        width: "175%",
-        marginLeft:"5%",
+        width: "200px",
     });
 
 
@@ -109,6 +109,17 @@ const BulletIns = (props) => {
         );
     };
 
+    const showTitle = (str) => {
+      switch(str) {
+        case "Announcement":
+          return props.announcement_title
+        case "Event":
+          return props.event_title
+        case "Order Of Service":
+          console.log(props.orderofservice_title)
+          return props.orderofservice_title
+      }
+    }
 
     const createDraggable = (list) => {
         return list.map((item, index) => {
@@ -132,9 +143,17 @@ const BulletIns = (props) => {
                     >
                     <div className="list"
                         onClick={() => props.setEditingpanelCallback(item)}
+                        style={{
+                          fontSize:"10px", 
+                          color:"black", 
+                          display:"flex", 
+                          justifyContent:"space-between",
+                          backgroundColor: "rgb(247, 250, 252)",
+                        }}
+                        
                     >
-                        {item.content}
-                        <ArrowRightOutlined />
+                        <p>{showTitle(item.content)}</p>
+                        <RightOutlined />
                     </div>
                 </div>
                 )}
@@ -143,6 +162,7 @@ const BulletIns = (props) => {
         });
     };
 
+    
     return (
         <S.ListWrapper>
           <DragDropContext onDragEnd={handleOnDragEnd}>
@@ -153,4 +173,10 @@ const BulletIns = (props) => {
     
 }
 
-export default BulletIns
+const mapStateToProps = (state) => ({
+  announcement_title: state.builletins.announcment_Title,
+  orderofservice_title : state.builletins.orderofservice_Title,
+  event_title : state.builletins.event_Title
+})
+
+export default connect(mapStateToProps)(BulletIns)

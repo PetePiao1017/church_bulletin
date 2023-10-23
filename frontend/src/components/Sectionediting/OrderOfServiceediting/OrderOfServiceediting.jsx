@@ -1,38 +1,33 @@
 import React, {useState}  from "react";
 import { Button,  Form, Input, Upload,message} from 'antd';
+import { connect } from "react-redux";
 import { PictureOutlined, UploadOutlined,PlusOutlined, } from "@ant-design/icons";
 
-const OrderOfServiceediting = () => {
+import {
+    setOrderOfServiceTitle,
+    setOrderOfServiceTopicContent,
+    setOrderOfServiceTopicTitle
+} from '../../../actions/bulletins';
+import CustomUpload from "../../CustomUpload/CustomUpload";
+
+const OrderOfServiceediting = (props) => {
 
     const [count, setCount] = useState(['a'])
-    const [formData, setFormData] = useState({
-        title: '',
-        bodyText: ''
-    });
 
-    const {title, bodyText} = formData;
+    const onStateChange = (e) => {
+        switch(e.target.name) {
+            case "title":
+                props.setOrderOfServiceTitle(e.target.value);
+                break
+            case "topic_title":
+                props.setOrderOfServiceTopicTitle(e.target.value);
+                break
+            case "topic_content":
+                props.setOrderOfServiceTopicContent(e.target.value);
+                break
+        }
+    }
 
-
-    const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
-
-
-    const props = {
-        name: 'file',
-        action: 'https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188',
-        headers: {
-          authorization: 'authorization-text',
-        },
-        onChange(info) {
-          if (info.file.status !== 'uploading') {
-            console.log(info.file, info.fileList);
-          }
-          if (info.file.status === 'done') {
-            message.success(`${info.file.name} file uploaded successfully`);
-          } else if (info.file.status === 'error') {
-            message.error(`${info.file.name} file upload failed.`);
-          }
-        },
-    };
     return (
         <div className="orderofservice">
             <h4 className="top-header">Edit Order of Service</h4>
@@ -41,33 +36,15 @@ const OrderOfServiceediting = () => {
                     <Input 
                         type = "text"
                         name = "title"
-                        value={title}
-                        onChange={onChange}
+                        value={props.title}
+                        placeholder="Order Of Service"
+                        onChange={onStateChange}
                     />
                 </Form.Item>
                 <Form.Item label = "IMAGE">
-                    <div className='upload-container'>
-                        <Upload 
-                            {...props} 
-                            className='upload-btn'
-                        >
-                            <Button 
-                                icon={<UploadOutlined />}
-                                style={{width: "120%"}}
-                            >
-                               Upload
-                            </Button>
-                        </Upload>
-                        <br />
-                        <br />
-                        <br />
-                        <Button 
-                            icon={<PictureOutlined />}
-                            style={{width: "95%"}}
-                        >
-                            Stock Image
-                        </Button>
-                    </div>
+                    <CustomUpload
+                        type = "OrderofService"
+                        />
                 </Form.Item>
                 {
                     count.map((item, index) => {
@@ -87,11 +64,14 @@ const OrderOfServiceediting = () => {
                                 </p>
                                 <Input 
                                     type = "text" 
-                                    placeholder="Service Topics 101" 
+                                    placeholder="Service Topics 101"
+                                    name="topic_title"
+                                    value={props.orderofservice_Topic_Title}
+                                    onChange={onStateChange}
                                     style={{marginBottom:"20px"}}
                                 />
                                 <Form.Item>
-                                    <Input.TextArea rows = {4} />
+                                    <Input.TextArea name="topic_content" value={props.orderofservice_TOpic_Content} onChange={onStateChange} rows = {4} />
                                 </Form.Item>
                             </>
                         )
@@ -116,4 +96,14 @@ const OrderOfServiceediting = () => {
     )
 }
 
-export default OrderOfServiceediting
+const mapStateToProps = (state) => ({
+    title: state.builletins.orderofService_Title,
+    topic_title: state.builletins.orderofService_Topic_Title,
+    topic_content: state.builletins.orderofService_Topic_Content
+})
+
+export default connect(mapStateToProps, {
+    setOrderOfServiceTitle,
+    setOrderOfServiceTopicTitle,
+    setOrderOfServiceTopicContent
+})(OrderOfServiceediting)

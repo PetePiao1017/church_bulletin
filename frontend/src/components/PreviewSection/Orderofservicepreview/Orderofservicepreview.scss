@@ -1,8 +1,22 @@
 .scroll-bar{
     .service-topic {
-        padding-left: 12%;
+        .topic-header{
+            font-size: 10px;
+            color: #736e6e;
+        }
+        .topic-header-active{
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .topic-content{
+            font-size: 7px;
+            color: #736e6e;
+        }
+        .topic-content-active{
+            font-size: 9px;
+            color: #736e6e;
+        }
     }
     .keep-everyone {
-        padding-left: 12%;
     }
 }

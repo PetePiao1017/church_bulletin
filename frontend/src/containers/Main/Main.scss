@@ -112,58 +112,101 @@
                 align-self: end;
             }
 
-            .show-app{
-               margin: 0 auto;
-               background-size: cover;
-               background-repeat: no-repeat;
-               background-position: center;
-               background-image: url("../../utils/phone.jpg");
-               width: 30vw;
-               height: 100vh;
-               .scroll-bar{
-                margin-top: 18%;
-                height: 85%;
-                width: 93%;
-                overflow: auto;
-                overflow-x: hidden;
-                .app-header{
-                        text-align: center;
-                        margin-left: 4vw;
-                }
-                .app-date{
-                        text-align: center;
-                }
-                .app-image{
-                        display: flex;
-                        background-color: rgb(245, 247, 250);
-                        border-radius: 15px;    
-                        height: 200px;
-                        width: 83%;
-                        margin-left: 3vw;
-                        align-items: center;
-                        cursor: pointer;
-                        img{
-                            margin: 0 auto;
+            .device-preview{
+            //    background-size: cover;
+            //    background-repeat: no-repeat;
+            //    background-position: center;
+            //    background-image: url("../../utils/phone.jpg");
+                width: 40vh;
+                height: 100vh;
+                margin: 0 auto;
+                text-align: center;
+                .device{
+                    position: relative;
+                    .border-screen-extra{
+                        position: relative;
+                        border:3px solid #abaeb0;
+                        border-radius:14%/7%;
+                        box-shadow:  0 0 2px 2px #eeeef0, inset 0 0 0 7px #e2e3e4;
+                        .tool-right{
+                            position: absolute;
+                            top: 23%;
+                            right: -3%;
+                            width: 2%;
+                            height: 7.5%;
+                            border-radius: 0 2px 2px 0;
+                            background-color: #d8d9dc;
                         }
-                }
-                .bulletins{
-                        width: 83%;
-                        margin-left: 2vw;
-                        .bulletin {
-                            width: 100%;
-                            margin-top: 1vw;
-                            Button {
-                                width: 100%;
-                                background-color: rgb(135, 137, 139);
+                        .tool-up{
+                            position: absolute;
+                            top: 20%;
+                            left: -3%;
+                            width: 2%;
+                            height: 7.5%;
+                            border-radius: 2px 0 0 2px;
+                            background-color: #d8d9dc;
+                        }
+                        .tool-down{
+                            position: absolute;
+                            top: 29%;
+                            left: -3%;
+                            width: 2%;
+                            height: 7.5%;
+                            border-radius: 2px 0 0 2px;
+                            background-color: #d8d9dc;
+                        }
+                        .border-screen{
+                            border: 10px solid #d8d9dc;
+                            border-radius: 14%/6%;
+                            .device__screen{
+                                border: 1px solid rgba(194,200,209,.5215686274509804);
+                                border-radius: 10%/5%;
+                                height: 85vh;
+                                .scroll-bar{
+                                    margin-top: 12%;
+                                    height: 85%;
+                                    width: 100%;
+                                    overflow: auto;
+                                    overflow-x: hidden;
+                                    .app-header{
+                                            text-align: center;
+                                    }
+                                    .app-date{
+                                            text-align: center;
+                                    }
+                                    .app-image{
+                                            display: flex;
+                                            background-color: rgb(245, 247, 250);
+                                            border-radius: 15px;    
+                                            height: 200px;
+                                            align-items: center;
+                                            cursor: pointer;
+                                            img{
+                                                margin: 0 auto;
+                                            }
+                                    }
+                                    .bulletins{
+                                            .bulletin {
+                                                width: 100%;
+                                                margin-top: 1vw;
+                                                Button {
+                                                    width: 100%;
+                                                    background-color: rgb(135, 137, 139);
+                                                }
+                                            }
+                                    }
+                                }
                             }
                         }
+                    }
+                    
+                    
                 }
-            }
+               
             .preview{
                 .app-back{
                     cursor: pointer;
                     padding-top: 15%;
-                    padding-left: 10%
                 }
             }
                

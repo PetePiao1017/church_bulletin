@@ -1,41 +1,66 @@
 import React, {useState}  from "react";
-import { Button,  Form, Input, Upload,message, DatePicker, TimePicker} from 'antd';
-import dayjs from 'dayjs';
+// import type { DatePickerProps } from 'antd';
+import { Button,  Form, Input, DatePicker, TimePicker} from 'antd';
 
-import { PictureOutlined, UploadOutlined, } from "@ant-design/icons";
 
-const Eventediting = () => {
+import {
+    setEventTitle,
+    setEventDate,
+    setEventTimeStart,
+    setEventTimeEnd,
+    setEventLocation,
+    setEventBodyText,
+    setEventBtnText,
+    setEventBtnLink,
+} from '../../../actions/bulletins';
+import { connect } from "react-redux";
+import CustomUpload from "../../CustomUpload/CustomUpload";
+
+const Eventediting = (props) => {
 
     const format = 'HH:mm';
 
-    const [formData, setFormData] = useState({
-        title: '',
-        bodyText: ''
-    });
+    const onStateChage = (e) => {
+        console.log("=======", e.target.texts);
+        switch(e.target.name) {
+            case "title" :
+                props.setEventTitle(e.target.value);
+                break
+            case "date" :
+                props.setEventDate(e.target.value);
+                break
+            case "time_start" :
+                props.setEventTimeStart(e.target.value);
+                break
+            case "time_end":
+                props.setEvnetTimeEnd(e.target.value);
+                break
+            case "location":
+                props.setEventLocation(e.target.value);
+                break
+            case "bodyText":
+                props.setEventBodyText(e.target.value);
+                break
+            case "btnText":
+                props.setEventBtnText(e.target.value);
+                break
+            case "btnLink":
+                props.setEventBtnLink(e.target.value);
+        }
+    }
 
-    const {title, bodyText} = formData;
+    const onDateChage  = (date, dateString) => {
+        props.setEventDate(dateString);
+    }
 
+    const onTimeStartChange = (time,timeString) => {
+        props.setEventTimeStart(timeString);
+    }
 
-    const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+    const onTimeEndChange = (time, timeString) => {
+        props.setEventTimeEnd(timeString);
+    }
 
-
-    const props = {
-        name: 'file',
-        action: 'https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188',
-        headers: {
-          authorization: 'authorization-text',
-        },
-        onChange(info) {
-          if (info.file.status !== 'uploading') {
-            console.log(info.file, info.fileList);
-          }
-          if (info.file.status === 'done') {
-            message.success(`${info.file.name} file uploaded successfully`);
-          } else if (info.file.status === 'error') {
-            message.error(`${info.file.name} file upload failed.`);
-          }
-        },
-    };
     return (
         <div className="orderofservice">
             <h4 className="top-header">Edit Event</h4>
@@ -44,38 +69,20 @@ const Eventediting = () => {
                     <Input 
                         type = "text"
                         name = "title"
-                        value={title}
-                        onChange={onChange}
+                        value={props.title}
+                        onChange={onStateChage}
                     />
                 </Form.Item>
                 <Form.Item label = "IMAGE">
-                    <div className='upload-container'>
-                        <Upload 
-                            {...props} 
-                            className='upload-btn'
-                        >
-                            <Button 
-                                icon={<UploadOutlined />}
-                                style={{width: "120%"}}
-                            >
-                               Upload
-                            </Button>
-                        </Upload>
-                        <br />
-                        <br />
-                        <br />
-                        <Button 
-                            icon={<PictureOutlined />}
-                            style={{width: "95%"}}
-                        >
-                            Stock Image
-                        </Button>
-                    </div>
+                    <CustomUpload
+                        type = "Event"
+                        />
                 </Form.Item>
                
                 <Form.Item label = "DATE">
                     <DatePicker
-                        onChange={onChange}
+                        // texts={{name: "date"}}
+                        onChange={onDateChage}
                         style={{width:"100%"}}
                     />
                 </Form.Item>
@@ -83,26 +90,26 @@ const Eventediting = () => {
                 <p>TIME</p>
                     <div style={{display:"flex"}}>
                         <TimePicker 
-                            defaultValue={dayjs('12:08', format)} 
+                            onChange={onTimeStartChange}
                             format={format} 
                         /> -
                         <TimePicker 
-                            defaultValue={dayjs('12:08', format)} 
+                            onChange={onTimeEndChange}
                             format={format} 
                         /> 
                     </div>
                 <br />
                 <Form.Item label = "LOCATION">
-                    <Input.TextArea rows = {2} />
+                    <Input.TextArea name="location" value={props.location} onChange={onStateChage} rows = {2} />
                 </Form.Item>
 
                 <Form.Item label = "BODY TEXT">
-                    <Input.TextArea rows = {4} />
+                    <Input.TextArea name="bodyText" value={props.bodyText} onChange={onStateChage} rows = {4} />
                 </Form.Item>
 
                 <Form.Item label = "BUTTON">
-                    <Input  type="text" placeholder="Button Text" style = {{marginBottom:"20px"}}/>
-                    <Input  type="text" placeholder="Button Link" />
+                    <Input  type="text" placeholder="Button Text" name="btnText" value={props.btnText} onChange={onStateChage} style = {{marginBottom:"20px"}}/>
+                    <Input  type="text" placeholder="Button Link" name="btnLink" value={props.btnLink} onChange={onStateChage} />
                 </Form.Item>
                 
                 <Button 
@@ -116,4 +123,24 @@ const Eventediting = () => {
     )
 }
 
-export default Eventediting
+const mapStateToProps = (state) => ({
+    title: state.builletins.Event_Title,
+    date: state.builletins.event_Date,
+    time_start: state.builletins.event_Time_Start,
+    time_end: state.builletins.event_Time_End,
+    location: state.builletins.event_Location,
+    bodyText: state.builletins.event_bodyText,
+    btnText: state.builletins.event_btnText,
+    btnLink: state.builletins.event_btnLink,
+})
+
+export default connect(mapStateToProps, {
+    setEventTitle,
+    setEventDate,
+    setEventTimeStart,
+    setEventTimeEnd,
+    setEventLocation,
+    setEventBodyText,
+    setEventBtnText,
+    setEventBtnLink,
+})(Eventediting)
