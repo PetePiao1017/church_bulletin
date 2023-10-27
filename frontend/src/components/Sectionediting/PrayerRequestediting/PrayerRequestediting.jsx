@@ -32,7 +32,7 @@ const PrayerRequestediting = (props) => {
 
 
     return(
-        <div className="prayerrequest">
+        <div style={{width: "100%", margin: "0 auto"}}>
             <h4 className="top-header">Edit Prayer Request</h4>
             <Form layout='vertical' className='form-container'>
                 <Form.Item label = "TITLE">

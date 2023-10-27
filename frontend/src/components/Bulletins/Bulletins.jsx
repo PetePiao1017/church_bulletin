@@ -85,7 +85,7 @@ const BulletIns = (props) => {
 
     const getListStyle = (isDraggingOver) => ({
         background: "transparent",
-        width: "200px",
+        width: "90%",
     });
 
 
@@ -116,8 +116,17 @@ const BulletIns = (props) => {
         case "Event":
           return props.event_title
         case "Order Of Service":
-          console.log(props.orderofservice_title)
           return props.orderofservice_title
+        case "Connect Card":
+          return props.connectcard_title
+        case "Online Giving":
+          return props.online_title;
+        case "Video":
+          return props.video_title;
+        case "Website":
+          return props.website_title;
+        case "Prayer Request":
+          return props.prayer_title;
       }
     }
 
@@ -176,7 +185,13 @@ const BulletIns = (props) => {
 const mapStateToProps = (state) => ({
   announcement_title: state.builletins.announcment_Title,
   orderofservice_title : state.builletins.orderofservice_Title,
-  event_title : state.builletins.event_Title
+  event_title : state.builletins.event_Title,
+  connectcard_title: state.builletins.connectcard_Title,
+  online_title: state.builletins.online_Title,
+  orderofservice_title: state.builletins.orderofservice_Title,
+  prayer_title: state.builletins.prayer_Title,
+  video_title: state.builletins.video_Title,
+  website_title: state.builletins.website_Title,
 })
 
 export default connect(mapStateToProps)(BulletIns)

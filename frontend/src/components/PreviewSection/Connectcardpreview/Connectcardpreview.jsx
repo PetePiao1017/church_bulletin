@@ -4,48 +4,43 @@ import {connect} from 'react-redux';
 
 const Connectcardpreview = (props) => {
 
-    console.log(props.connectcard_checkedvalues)
     return(
-        <div >
+        <div className='scroll-bar' 
+            style={{
+                marginTop:"0", 
+                height:"73vh"}} >
             <h3 className='app-header'>{props.title}</h3>
-            <div className='app-image'>
-                <img src = "./gallery.png"  style={{width:"50px"}} alt = "Gallery Image" />
-            </div>
-            <div className="body-text">
-            <p> {props.bodyText}</p>
-            </div>
             {
-                props.connectcard_checkedvalues.length === 0
-                ?
-                <>
-                    <label>Name</label>
-                        <Input type = "text" />
-                    <br />
-                    <label>Email</label>
-                        <Input type = "text" />
-                    <br />
-                </>
-
-                : props.connectcard_checkedvalues.map((item, index) => {
-                    return(
-                        <>
-                        <div key = {index}>
-                            <label>{item}</label>
-                                <Input type = "text" />
-                        </div>
-                        <br />
-                        </>
-                    )
-                })
+                <img src = {props.imageurl} alt = "image" />
             }
-           
-            <p>{props.questionOne}</p>
-                <Checkbox>{props.questionOneOptionOne}</Checkbox>
-                <Checkbox>{props.questionOneOptionTwo}</Checkbox>
-            <p>{props.questionTwo}</p>
-                <Checkbox>{props.questionTwoOptionOne}</Checkbox>
-                <Checkbox>{props.questionTwoOptionTwo}</Checkbox>
-            <div className="btn-link">
+            <div className="body-text">
+            <p>{!props.bodyText ? "Type into the BODY TEXT field on the left for your text to show up here. Customize your copy with bold, italicized, or underlined text. Tip: Leaving a field blank in Loop will exclude it from your bulletin." : props.bodyText}</p>
+            </div>
+            <Form layout="vertical" style={{width : "80%", margin: "0 auto"}}>
+                {
+                    !props.checkedvalues
+                    ?   
+                        <>
+                        <Form.Item label = "Name" >
+                            <Input type = "text" /> 
+                        </Form.Item>
+                       <Form.Item label = "Email">
+                            <Input type = "text" /> 
+                        </Form.Item>
+                        </>
+                    
+                    :
+                    props.checkedvalues.map((item, index) => {
+                        return(<Form.Item label = {item}>
+                            <Input type = "text" />
+                        </Form.Item>)
+                    })
+                }
+                <Form.Item label = "Prayer Request">
+                    <Input.TextArea type="text" />
+                </Form.Item>
+            </Form>
+            <div className="btn-link">   
                 <Button type="primary">Submit</Button>
             </div>
         </div>

@@ -55,6 +55,7 @@ const Main = (props) => {
   const onDrop = (ev, method) => {
     if(method == "add") {
       let id = ev.dataTransfer.getData("id");
+      
       setLocalbulletins([...localbulletins, id])
     }
   }

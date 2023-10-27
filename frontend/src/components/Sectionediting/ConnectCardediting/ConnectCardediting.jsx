@@ -15,6 +15,7 @@ import {
     setConnectCardQuestionTwoOptionOne,
     setConnectCardCheckedValues
 } from '../../../actions/bulletins';
+import CustomUpload from "../../CustomUpload/CustomUpload";
 
 const ConnectCardediting = (props) => {
  
@@ -66,26 +67,9 @@ const ConnectCardediting = (props) => {
                     />
                 </Form.Item>
                 <Form.Item label = "IMAGE">
-                    <div className='upload-container'>
-                        <Upload 
-                            className='upload-btn'
-                        >
-                            <Button 
-                                icon={<UploadOutlined />}
-                            >
-                                Click to Upload
-                            </Button>
-                        </Upload>
-                        <br />
-                        <br />
-                        <br />
-                        <Button 
-                            icon={<PictureOutlined />}
-                            style={{width: "95%"}}
-                        >
-                            Stock Image
-                        </Button>
-                    </div>
+                    <CustomUpload
+                        type = "Connect Card"
+                        />
                 </Form.Item>
                 <Form.Item label = "BODY TEXT">
                     <Input.TextArea 

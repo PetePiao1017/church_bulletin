@@ -10,15 +10,8 @@ import {
 } from '../../../actions/bulletins';
 
 const Videoediting = (props) => {
-    const [formData, setFormData] = useState({
-        title: '',
-        bodyText: ''
-    });
-
-    const {title, bodyText} = formData;
 
 
-    const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
     const onStateChange = (e) => {
         switch(e.target.name) {
             case "title":
@@ -34,13 +27,12 @@ const Videoediting = (props) => {
     }
 
     const onPlaformChage = (value) => {
-        console.log("value=====",value)
         props.setVideoPlatform(value);
     }
 
 
     return(
-        <div className="announcment">
+        <div style={{margin: "0 auto", width: "100%"}}>
             <h4 className="top-header">Edit Video</h4>
             <Form layout='vertical' className='form-container'>
                 <Form.Item label = "Video">

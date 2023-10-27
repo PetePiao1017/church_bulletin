@@ -12,8 +12,12 @@ import { setAnnouncementImageUrl,
         setEventImageUrl,
         setEventDeleteImageUrl,
     } from "../../actions/bulletins";
+import { useNavigate } from "react-router-dom";
+
 
 const CustomUpload = (props) => {
+
+    const navigate = useNavigate();
     const [selectedFile, setSelectedFile] = useState()
     const [preview, setPreview] = useState()
 
@@ -26,7 +30,7 @@ const CustomUpload = (props) => {
         const objectUrl = URL.createObjectURL(selectedFile);
         switch(props.type){
             case "Announcement":
-                props.setAnnouncementImageUrl(objectUrl);                
+                props.setAnnouncementImageUrl(objectUrl);
                 break
             case "Headerediting":
                 props.setHeaderImageurl(objectUrl);
@@ -44,12 +48,13 @@ const CustomUpload = (props) => {
     }, [selectedFile])
 
     const onSelectFile = e => {
+        navigate('/ex1', {replace: true})
         if (!e.target.files || e.target.files.length === 0) {
             setSelectedFile(undefined)
             
             return
         }
-        
+        console.log(e.target.files[0])
         // I've kept this example simple by using the first image instead of multiple
         setSelectedFile(e.target.files[0])
     }
@@ -75,7 +80,7 @@ const CustomUpload = (props) => {
 
     return (
        <>
-            <label for="file-upload" class="custom-file-upload">
+            <label for="file-upload" className="custom-file-upload">
                 {
                     !selectedFile
                     ?   <div style={{margin: "auto", display: "flex", flexDirection: "column"}}>

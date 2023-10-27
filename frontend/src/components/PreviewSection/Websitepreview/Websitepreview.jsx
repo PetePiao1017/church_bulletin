@@ -1,6 +1,6 @@
 import React from "react";
-import {GlobalOutlined} from '@ant-design/icons'
 import { connect } from "react-redux";
+import { Website } from "../../SVG";
 
 const Websitepreview = (props) => {
 
@@ -10,14 +10,20 @@ const Websitepreview = (props) => {
             
             {
                 props.type === "Website" || props.type.length === 0
-                ? <div className='app-image' />
+                ? <div style={{
+                    display:"flex", 
+                    alignItems:"center", 
+                    justifyContent:"center",
+                    height:"50vh",
+                    backgroundColor: "gray"
+                }}>
+                    <Website />
+                </div>
                 :   
                 <div className="body-text">
-                    <div className="app-image">{props.embed_code}</div>
+                    <p className="app-image">{props.embed_code}</p>
                 </div>
             }
-            <div style={{height:"20vh", backgroundColor:"rgb(245, 247, 250)", width:"90%", marginLeft:"20px"}}>
-            </div>
         </div>
     )
 }

@@ -16,8 +16,8 @@ const Addsection = (props) => {
     return(
     <Col span = {20} className='add-section'>
         <h3>Add a section</h3>
-        <p className='subtitle'>Drag any section below into the phone on the right.</p>
-        <Row gutter={16}>
+        <p style={{fontSize:"12px", marginLeft:"10px"}}>Drag any section below into the phone on the right.</p>
+        <Row gutter={16} >
             <Col span = {1} />
             <Col span={11}>
                 <ReactCardFlip 
@@ -25,7 +25,7 @@ const Addsection = (props) => {
                     flipDirection="vertical"
                 >
                     <Card 
-                        className='draggable' 
+                        className='draggable'
                         draggable 
                         onClick={(e) => {
                             onclick(e, "Announcement")
@@ -40,8 +40,8 @@ const Addsection = (props) => {
                         <p className='category'>Announcement</p>
                     </Card>
                     <Card>
-                        <img src = "./check_icon.png" style={{width:"40px"}} />
-                        <p className='category'>Added</p>
+                        <img src = "./check_icon.png" style={{width:"40px", margin:"0 auto"}} />
+                        <p style={{margin:"0 auto"}}>Added</p>
                     </Card>
                 </ReactCardFlip>
             </Col>

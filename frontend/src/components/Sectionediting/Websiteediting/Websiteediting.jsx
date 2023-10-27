@@ -30,7 +30,7 @@ const Websiteediting = (props) => {
 
 
     return(
-        <div className="announcment">
+        <div style={{width: "100%", margin: "0 auto"}}>
             <h4 className="top-header">Edit Website</h4>
             <Form layout='vertical' className='form-container'>
                 <Form.Item label = "BULLETIN TITLE">

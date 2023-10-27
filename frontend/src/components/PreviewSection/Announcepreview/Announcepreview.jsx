@@ -12,7 +12,7 @@ const Announcepreview = (props) => {
                     {
                         !props.imageurl 
                             ? <img src = "./gallery.png"  style={{width:"50px"}} alt = "Gallery Image" />
-                            : <img src = {props.imageurl} alt = "preview" style = {{width : "100%"}} />
+                            : <img src = {'URL.createObjectURL(props.file)'} alt = "preview" style = {{width : "100%", height:"100%"}} />
                     }
                 </div>
                 <br />
@@ -43,6 +43,7 @@ const mapStateToProps = (state) => ({
     buttonLink: state.builletins.announcment_buttonLink,
     buttonText: state.builletins.announcment_buttonText,
     imageurl : state.builletins.announcment_imageurl,
+    file: state.builletins.announcement_file,
 })
 
 export default connect(mapStateToProps)(Announcepreview)

@@ -10,6 +10,7 @@ import {
     ANNOUNCEMENT_IMAGE_URL, 
     ANNOUNCEMENT_DELETE_IMAGE_URL, 
     ANNOUNCEMENT_TITLE,
+    ANNOUNCEMENT_FILE,
 
     CONNECTCARD_BODY_TEXT,
     CONNECTCARD_IMAGE,
@@ -181,7 +182,6 @@ function bulletinsReducer (state = initialState, action) {
             ...state,
             announcment_imageurl: payload
           };
-
 
         case CONNECTCARD_TITLE:
           if(payload){

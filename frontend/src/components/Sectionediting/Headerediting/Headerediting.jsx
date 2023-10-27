@@ -21,7 +21,7 @@ const Headerediting = (props) => {
 
     
     return(
-        <div>
+        <div style={{width:"100%", margin: "0 auto"}}>
             <h3>Edit Header</h3>
             <Form layout='vertical' className='form-container'>
                 <Form.Item label = "BULLETIN TITLE">

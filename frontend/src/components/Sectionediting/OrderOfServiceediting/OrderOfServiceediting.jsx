@@ -29,7 +29,7 @@ const OrderOfServiceediting = (props) => {
     }
 
     return (
-        <div className="orderofservice">
+        <div style={{margin: "0 auto", width: "100%"}}>
             <h4 className="top-header">Edit Order of Service</h4>
             <Form layout='vertical' className='form-container'>
                 <Form.Item label = "BULLETIN TITLE">

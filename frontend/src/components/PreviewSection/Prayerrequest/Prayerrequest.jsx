@@ -5,22 +5,21 @@ import { connect } from "react-redux";
 
 
 const Prayerrequest = (props) => {
-    console.log(props.checkedvalues)
     return (
-        <div className='scroll-bar' style={{marginLeft:"10%", width:"80%", marginTop:"0", height:"80vh"}} >
+        <div className='scroll-bar' 
+            style={{
+                marginTop:"0", 
+                height:"73vh"}} >
             <h3 className='app-header'>{props.title}</h3>
-            <div className='app-image'>
-                <img src = "./gallery.png"  style={{width:"50px"}} alt = "Gallery Image" />
-            </div>
             <div className="body-text">
             <p>{props.bodyText}</p>
             </div>
-            <Form layout="vertical">
+            <Form layout="vertical" style={{width : "80%", margin: "0 auto"}}>
                 {
                     !props.checkedvalues
                     ?   
                         <>
-                        <Form.Item label = "Name">
+                        <Form.Item label = "Name" >
                             <Input type = "text" /> 
                         </Form.Item>
                        <Form.Item label = "Name">
@@ -28,7 +27,8 @@ const Prayerrequest = (props) => {
                         </Form.Item>
                         </>
                     
-                    :props.checkedvalues.map((item, index) => {
+                    :
+                    props.checkedvalues.map((item, index) => {
                         return(<Form.Item label = {item}>
                             <Input type = "text" />
                         </Form.Item>)
