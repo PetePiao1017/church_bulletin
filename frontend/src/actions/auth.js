@@ -10,6 +10,7 @@ import {
   LOGOUT
 } from './types';
 
+
 /*
   NOTE: we don't need a config object for axios as the
  default headers in axios are already Content-Type: application/json
@@ -79,4 +80,10 @@ export const login = (email, password) => async (dispatch) => {
 };
 
 // Logout
-export const logout = () => ({ type: LOGOUT });
+export const logout = () => async (dispatch) => {
+  localStorage.removeItem("token");
+  dispatch({
+    type: LOGOUT,
+    payload: null
+  })
+}

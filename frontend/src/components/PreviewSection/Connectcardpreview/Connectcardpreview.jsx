@@ -3,42 +3,59 @@ import {Button, Checkbox, Form, Input} from 'antd'
 import {connect} from 'react-redux';
 
 const Connectcardpreview = (props) => {
+    let title = props.title.filter((item) => item.id === props.id);
+    let bodyText = props.bodyText.filter((item) => item.id === props.id);
+    let connectcard_checkedvalues = props.connectcard_checkedvalues.filter((item) => item.id === props.id);
+    let questionOne = props.questionOne.filter((item) => item.id === props.id);
+    let questionTwo = props.questionTwo.filter((item) => item.id === props.id);
 
     return(
         <div className='scroll-bar' 
             style={{
                 marginTop:"0", 
                 height:"73vh"}} >
-            <h3 className='app-header'>{props.title}</h3>
+            <h3 className='app-header'>
+                {title.length === 0 ? "Connect Card" : title[0].str}
+            </h3>
             {
-                <img src = {props.imageurl} alt = "image" />
+                <div style={{
+                    width:"100%", 
+                    height:"30%", 
+                    background:"rgb(226, 232, 240)", 
+                    margin: "0 auto",
+                    display:"flex", 
+                    alignItems:"center"
+                    }}>
+                    <img src = {props.imageurl} alt = "image"/>
+                </div>
+                
             }
             <div className="body-text">
-            <p>{!props.bodyText ? "Type into the BODY TEXT field on the left for your text to show up here. Customize your copy with bold, italicized, or underlined text. Tip: Leaving a field blank in Loop will exclude it from your bulletin." : props.bodyText}</p>
+                <p>
+                    {bodyText.length === 0 ? "Type into the BODY TEXT field on the left for your text to show up here. Customize your copy with bold, italicized, or underlined text. Tip: Leaving a field blank in Loop will exclude it from your bulletin." : bodyText[0].str}
+                </p>
             </div>
             <Form layout="vertical" style={{width : "80%", margin: "0 auto"}}>
                 {
-                    !props.checkedvalues
+                    props.connectcard_checkedvalues.length === 0
                     ?   
                         <>
                         <Form.Item label = "Name" >
                             <Input type = "text" /> 
                         </Form.Item>
-                       <Form.Item label = "Email">
+                        <Form.Item label = "Email">
                             <Input type = "text" /> 
                         </Form.Item>
                         </>
                     
                     :
-                    props.checkedvalues.map((item, index) => {
-                        return(<Form.Item label = {item}>
-                            <Input type = "text" />
-                        </Form.Item>)
+                    connectcard_checkedvalues[0].arr.map((item, index) => {
+                        return(
+                            <Form.Item label = {item}>
+                                <Input type = "text" />
+                            </Form.Item>)
                     })
                 }
-                <Form.Item label = "Prayer Request">
-                    <Input.TextArea type="text" />
-                </Form.Item>
             </Form>
             <div className="btn-link">   
                 <Button type="primary">Submit</Button>

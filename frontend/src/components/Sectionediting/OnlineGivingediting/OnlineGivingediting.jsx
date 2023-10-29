@@ -11,16 +11,24 @@ import {
 
 const OnlineGivingediting = (props) => {
    
+    let title, bodyText, link;
     const onStateChange = (e) => {
+        let tempObj = {
+            id: props.id,
+            str: e.target.value
+        }
         switch(e.target.name) {
             case "title":
-                props.setOnlineTitle(e.target.value);
+                title += e.target.value;
+                props.setOnlineTitle(tempObj);
                 break
             case "bodyText":
-                props.setOnlineBodyText(e.target.value);
+                bodyText += e.target.value;
+                props.setOnlineBodyText(tempObj);
                 break
             case "link":
-                props.setOnlineLink(e.target.value);
+                link += e.target.value;
+                props.setOnlineLink(tempObj);
                 break
         }
     }
@@ -38,14 +46,14 @@ const OnlineGivingediting = (props) => {
                     <Input 
                         type = "text"
                         name = "title"
-                        value={props.title}
+                        value={title}
                         onChange={onStateChange}
                         placeholder="Onling Giving"
                     />
                 </Form.Item>
 
                 <Form.Item label = "BODY TEXT">
-                    <Input.TextArea name="bodyText" value={props.bodyText} onChange={onStateChange} rows = {4} />
+                    <Input.TextArea name="bodyText" value={bodyText} onChange={onStateChange} rows = {4} />
                 </Form.Item>
                 
                 <Form.Item label = "Display Online Giving via">
@@ -63,7 +71,7 @@ const OnlineGivingediting = (props) => {
                     <Input 
                         type="text"
                         name="link"
-                        value={props.link}
+                        value={link}
                         onChange={onStateChange}
                         placeholder="yourwebsite.com"
                         /> 

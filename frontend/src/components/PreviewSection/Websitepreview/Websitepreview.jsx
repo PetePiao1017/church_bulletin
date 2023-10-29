@@ -3,10 +3,13 @@ import { connect } from "react-redux";
 import { Website } from "../../SVG";
 
 const Websitepreview = (props) => {
-
+    let title = props.title.filter((item) => item.id === props.id);
+    let embed_code = props.embed_code.filter((item) => item.id === props.id);
     return (
         <div className='scroll-bar' style={{margin:"0"}} >
-            <h3 className='app-header'>{props.title}</h3>
+            <h3 className='app-header'>
+                {title.length === 0 ? "Website" : title[0].str}
+            </h3>
             
             {
                 props.type === "Website" || props.type.length === 0
@@ -21,7 +24,9 @@ const Websitepreview = (props) => {
                 </div>
                 :   
                 <div className="body-text">
-                    <p className="app-image">{props.embed_code}</p>
+                    <p className="app-image">
+                        {embed_code.length === 0 ? " ":  embed_code[0].str}
+                    </p>
                 </div>
             }
         </div>

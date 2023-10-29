@@ -10,26 +10,26 @@ import Websiteediting from './Websiteediting/Websiteediting';
 import Headerediting from "./Headerediting/Headerediting";
 
 const Sectionediting = (props) => {
-    
+
     switch(props.category){
         case "Headerediting":
-            return <Headerediting />
+            return <Headerediting id = {props.id} />
         case "Announcement":
-            return <Announceediting />
+            return <Announceediting id = {props.id} />
         case "Connect Card":
-            return <ConnectCardediting />
+            return <ConnectCardediting id = {props.id} />
         case "Event":
-            return <Eventediting />
+            return <Eventediting id = {props.id} />
         case "Online Giving":
-            return <OnlineGivingediting />
+            return <OnlineGivingediting id = {props.id} />
         case "Order Of Service":
-            return <OrderOfServiceediting />
+            return <OrderOfServiceediting id = {props.id} />
         case "Prayer Request":
-            return <PrayerRequestediting />
+            return <PrayerRequestediting id = {props.id} />
         case "Video":
-            return <Videoediting />
+            return <Videoediting id = {props.id} />
         case "Website":
-            return <Websiteediting />
+            return <Websiteediting id = {props.id} />
     }
 }
 

@@ -22,32 +22,40 @@ const ConnectCardediting = (props) => {
 
 
     const onChange = (checkedValues) => {
-        props.setConnectCardCheckedValues(checkedValues);
+        let tempObj = {
+            id : props.id,
+            arr: checkedValues
+        }
+        props.setConnectCardCheckedValues(tempObj);
     }
     const onStateChange = (e) => {
+        let tempObj = {
+            id: props.id,
+            str: e.target.value
+        }
         switch(e.target.name) {
             case "title":
-                props.setConnectCardTitle(e.target.value);
+                props.setConnectCardTitle(tempObj);
                 break
             case "bodyText":
-                props.setConnectCardBodyText(e.target.value);
+                props.setConnectCardBodyText(tempObj);
                 break
             case "questionOne":
-                props.setConnectCardQuestionOne(e.target.value);
+                props.setConnectCardQuestionOne(tempObj);
                 break
             case "question_one_option_one":
-                props.setConnectCardQuestionOneOptionOne(e.target.value);
+                props.setConnectCardQuestionOneOptionOne(tempObj);
                 break
             case "question_one_option_two":
-                props.setConnectCardQuestionOneOptionTwo(e.target.value);
+                props.setConnectCardQuestionOneOptionTwo(tempObj);
             case "questionTwo":
-                props.setConnectCardQuestionTwo(e.target.value);
+                props.setConnectCardQuestionTwo(tempObj);
                 break
             case "question_two_option_one":
-                props.setConnectCardQuestionTwoOptionOne(e.target.value);
+                props.setConnectCardQuestionTwoOptionOne(tempObj);
                 break
             case "question_two_option_two":
-                props.setConnectCardQuestionTwoOptionTwo(e.target.value);
+                props.setConnectCardQuestionTwoOptionTwo(tempObj);
         }
     }
 

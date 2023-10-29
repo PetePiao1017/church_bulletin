@@ -7,9 +7,18 @@ import { convertDate } from "../../../utils/convertDate";
 import './Eventpreview.scss';
 
 const Eventpreview = (props) => {
+    let title = props.title.filter((item) => item.id === props.id);
+    let date = props.date.filter((item) => item.id === props.id);
+    let time_start = props.time_start.filter(item => item.id === props.id);
+    let time_end = props.time_end.filter(item => item.id === props.id);
+    let location = props.location.filter(item => item.id === props.id);
+    let bodyText = props.bodyText.filter(item => item.id === props.id);
+    let btnText = props.btnText.filter(item => item.id === props.id);
     return (
             <div className='scroll-bar' style={{margin:"0"}} >
-                <h3 className='app-header' style={{marginTop:"0"}}>{props.title}</h3>
+                <h3 className='app-header' style={{marginTop:"0"}}>
+                    {title.length === 0 ? "Event" : title[0].str}
+                </h3>
                 <div className='app-image'>
                     <img src = {props.imageurl}  style={{width:"100%", height:"100%"}} alt = "Gallery Image" />
                 </div>
@@ -19,8 +28,14 @@ const Eventpreview = (props) => {
                             <CalendarFilled /> 
                         </Col>
                         <Col>
-                            <div style={{fontSize:"8px"}}>{convertDate(props.date)}</div>
-                            <div style={{fontSize:"8px"}}>{props.time_start} - {props.time_end}</div>
+                            <div style={{fontSize:"8px"}}>
+                                {date.length === 0 ? "" : 
+                                (date[0].str)}
+                            </div>
+                            <div style={{fontSize:"8px"}}>
+                                {time_start.length === 0 ? "" : time_start[0].str} - 
+                                {time_end.length === 0 ? "" : time_end[0].str}
+                            </div>
                         </Col>
                 </Row>
                 <Row className="location" gutter={16}>
@@ -28,12 +43,12 @@ const Eventpreview = (props) => {
                             <EnvironmentOutlined /> 
                         </Col>
                         <Col>
-                            <div style={{fontSize:"8px"}}>{props.location}</div>
+                            <div style={{fontSize:"8px"}}>{location.length === 0 ? "" : location[0].str}</div>
                             <div style={{display: "none"}}>12:00 pm - 1:00 pm</div>
                         </Col>
                 </Row>
                 <div className="body-text">
-                    {!props.bodyText ? "Type into the BODY TEXT field on the left for your text to show up here. Customize your copy with bold, italicized, or underlined text. Tip: Leaving a field blank in Loop will exclude it from your bulletin." : props.bodyText}
+                    {bodyText.length === 0 ? "Type into the BODY TEXT field on the left for your text to show up here. Customize your copy with bold, italicized, or underlined text. Tip: Leaving a field blank in Loop will exclude it from your bulletin." : bodyText[0].str}
                 </div>
                 <div className="btn-link">
                     <button 
@@ -45,7 +60,7 @@ const Eventpreview = (props) => {
                             borderRadius:"6px"
                         }}
                     >
-                        {!props.btnText ? "Submit" : props.btnText}
+                        {btnText.length === 0 ? "Submit" : btnText[0].str}
                     </button>
                 </div>
             </div>

@@ -91,22 +91,22 @@ export const setHeaderDeleteImageurl = (text) => async (dispatch) => {
 
 // Announcement
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-export const setAnnouncementBodyText = (bodyText) => async (dispatch) => {
+export const setAnnouncementBodyText = (tempObj) => async (dispatch) => {
     dispatch({
         type: ANNOUNCEMENT_BODY_TEXT,
-        payload: bodyText
+        payload: tempObj
     })
 }
-export const setAnnouncementButtonLink = (buttonLink) => async (dispatch) => {
+export const setAnnouncementButtonLink = (tempObj) => async (dispatch) => {
     dispatch({
         type: ANNOUNCEMENT_BUTTON_LINK,
-        payload: buttonLink
+        payload: tempObj
     })
 }
-export const setAnnouncementButtonText = (buttonText) => async (dispatch) => {
+export const setAnnouncementButtonText = (tempObj) => async (dispatch) => {
     dispatch({
         type: ANNOUNCEMENT_BUTTON_TEXT,
-        payload: buttonText
+        payload: tempObj
     })
 }
 export const setAnnouncementImageUrl = (imageurl) => async (dispatch) => {
@@ -121,99 +121,99 @@ export const setAnnouncementDeleteImageUrl = (imageurl) => async (dispatch) => {
         payload: imageurl
     })
 }
-export const setAnnouncementTitle = (title) => async (dispatch) => {
+export const setAnnouncementTitle = (tempObj) => async (dispatch) => {
     dispatch({
         type: ANNOUNCEMENT_TITLE,
-        payload: title
+        payload: tempObj
     })
 }
 
 
 // Connet Card
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-export const setConnectCardTitle = (title) =>async (dispatch) => {
+export const setConnectCardTitle = (tempObj) =>async (dispatch) => {
     dispatch({
         type: CONNECTCARD_TITLE,
-        payload: title
+        payload: tempObj
     })
 }
 
-export const setConnectCardBodyText = (bodyText) => async (dispatch) => {
+export const setConnectCardBodyText = (tempObj) => async (dispatch) => {
     dispatch({
         type: CONNECTCARD_BODY_TEXT,
-        payload: bodyText
+        payload: tempObj
     })
 }
 
-export const setConnectCardQuestionOne = (questionOne) => async (dispatch) => {
+export const setConnectCardQuestionOne = (tempObj) => async (dispatch) => {
     dispatch({
         type: CONNECTCARD_QUESTION_ONE,
-        payload: questionOne
+        payload: tempObj
     })
 }
 
-export const setConnectCardQuestionOneOptionOne = (questionOne) => async (dispatch) => {
+export const setConnectCardQuestionOneOptionOne = (tempObj) => async (dispatch) => {
     dispatch({
         type: CONNECTCARD_QUESTION_ONE_OPTION_ONE,
-        payload: questionOne
+        payload: tempObj
     })
 }
 
-export const setConnectCardQuestionOneOptionTwo = (questionOne) => async (dispatch) => {
+export const setConnectCardQuestionOneOptionTwo = (tempObj) => async (dispatch) => {
     dispatch({
         type: CONNECTCARD_QUESTION_ONE_OPTION_TWO,
-        payload: questionOne
+        payload: tempObj
     })
 }
 
-export const setConnectCardQuestionTwo = (questionTwo) => async (dispatch) => {
+export const setConnectCardQuestionTwo = (tempObj) => async (dispatch) => {
     dispatch({
         type: CONNECTCARD_QUESTION_TWO,
-        payload: questionTwo
+        payload: tempObj
     })
 }
 
-export const setConnectCardQuestionTwoOptionOne = (questionTwo) => async (dispatch) => {
+export const setConnectCardQuestionTwoOptionOne = (tempObj) => async (dispatch) => {
     dispatch({
         type: CONNECTCARD_QUESTION_TWO_OPTION_ONE,
-        payload: questionTwo
+        payload: tempObj
     })
 }
 
-export const setConnectCardQuestionTwoOptionTwo = (questionTwo) => async (dispatch) => {
+export const setConnectCardQuestionTwoOptionTwo = (tempObj) => async (dispatch) => {
     dispatch({
         type: CONNECTCARD_QUESTION_TWO_OPTION_TWO,
-        payload: questionTwo
+        payload: tempObj
     })
 }
 
-export const setConnectCardCheckedValues = (str) => async (dispatch) => {
+export const setConnectCardCheckedValues = (tempObj) => async (dispatch) => {
     dispatch({
         type: CONNECTCARD_CHECKED_VALUES,
-        payload: str
+        payload: tempObj
     })
 }
 
 // Order Of Service
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-export const setOrderOfServiceTitle = (title) => async (dispatch) => {
+export const setOrderOfServiceTitle = (tempObj) => async (dispatch) => {
     dispatch({
         type: ORDEROFSERVICE_TITLE,
-        payload: title
+        payload: tempObj
     })
 }
 
-export const setOrderOfServiceTopicTitle = (title) => async (dispatch) => {
+export const setOrderOfServiceTopicTitle = (tempObj) => async (dispatch) => {
     dispatch({
         type: ORDEROFSERVICE_TOPIC_TITLE,
-        payload: title
+        payload: tempObj
     })
 }
 
-export const setOrderOfServiceTopicContent = (title) => async (dispatch) => {
+export const setOrderOfServiceTopicContent = (tempObj) => async (dispatch) => {
     dispatch({
         type: ORDEROFSERVICE_TOPIC_CONTENT,
-        payload:title
+        payload:tempObj
     })
 }
 
@@ -233,59 +233,59 @@ export const setOrderOfServiceDeleteImageurl = (str) => async (disaptch) => {
 
 // Event
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-export const setEventTitle = (title) => async (dispatch) => {
+export const setEventTitle = (tempObj) => async (dispatch) => {
     dispatch({
         type: EVENT_TITLE,
-        payload: title
+        payload: tempObj
     })
 }
 
-export const setEventDate = (date) => async (dispatch) => {
+export const setEventDate = (tempObj) => async (dispatch) => {
     dispatch({
         type: EVENT_DATE,
-        payload: date
+        payload: tempObj
     })
 }
 
-export const setEventLocation = (location) => async (dispatch) => {
+export const setEventLocation = (tempObj) => async (dispatch) => {
     dispatch({
         type: EVENT_LOCATION,
-        payload: location
+        payload: tempObj
     })
 }
 
-export const setEventTimeStart = (time) => async (dispatch) => {
+export const setEventTimeStart = (tempObj) => async (dispatch) => {
     dispatch({
         type: EVENT_TIME_START,
-        payload: time
+        payload: tempObj
     })
 }
 
-export const setEventTimeEnd = (time) => async (dispatch) => {
+export const setEventTimeEnd = (tempObj) => async (dispatch) => {
     dispatch({
         type: EVENT_TIME_END,
-        payload: time
+        payload: tempObj
     })
 }
 
-export const setEventBodyText = (text) => async (dispatch) => {
+export const setEventBodyText = (tempObj) => async (dispatch) => {
     dispatch({
         type: EVENT_BODY_TEXT,
-        payload : text
+        payload : tempObj
     })
 }
 
-export const setEventBtnText = (text) => async (dispatch) => {
+export const setEventBtnText = (tempObj) => async (dispatch) => {
     dispatch ({
         type: EVENT_BTN_TEXT,
-        payload : text
+        payload : tempObj
     })
 }
 
-export const setEventBtnLink = (link) => async (dispatch) => {
+export const setEventBtnLink = (tempObj) => async (dispatch) => {
     dispatch ({
         type: EVENT_BTN_LINK,
-        payload:  link
+        payload:  tempObj
     })
 }
 
@@ -306,41 +306,41 @@ export const setEventDeleteImageUrl = (str) => async (dispatch) => {
 
 // Prayer Request
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-export const setPrayerTitle = (title) => async (dispatch) => {
+export const setPrayerTitle = (tempObj) => async (dispatch) => {
     dispatch({
         type: PRAYER_TITLE,
-        payload: title
+        payload: tempObj
     })
 }
 
-export const setPrayerBodyText = (text) => async (dispatch) => {
+export const setPrayerBodyText = (tempObj) => async (dispatch) => {
     dispatch({
         type: PRAYER_BODY_TEXT,
-        payload: text
+        payload: tempObj
     })
 }
 
-export const setPrayerCheckvalue = (str) => async(dispatch) => {
+export const setPrayerCheckvalue = (tempObj) => async(dispatch) => {
     dispatch({
         type: PRAYER_CHECKED_VALUE,
-        payload: str
+        payload: tempObj
     })
 }
 
 
 // Online Giving
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-export const setOnlineTitle = (title) => async (dispatch) => {
+export const setOnlineTitle = (tempObj) => async (dispatch) => {
     dispatch({
         type: ONLINE_TITLE,
-        payload: title
+        payload: tempObj
     })
 }
 
-export const setOnlineBodyText = (text) => async (dispatch) => {
+export const setOnlineBodyText = (tempObj) => async (dispatch) => {
     dispatch({
         type: ONLINE_BODY_TEXT,
-        payload: text
+        payload: tempObj
     })
 }
 
@@ -351,19 +351,19 @@ export const setOnlineType = (text) => async (dispatch) => {
     })
 }
 
-export const setOnlineLink = (link) => async (dispatch) => {
+export const setOnlineLink = (tempObj) => async (dispatch) => {
     dispatch({
         type: ONLINE_LINK,
-        payload: link
+        payload: tempObj
     })
 }
 
 // Website
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-export const setWebsiteTitle = (title) => async (dispatch) => {
+export const setWebsiteTitle = (tempObj) => async (dispatch) => {
     dispatch({
         type: WEBSITE_TITLE,
-        payload: title
+        payload: tempObj
     })
 }
 
@@ -374,46 +374,46 @@ export const setWebsiteType = (type) => async (dispatch) => {
     })
 }
 
-export const setWebsiteLink = (link) => async (dispatch) => {
+export const setWebsiteLink = (tempObj) => async (dispatch) => {
     dispatch({
         type:WEBSITE_LINK,
-        payload: link
+        payload: tempObj
     })
 }
 
-export const setEmbedCode = (text) => async (dispatch) => {
+export const setEmbedCode = (tempObj) => async (dispatch) => {
     dispatch({
         type:WEBSITE_EMBED_CODE,
-        payload: text,
+        payload: tempObj,
     })
 }
 
 // Video
 // ~~~~~~~~~~~~~~~~~~~~~~~
-export const setVideoTitle = (title) => async (dispatch) => {
+export const setVideoTitle = (tempObj) => async (dispatch) => {
     dispatch({
         type: VIDEO_TITLE,
-        payload: title
+        payload: tempObj
     })
 }
 
-export const setVideoBodyText = (text) => async (dispatch) => {
+export const setVideoBodyText = (tempObj) => async (dispatch) => {
     dispatch({
         type:VIDEO_BODY_TEXT,
-        payload: text
+        payload: tempObj
     })
 }
 
-export const setVideoPlatform = (form) => async (dispatch) => {
+export const setVideoPlatform = (tempObj) => async (dispatch) => {
     dispatch({
         type: VIDEO_PLATFORM,
-        payload: form
+        payload: tempObj
     })
 }
 
-export const setVideoLink = (link) => async (dispatch) => {
+export const setVideoLink = (tempObj) => async (dispatch) => {
     dispatch({
         type:VIDEO_LINK,
-        payload: link
+        payload: tempObj
     })
 }

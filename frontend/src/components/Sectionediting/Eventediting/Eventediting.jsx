@@ -1,5 +1,4 @@
 import React, {useState}  from "react";
-// import type { DatePickerProps } from 'antd';
 import { Button,  Form, Input, DatePicker, TimePicker} from 'antd';
 
 
@@ -17,48 +16,58 @@ import { connect } from "react-redux";
 import CustomUpload from "../../CustomUpload/CustomUpload";
 
 const Eventediting = (props) => {
-
+    let location, bodyText, btnText, btnLink;
     const format = 'HH:mm';
 
     const onStateChage = (e) => {
-        console.log("=======", e.target.texts);
+        let tempObj = {
+            id: props.id,
+            str: e.target.value
+        }
         switch(e.target.name) {
             case "title" :
-                props.setEventTitle(e.target.value);
-                break
-            case "date" :
-                props.setEventDate(e.target.value);
-                break
-            case "time_start" :
-                props.setEventTimeStart(e.target.value);
-                break
-            case "time_end":
-                props.setEvnetTimeEnd(e.target.value);
+                props.setEventTitle(tempObj);
                 break
             case "location":
-                props.setEventLocation(e.target.value);
+                location += e.target.value;
+                props.setEventLocation(tempObj);
                 break
             case "bodyText":
-                props.setEventBodyText(e.target.value);
+                bodyText += e.target.value;
+                props.setEventBodyText(tempObj);
                 break
             case "btnText":
-                props.setEventBtnText(e.target.value);
+                btnText += e.target.value;
+                props.setEventBtnText(tempObj);
                 break
             case "btnLink":
-                props.setEventBtnLink(e.target.value);
+                btnLink += e.target.value;
+                props.setEventBtnLink(tempObj);
         }
     }
 
     const onDateChage  = (date, dateString) => {
-        props.setEventDate(dateString);
+        let tempObj = {
+            id: props.id,
+            str: dateString
+        }
+        props.setEventDate(tempObj);
     }
 
     const onTimeStartChange = (time,timeString) => {
-        props.setEventTimeStart(timeString);
+        let tempObj = {
+            id: props.id,
+            str: timeString
+        }
+        props.setEventTimeStart(tempObj);
     }
 
     const onTimeEndChange = (time, timeString) => {
-        props.setEventTimeEnd(timeString);
+        let tempObj = {
+            id: props.id,
+            str: timeString
+        }
+        props.setEventTimeEnd(tempObj);
     }
 
     return (
@@ -81,7 +90,6 @@ const Eventediting = (props) => {
                
                 <Form.Item label = "DATE">
                     <DatePicker
-                        // texts={{name: "date"}}
                         onChange={onDateChage}
                         style={{width:"100%"}}
                     />
@@ -100,16 +108,27 @@ const Eventediting = (props) => {
                     </div>
                 <br />
                 <Form.Item label = "LOCATION">
-                    <Input.TextArea name="location" value={props.location} onChange={onStateChage} rows = {2} />
+                    <Input type = "text" name="location" value={location} onChange={onStateChage}  />
                 </Form.Item>
 
                 <Form.Item label = "BODY TEXT">
-                    <Input.TextArea name="bodyText" value={props.bodyText} onChange={onStateChage} rows = {4} />
+                    <Input.TextArea name="bodyText" value={bodyText} onChange={onStateChage} rows = {4} />
                 </Form.Item>
 
                 <Form.Item label = "BUTTON">
-                    <Input  type="text" placeholder="Button Text" name="btnText" value={props.btnText} onChange={onStateChage} style = {{marginBottom:"20px"}}/>
-                    <Input  type="text" placeholder="Button Link" name="btnLink" value={props.btnLink} onChange={onStateChage} />
+                    <Input  
+                        type="text" 
+                        placeholder="Button Text" 
+                        name="btnText" 
+                        value={btnText} 
+                        onChange={onStateChage} 
+                        style = {{marginBottom:"20px"}}/>
+                    <Input  
+                        type="text" 
+                        placeholder="Button Link" 
+                        name="btnLink" 
+                        value={btnLink} 
+                        onChange={onStateChage} />
                 </Form.Item>
                 
                 <Button 
@@ -123,18 +142,9 @@ const Eventediting = (props) => {
     )
 }
 
-const mapStateToProps = (state) => ({
-    title: state.builletins.Event_Title,
-    date: state.builletins.event_Date,
-    time_start: state.builletins.event_Time_Start,
-    time_end: state.builletins.event_Time_End,
-    location: state.builletins.event_Location,
-    bodyText: state.builletins.event_bodyText,
-    btnText: state.builletins.event_btnText,
-    btnLink: state.builletins.event_btnLink,
-})
 
-export default connect(mapStateToProps, {
+
+export default connect(null, {
     setEventTitle,
     setEventDate,
     setEventTimeStart,

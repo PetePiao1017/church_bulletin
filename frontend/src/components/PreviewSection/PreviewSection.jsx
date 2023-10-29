@@ -13,21 +13,21 @@ const PreviewSection = (props) => {
 
     switch(props.category){
         case "Announcement":
-            return <Announcepreview />
+            return <Announcepreview id = {props.id} />
         case "Connect Card":
-            return <Connectcardpreview />
+            return <Connectcardpreview id = {props.id} />
         case "Event":
-            return <Eventpreview />
+            return <Eventpreview id = {props.id} />
         case "Online Giving":
-            return <Onlinegivingpreview />
+            return <Onlinegivingpreview id = {props.id} />
         case "Order Of Service":
-            return <Orderofservicepreview />
+            return <Orderofservicepreview id = {props.id} />
         case "Prayer Request":
-            return <Prayerrequest />
+            return <Prayerrequest id = {props.id} />
         case "Video":
-            return <Videopreview />
+            return <Videopreview id = {props.id} />
         case "Website":
-            return <Websitepreview />
+            return <Websitepreview id = {props.id} />
             
     }
 }

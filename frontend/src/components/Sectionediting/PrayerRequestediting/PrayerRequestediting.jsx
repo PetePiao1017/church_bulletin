@@ -13,14 +13,19 @@ import './PrayerRequestediting.scss'
 
 const PrayerRequestediting = (props) => {
     
-
+    let bodyText;
     const onStateChange = (e) => {
+        let tempObj = {
+            id: props.id,
+            str: e.target.value
+        }
         switch(e.target.name) {
             case "title":
-                props.setPrayerTitle(e.target.value);
+                props.setPrayerTitle(tempObj);
                 break
             case "bodyText" :
-                props.setPrayerBodyText(e.target.value);
+                bodyText += e.target.value;
+                props.setPrayerBodyText(tempObj);
                 break
         }
     }
@@ -45,7 +50,7 @@ const PrayerRequestediting = (props) => {
                     />
                 </Form.Item>
                 <Form.Item label = "BODY TEXT">
-                    <Input.TextArea name="bodyText" value={props.prayer_bodyText} onChange={onStateChange} rows = {4} />
+                    <Input.TextArea name="bodyText" value={bodyText} onChange={onStateChange} rows = {4} />
                 </Form.Item>
 
                 <Form.Item label = "SELECT FIELDS TO INCLUDE">

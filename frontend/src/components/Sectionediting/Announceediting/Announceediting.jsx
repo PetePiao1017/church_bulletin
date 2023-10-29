@@ -13,35 +13,30 @@ import CustomUpload from "../../CustomUpload/CustomUpload";
 import './Announceediting.scss';
 
 
-const getBase64 = (file) =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = (error) => reject(error);
-  });
-
 const Announceediting = (props) => {
     
 
     
     const onChange = (e) => {
+        let tempObj = {
+            id: props.id,
+            str: e.target.value
+        }
         switch(e.target.name){
             case "title":
-                props.setAnnouncementTitle(e.target.value);
+                props.setAnnouncementTitle(tempObj);
                 break
             case "bodyText":
-                props.setAnnouncementBodyText(e.target.value);
+                props.setAnnouncementBodyText(tempObj);
                 break;
             case "buttonLink":
-                props.setAnnouncementButtonLink(e.target.value);
+                props.setAnnouncementButtonLink(tempObj);
                 break;
             case "buttonText":
-                props.setAnnouncementButtonText(e.target.value);
+                props.setAnnouncementButtonText(tempObj);
                 break;
         
         }
-
     }
 
     return(

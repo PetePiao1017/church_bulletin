@@ -10,7 +10,6 @@ import "./Bulletins.scss"
 const BulletIns = (props) => {
 
     const [todoList, setTodoList] = useState([{}]);
-
     useEffect(() => {
         setTodoList(props.bulletins.map((item) => {
             return {
@@ -109,24 +108,74 @@ const BulletIns = (props) => {
         );
     };
 
-    const showTitle = (str) => {
-      switch(str) {
+    const showTitle = (type, id) => {
+      let index;
+      switch(type) {
         case "Announcement":
-          return props.announcement_title
+          index = props.announcement_title.findIndex(item => item.id === id)
+          if(index !== -1){
+            return props.announcement_title[index].str;
+          }
+          else{
+            return "Announcement"
+          }
+
         case "Event":
-          return props.event_title
+          index = props.event_title.findIndex(item => item.id === id)
+          if(index !== -1){
+            return props.event_title[index].str;
+          }
+          else{
+            return "Event"
+          }
         case "Order Of Service":
-          return props.orderofservice_title
+          index = props.orderofservice_title.findIndex(item => item.id === id)
+          if(index !== -1){
+            return props.orderofservice_title[index].str;
+          }
+          else{
+            return "Order Of Service"
+          }
         case "Connect Card":
-          return props.connectcard_title
+          index = props.connectcard_title.findIndex(item => item.id === id)
+          if(index !== -1){
+            return props.connectcard_title[index].str;
+          }
+          else{
+            return "Connect Card"
+          }
         case "Online Giving":
-          return props.online_title;
+          index = props.online_title.findIndex(item => item.id === id)
+          if(index !== -1){
+            return props.online_title[index].str;
+          }
+          else{
+            return "Online Giving"
+          }
         case "Video":
-          return props.video_title;
+          index = props.video_title.findIndex(item => item.id === id)
+          if(index !== -1){
+            return props.video_title[index].str;
+          }
+          else{
+            return "Video"
+          }
         case "Website":
-          return props.website_title;
+          index = props.website_title.findIndex(item => item.id === id)
+          if(index !== -1){
+            return props.website_title[index].str;
+          }
+          else{
+            return "Website"
+          }
         case "Prayer Request":
-          return props.prayer_title;
+          index = props.prayer_title.findIndex(item => item.id === id)
+          if(index !== -1){
+            return props.prayer_title[index].str;
+          }
+          else{
+            return "Prayer Request"
+          }
       }
     }
 
@@ -161,7 +210,9 @@ const BulletIns = (props) => {
                         }}
                         
                     >
-                        <p>{showTitle(item.content)}</p>
+                        <p>{
+                          item.content === undefined ? " " : showTitle(item.content.type, item.content.id)
+                        }</p>
                         <RightOutlined />
                     </div>
                 </div>

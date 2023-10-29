@@ -12,12 +12,10 @@ import { setAnnouncementImageUrl,
         setEventImageUrl,
         setEventDeleteImageUrl,
     } from "../../actions/bulletins";
-import { useNavigate } from "react-router-dom";
 
 
 const CustomUpload = (props) => {
 
-    const navigate = useNavigate();
     const [selectedFile, setSelectedFile] = useState()
     const [preview, setPreview] = useState()
 
@@ -48,13 +46,11 @@ const CustomUpload = (props) => {
     }, [selectedFile])
 
     const onSelectFile = e => {
-        navigate('/ex1', {replace: true})
         if (!e.target.files || e.target.files.length === 0) {
             setSelectedFile(undefined)
             
             return
         }
-        console.log(e.target.files[0])
         // I've kept this example simple by using the first image instead of multiple
         setSelectedFile(e.target.files[0])
     }

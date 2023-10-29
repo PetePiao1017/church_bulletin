@@ -11,17 +11,24 @@ import {
 
 const Videoediting = (props) => {
 
-
+    let title, bodyText, videoLink;
     const onStateChange = (e) => {
+        let tempObj = {
+            id: props.id,
+            str: e.target.value
+        }
         switch(e.target.name) {
             case "title":
-                props.setVideoTitle(e.target.value);
+                title += e.target.value;
+                props.setVideoTitle(tempObj);
                 break
             case "bodyText":
-                props.setVideoBodyText(e.target.value);
+                bodyText += e.target.value;
+                props.setVideoBodyText(tempObj);
                 break
             case "video_Link":
-                props.setVideoLink(e.target.value);
+                videoLink += e.target.value;
+                props.setVideoLink(tempObj);
                 break
         }
     }
@@ -39,12 +46,12 @@ const Videoediting = (props) => {
                     <Input 
                         type = "text"
                         name = "title"
-                        value={props.title}
+                        value={title}
                         onChange={onStateChange}
                     />
                 </Form.Item>
                 <Form.Item label = "BODY TEXT">
-                    <Input.TextArea name="bodyText" value={props.bodyText} onChange={onStateChange} rows = {4} />
+                    <Input.TextArea name="bodyText" value={bodyText} onChange={onStateChange} rows = {4} />
                 </Form.Item>
                 <Form.Item label = "Video Platform">
                     <Select value={props.video_Platform} onChange={onPlaformChage}>
@@ -59,7 +66,7 @@ const Videoediting = (props) => {
                     <Input 
                         type = "text" 
                         name="video_Link" 
-                        value={props.vidoe_Link} 
+                        value={videoLink} 
                         onChange={onStateChange} 
                         placeholder="yourwebsite.com" 
                     />

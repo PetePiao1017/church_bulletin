@@ -10,17 +10,25 @@ import {
 } from '../../../actions/bulletins';
 
 const Websiteediting = (props) => {
-
+    let title,link, embed_code;
     const onStateChange = (e) => {
+        let tempObj = {
+            id: props.id,
+            str: e.target.value
+        }
         switch(e.target.name) {
             case "title":
-                props.setWebsiteTitle(e.target.value);
+                title += e.target.value;
+                props.setWebsiteTitle(tempObj);
                 break
             case "link":
-                props.setWebsiteLink(e.target.value);
+                link += e.target.value;
+                props.setWebsiteLink(tempObj);
                 break
             case "embed_code":
-                props.setEmbedCode(e.target.value);
+                embed_code += e.target.value;
+                props.setEmbedCode(tempObj);
+                break
         }
     }
 
@@ -37,7 +45,7 @@ const Websiteediting = (props) => {
                     <Input 
                         type = "text"
                         name = "title"
-                        value={props.title}
+                        value={title}
                         onChange={onStateChange}
                     />
                 </Form.Item>
@@ -51,7 +59,7 @@ const Websiteediting = (props) => {
                     props.type === "Website"
                     ?
                         <Form.Item label = "Website Link">
-                            <Input type = "text" name="link" value={props.link} onChange={onStateChange} placeholder="yourwebsite.com" />
+                            <Input type = "text" name="link" value={link} onChange={onStateChange} placeholder="yourwebsite.com" />
                         </Form.Item>
                     :
                         <Form.Item label = "EMBED CODE">

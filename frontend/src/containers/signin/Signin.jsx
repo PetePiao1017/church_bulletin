@@ -22,8 +22,8 @@ const Signin = (props) => {
 
     useEffect(() => {
         if(props.isAuthenticated === true){
+            localStorage.getItem("token")
             navigate('/main', {replace: true})
-            navigate('/ex', {replace: true})
         }
     }, [props.isAuthenticated])
 

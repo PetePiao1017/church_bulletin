@@ -1,7 +1,7 @@
 import React, {useState}  from "react";
 import { Button,  Form, Input, Upload,message} from 'antd';
 import { connect } from "react-redux";
-import { PictureOutlined, UploadOutlined,PlusOutlined, } from "@ant-design/icons";
+import { PlusOutlined, } from "@ant-design/icons";
 
 import {
     setOrderOfServiceTitle,
@@ -15,15 +15,19 @@ const OrderOfServiceediting = (props) => {
     const [count, setCount] = useState(['a'])
 
     const onStateChange = (e) => {
+        let tempObj = {
+            id: props.id,
+            str: e.target.value
+        }
         switch(e.target.name) {
             case "title":
-                props.setOrderOfServiceTitle(e.target.value);
+                props.setOrderOfServiceTitle(tempObj);
                 break
             case "topic_title":
-                props.setOrderOfServiceTopicTitle(e.target.value);
+                props.setOrderOfServiceTopicTitle(tempObj);
                 break
             case "topic_content":
-                props.setOrderOfServiceTopicContent(e.target.value);
+                props.setOrderOfServiceTopicContent(tempObj);
                 break
         }
     }

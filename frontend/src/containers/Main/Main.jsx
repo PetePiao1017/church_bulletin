@@ -1,35 +1,41 @@
 import React, {useEffect, useState} from 'react';
+import { v4 as uuidv6 } from 'uuid';
 import { Link } from "react-router-dom";
 import { Button, Dropdown,Tabs, Modal, DatePicker, Row, Col,} from 'antd';
 import { useNavigate } from "react-router-dom";
 import {connect} from 'react-redux';
 import {ArrowLeftOutlined } from '@ant-design/icons';
 import { Addsection, Sectionediting, PreviewSecton, BulletIns, Headerpreview } from '../../components';
+import {logout} from '../../actions/auth';
+import { setHeaderDate } from '../../actions/bulletins';
 
 import "./Main.scss";
 
 const {TabPane} = Tabs;
 
 const Main = (props) => {
-
   const navigate = useNavigate();
 
-  let today;
   useEffect(() => {
-
-    // if(props.isAuthenticated !== true){
-    //   navigate('/signin', {replace: true})
-    // }
+    if(!localStorage.getItem("token")){
+      navigate('/signin', {replace : true})
+    }
 
   },[])
 
+  useEffect(() => {
+    if(props.isAuthenticated === false){
+      navigate('/signin', {replace: true})
+    }
+  },[props.isAuthenticated])
+
   const [open, setOpen] = useState(false);
-  const [confirmLoading, setConfirmLoading] = useState(false);
   const [date, setDate] = useState("a");
+  const [confirmLoading, setConfirmLoading] = useState(false);
   const [newbulletin, setNewbulletin] = useState(false)
   const [localbulletins, setLocalbulletins] = useState([]);
   const [editingPanel, setEditingPanel] = useState("");
-
+  console.log(editingPanel)
   const showModal = () => {
     setOpen(true);
   };
@@ -54,20 +60,31 @@ const Main = (props) => {
 
   const onDrop = (ev, method) => {
     if(method == "add") {
-      let id = ev.dataTransfer.getData("id");
       
-      setLocalbulletins([...localbulletins, id])
+      let type = ev.dataTransfer.getData("id");
+      let temp = {
+        id: uuidv6(),
+        type: type,
+        title: type,
+      }
+      setLocalbulletins([...localbulletins, temp])
     }
   }
 
 
   const onDateChange = (date, dateString) => {
     setDate(dateString);
+    props.setHeaderDate(dateString)
   };
 
 
   const getValueCallback = (id) => {
-    setLocalbulletins([...localbulletins, id])
+    let temp = {
+      id: uuidv6(),
+      type: id,
+      title: id
+    }
+    setLocalbulletins([...localbulletins, temp])
   }
 
   const setEditingpanelCallback = (item) => {
@@ -78,7 +95,7 @@ const Main = (props) => {
       {
         key: '1',
         label: (
-          <Link>My Account</Link>
+          <Link to = {'./profile'} >My Account</Link>
         ),
       },
       {
@@ -90,14 +107,14 @@ const Main = (props) => {
       {
         key: '3',
         label: (
-          <Link>Log out</Link>
+          <Link onClick={() => props.logout()}>Log out</Link>
         ),
       },
   ];
     return(
         <div className='main-container'>
             <div className='header'>
-                {/* <span className='logo'>Church Bulletin</span> */}
+                <span className='logo'>Church Bulletin</span>
                 <Dropdown
                     menu={{
                         items,
@@ -143,7 +160,10 @@ const Main = (props) => {
                           {
                             !editingPanel 
                               ? <Addsection getValueCallback = {getValueCallback} />
-                              : <Sectionediting category = {editingPanel} />
+                              : <Sectionediting 
+                                  category = {editingPanel.type}
+                                  id = {editingPanel.id}
+                                />
                           }
                       </Row>
                     </Col>
@@ -171,9 +191,7 @@ const Main = (props) => {
                                   !editingPanel || editingPanel === "Headerediting" ?
                                     <div className='scroll-bar'>
                                       <div onClick={() => setEditingPanel("Headerediting")}>
-                                        <Headerpreview 
-                                          
-                                        />
+                                        <Headerpreview />
                                       </div>
                                       <div className='bulletins'>
                                         {
@@ -189,11 +207,18 @@ const Main = (props) => {
                                   <p 
                                     className='app-back' 
                                     onClick={ () => setEditingPanel("")}
-                                    style={{float: "left", marginLeft:"7%", fontSize:"8px"}}
+                                    style={{
+                                      float: "left", 
+                                      marginLeft:"7%", 
+                                      fontSize:"8px"
+                                    }}
                                   >
                                     <ArrowLeftOutlined />   Back
                                   </p> 
-                                  <PreviewSecton category = {editingPanel} />
+                                  <PreviewSecton 
+                                    category = {editingPanel.type} 
+                                    id = {editingPanel.id} 
+                                  />
                                 </div>
                               }
                               </div>
@@ -258,7 +283,6 @@ const Main = (props) => {
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
   token: state.auth.token,
-  // user: state.auth.user
 })
 
-export default connect(mapStateToProps)(Main)
+export default connect(mapStateToProps, {logout, setHeaderDate})(Main)
