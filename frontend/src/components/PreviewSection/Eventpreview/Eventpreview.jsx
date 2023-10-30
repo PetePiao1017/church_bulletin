@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import {Button, Row, Col} from 'antd'
+import { Row, Col} from 'antd'
 import {CalendarFilled, EnvironmentOutlined} from '@ant-design/icons'
 
 import { convertDate } from "../../../utils/convertDate";
@@ -14,13 +14,18 @@ const Eventpreview = (props) => {
     let location = props.location.filter(item => item.id === props.id);
     let bodyText = props.bodyText.filter(item => item.id === props.id);
     let btnText = props.btnText.filter(item => item.id === props.id);
+    let imageurl = props.imageurl.filter(item => item.id === props.id);
     return (
             <div className='scroll-bar' style={{margin:"0"}} >
                 <h3 className='app-header' style={{marginTop:"0"}}>
                     {title.length === 0 ? "Event" : title[0].str}
                 </h3>
                 <div className='app-image'>
-                    <img src = {props.imageurl}  style={{width:"100%", height:"100%"}} alt = "Gallery Image" />
+                {
+                    imageurl.length === 0
+                    ? <img src = "./gallery.png"  style={{width:"50px"}} alt = "Gallery Image" />
+                    : <img src = {imageurl[0].str} alt = "preview" style = {{width : "100%", height:"100%"}} />
+                }
                 </div>
                 <br />
                 <Row className="date">

@@ -85,6 +85,7 @@ const Eventediting = (props) => {
                 <Form.Item label = "IMAGE">
                     <CustomUpload
                         type = "Event"
+                        id = {props.id}
                         />
                 </Form.Item>
                

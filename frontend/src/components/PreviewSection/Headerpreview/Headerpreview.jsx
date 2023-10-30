@@ -4,7 +4,7 @@ import { convertDate } from "../../../utils/convertDate";
 
 const Headerpreview = (props) => {
     return (
-        <div style={{margin:"0"}}>
+        <div className="scroll-bar" style={{margin : "0"}}>
             <h3 className='app-header' style={{marginTop:"0", marginBottom:"0"}}>
                 {!props.title ? props.user.church_name + " Bulletin" : props.title}
             </h3>
@@ -13,8 +13,10 @@ const Headerpreview = (props) => {
             <div 
                 className='app-image' style={{height:"20vh"}}
                 >
-                {
-                    !props.imageurl ? "" : <img src = {props.imageurl} style={{width:"100%", height:"100%"}} />
+            {
+                    !props.imageurl
+                    ? <img src = "./gallery.png"  style={{width:"50px"}} alt = "Gallery Image" />
+                    : <img src = {props.imageurl} alt = "preview" style = {{width : "100%", height:"100%"}} />
                 }
                 
             </div>

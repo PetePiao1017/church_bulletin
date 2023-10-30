@@ -12,9 +12,13 @@ import CustomUpload from "../../CustomUpload/CustomUpload";
 
 const OrderOfServiceediting = (props) => {
 
-    const [count, setCount] = useState(['a'])
-
-    const onStateChange = (e) => {
+    const [count, setCount] = useState([0,1])
+    const [topic, setTopic] = useState(['','']);
+    const [content, setContent] = useState(['', '']);
+    let tempTopic = [];
+    let tempContent= [];
+    console.log(content)
+    const onStateChange = (e, index) => {
         let tempObj = {
             id: props.id,
             str: e.target.value
@@ -24,9 +28,21 @@ const OrderOfServiceediting = (props) => {
                 props.setOrderOfServiceTitle(tempObj);
                 break
             case "topic_title":
+                tempTopic = [...topic.slice(0,index), e.target.value, ...topic.slice(index+1)];
+                tempObj = {
+                    id: props.id,
+                    str: tempTopic
+                }
+                setTopic(tempTopic)
                 props.setOrderOfServiceTopicTitle(tempObj);
                 break
             case "topic_content":
+                tempContent = [...content.slice(0,index), e.target.value, ...content.slice(index+1)];
+                tempObj = {
+                    id: props.id,
+                    str: tempContent
+                }
+                setContent(tempContent)
                 props.setOrderOfServiceTopicContent(tempObj);
                 break
         }
@@ -48,6 +64,7 @@ const OrderOfServiceediting = (props) => {
                 <Form.Item label = "IMAGE">
                     <CustomUpload
                         type = "OrderofService"
+                        id = {props.id}
                         />
                 </Form.Item>
                 {
@@ -61,21 +78,36 @@ const OrderOfServiceediting = (props) => {
                                             cursor: "pointer", 
                                             float: "right"
                                         }}
-                                       
+                                        onClick={() => {
+                                           setCount(count.filter(element => element !== item))
+                                           setTopic([...topic.slice(0,index), ...topic.slice(index+1)])
+                                        }}
                                     >
                                         Delete
                                     </span>
                                 </p>
-                                <Input 
-                                    type = "text" 
-                                    placeholder="Service Topics 101"
-                                    name="topic_title"
-                                    value={props.orderofservice_Topic_Title}
-                                    onChange={onStateChange}
-                                    style={{marginBottom:"20px"}}
-                                />
+                                {
+                                    index === 1 ? 
+                                    <Input 
+                                        type = "text" 
+                                        placeholder = "Keep Everyone in loop"
+                                        name="topic_title"
+                                        value={props.orderofservice_Topic_Title}
+                                        onChange={(e) => onStateChange(e, item)}
+                                        style={{marginBottom:"20px"}}
+                                    />
+                                    :
+                                    <Input 
+                                        type = "text" 
+                                        placeholder = {index === 0 ? "Service Topics 101" : ""}
+                                        name="topic_title"
+                                        value={props.orderofservice_Topic_Title}
+                                        onChange={(e) => onStateChange(e, item)}
+                                        style={{marginBottom:"20px"}}
+                                    />
+                                }
                                 <Form.Item>
-                                    <Input.TextArea name="topic_content" value={props.orderofservice_TOpic_Content} onChange={onStateChange} rows = {4} />
+                                    <Input.TextArea name="topic_content" value={props.orderofservice_TOpic_Content} onChange={(e) => onStateChange(e, item)} rows = {4} />
                                 </Form.Item>
                             </>
                         )
@@ -84,7 +116,12 @@ const OrderOfServiceediting = (props) => {
                 
                 <p 
                     style={{color:"#0D6EFD",cursor: "pointer"}}
-                    onClick={() => setCount([...count, "a"])}
+                    onClick={() => {
+                        let last_index = count.at(-1);
+                        setCount([...count, last_index + 1]);
+                        setTopic([...topic,'']);
+                        setContent([...content, '']);
+                    }}
                 >
                     <PlusOutlined />
                     Add more

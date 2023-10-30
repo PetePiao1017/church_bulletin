@@ -7,6 +7,7 @@ const Announcepreview = (props) => {
     let title = props.title.filter((item) => item.id === props.id);
     let bodyText = props.bodyText.filter((item) => item.id === props.id);
     let buttonText = props.buttonText.filter(item => item.id === props.id);
+    let imageurl = props.imageurl.filter(item => item.id === props.id);
     return (
             <div className='scroll-bar' style={{margin:"0"}} >
                 <h3 className='app-header' 
@@ -15,9 +16,9 @@ const Announcepreview = (props) => {
                 </h3>
                 <div className='app-image'>
                     {
-                        !props.imageurl 
+                        imageurl.length === 0
                             ? <img src = "./gallery.png"  style={{width:"50px"}} alt = "Gallery Image" />
-                            : <img src = {'URL.createObjectURL(props.file)'} alt = "preview" style = {{width : "100%", height:"100%"}} />
+                            : <img src = {imageurl[0].str} alt = "preview" style = {{width : "100%", height:"100%"}} />
                     }
                 </div>
                 <br />

@@ -58,7 +58,14 @@ import {
     HEADER_IMAGE_URL,
 } from './types';
 
-
+import axios from 'axios';
+import api from '../utils/api';
+const uploadApi = axios.create({
+    baseURL: '/api',
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    }
+});
 // HEADER
 export const setHeaderTitle = (text) => async (dispatch) => {
     dispatch({
@@ -74,14 +81,18 @@ export const setHeaderDate = (text) => async (dispatch) => {
     })
 }
 
-export const setHeaderImageurl = (text) => async (dispatch) => {
+export const setHeaderImageurl = (file) => async (dispatch) => {
+    let formData = new FormData();
+    formData.append("file", file);
+    let imageUrl = (await uploadApi.post('/upload', formData)).data;
     dispatch({
         type: HEADER_IMAGE_URL,
-        payload: text
+        payload: imageUrl
     })
 }
 
-export const setHeaderDeleteImageurl = (text) => async (dispatch) => {
+export const setHeaderDeleteImageurl = (text, imageUrl) => async (dispatch) => {
+    api.post('/upload/del', {imageUrl: imageUrl});
     dispatch({
         type: HEADER_DELETE_IMAGE_URL,
         payload: text
@@ -109,16 +120,27 @@ export const setAnnouncementButtonText = (tempObj) => async (dispatch) => {
         payload: tempObj
     })
 }
-export const setAnnouncementImageUrl = (imageurl) => async (dispatch) => {
+export const setAnnouncementImageUrl = (file, id) => async (dispatch) => {
+    let formData = new FormData();
+    formData.append("file", file);
+    
+    let imageUrl = (await uploadApi.post('/upload', formData)).data;
+
+    let tempObj = {
+        id: id,
+        str: imageUrl
+    }
+
     dispatch({
         type: ANNOUNCEMENT_IMAGE_URL,
-        payload: imageurl
+        payload: tempObj
     })
 }
-export const setAnnouncementDeleteImageUrl = (imageurl) => async (dispatch) => {
+export const setAnnouncementDeleteImageUrl = (imageUrl, id) => async (dispatch) => {
+    api.post('/upload/del', {imageUrl: imageUrl.str});
     dispatch({
         type: ANNOUNCEMENT_DELETE_IMAGE_URL,
-        payload: imageurl
+        payload: id
     })
 }
 export const setAnnouncementTitle = (tempObj) => async (dispatch) => {
@@ -217,17 +239,27 @@ export const setOrderOfServiceTopicContent = (tempObj) => async (dispatch) => {
     })
 }
 
-export const setOrderOfServiceImageurl = (str) => async (disaptch) => {
+export const setOrderOfServiceImageurl = (file, id) => async (disaptch) => {
+    let formData = new FormData();
+    formData.append("file", file);
+    
+    let imageUrl = (await uploadApi.post('/upload', formData)).data;
+
+    let tempObj = {
+        id: id,
+        str: imageUrl
+    }
     disaptch({
         type: ORDEROFSERVICE_IMAGE_URL,
-        payload: str
+        payload: tempObj
     })
 }
 
-export const setOrderOfServiceDeleteImageurl = (str) => async (disaptch) => {
+export const setOrderOfServiceDeleteImageurl = (imageUrl, id ) => async (disaptch) => {
+    api.post('/upload/del', {imageUrl: imageUrl.str});
     disaptch({
         type: ORDEROFSERVICE_DELETE_IMAGE_URL,
-        payload: str
+        payload: id
     })
 }
 
@@ -289,17 +321,28 @@ export const setEventBtnLink = (tempObj) => async (dispatch) => {
     })
 }
 
-export const setEventImageUrl = (str) => async (dispatch) => {
+export const setEventImageUrl = (file, id) => async (dispatch) => {
+    let formData = new FormData();
+    formData.append("file", file);
+    
+    let imageUrl = (await uploadApi.post('/upload', formData)).data;
+
+    let tempObj = {
+        id: id,
+        str: imageUrl
+    }
     dispatch({
         type: EVENT_IMAGE_URL,
-        payload: str
+        payload: tempObj
     })
 }
 
-export const setEventDeleteImageUrl = (str) => async (dispatch) => {
+export const setEventDeleteImageUrl = (imageUrl, id) => async (dispatch) => {
+    api.post('/upload/del', {imageUrl: imageUrl.str});
+
     dispatch({
         type: EVENT_DELETE_IMAGE_URL,
-        payload: str
+        payload: id
     })
 }
 

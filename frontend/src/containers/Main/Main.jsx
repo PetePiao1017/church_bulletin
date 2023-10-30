@@ -7,14 +7,30 @@ import {connect} from 'react-redux';
 import {ArrowLeftOutlined } from '@ant-design/icons';
 import { Addsection, Sectionediting, PreviewSecton, BulletIns, Headerpreview } from '../../components';
 import {logout} from '../../actions/auth';
-import { setHeaderDate } from '../../actions/bulletins';
+import { setHeaderDate} from '../../actions/bulletins';
+import {ExclamationCircleFilled} from "@ant-design/icons";
 
 import "./Main.scss";
 
 const {TabPane} = Tabs;
+const { confirm } = Modal;
 
 const Main = (props) => {
   const navigate = useNavigate();
+
+  const showConfirm = () => {
+    confirm({
+      title: 'Have you saved the editings?',
+      icon: <ExclamationCircleFilled />,
+      content: 'You have to save editings before you leave this page',
+      onOk() {
+        console.log('OK');
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  };
 
   useEffect(() => {
     if(!localStorage.getItem("token")){
@@ -35,7 +51,8 @@ const Main = (props) => {
   const [newbulletin, setNewbulletin] = useState(false)
   const [localbulletins, setLocalbulletins] = useState([]);
   const [editingPanel, setEditingPanel] = useState("");
-  console.log(editingPanel)
+  const [confirmsave, setConfirmsave] = useState(false);
+  const [modal, contextHolder] = Modal.useModal();
   const showModal = () => {
     setOpen(true);
   };
@@ -88,9 +105,10 @@ const Main = (props) => {
   }
 
   const setEditingpanelCallback = (item) => {
+    console.log(item.content)
     setEditingPanel(item.content);
   }
-  
+
   const items = [
       {
         key: '1',
@@ -138,15 +156,24 @@ const Main = (props) => {
                           !editingPanel
                             ? 
                               <p 
-                              className='back-link'
-                              onClick={ () => setNewbulletin(false)}
-                              ><ArrowLeftOutlined />   Back to Bulletin
+                                className='back-link'
+                                onClick={ () => {
+                                  if(!confirmsave){
+                                      showConfirm()
+                                  }
+                                  else setNewbulletin(false)
+                                }}
+                              >
+                                <ArrowLeftOutlined />   Back to Bulletin
                               </p>
                             :
                               <p 
-                              className='back-link'
-                              onClick={ () => setEditingPanel("")}
-                              ><ArrowLeftOutlined />   Back to Section
+                                className='back-link'
+                                onClick={ () => {
+                                  setEditingPanel("")
+                                }}
+                              >
+                                <ArrowLeftOutlined />   Back to Section
                               </p>
                         }
                         
@@ -172,7 +199,12 @@ const Main = (props) => {
                       className='show-panel' 
                     >
                       <div className='button-group'>
-                        <Button type = "primary">Edit</Button>
+                        <Button 
+                          type = "primary"
+                          onClick={() => setConfirmsave(true)}
+                        >
+                          Save
+                        </Button>
                         <Button type = "default">Preview</Button>
                       </div>
                       <div
@@ -190,7 +222,13 @@ const Main = (props) => {
                               { 
                                   !editingPanel || editingPanel === "Headerediting" ?
                                     <div className='scroll-bar'>
-                                      <div onClick={() => setEditingPanel("Headerediting")}>
+                                      <div onClick={() => setEditingPanel(
+                                        {
+                                          type: "Headerediting",
+                                          title: "Headerediting",
+                                          id:'1'
+                                        }
+                                        )}>
                                         <Headerpreview />
                                       </div>
                                       <div className='bulletins'>
@@ -215,7 +253,7 @@ const Main = (props) => {
                                   >
                                     <ArrowLeftOutlined />   Back
                                   </p> 
-                                  <PreviewSecton 
+                                  <PreviewSecton
                                     category = {editingPanel.type} 
                                     id = {editingPanel.id} 
                                   />
@@ -283,6 +321,7 @@ const Main = (props) => {
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
   token: state.auth.token,
+  bulletins: state.builletins
 })
 
 export default connect(mapStateToProps, {logout, setHeaderDate})(Main)

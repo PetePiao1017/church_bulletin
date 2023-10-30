@@ -4,18 +4,21 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
-
 // Connect Database
 connectDB();
 
 // Init Middleware
 app.use(express.json());
 app.use(cors());
+app.use(express.static("img_uploads"));
+
 
 // Define Routes
 app.use('/api/users', require('./routes/api/users'));
 app.use('/api/auth', require('./routes/api/auth'));
+app.use('/api/upload', require('./routes/api/upload'));
 
+ 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
   // Set static folder

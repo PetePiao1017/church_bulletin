@@ -57,7 +57,6 @@ const PrayerRequestediting = (props) => {
                     <Checkbox.Group 
                         onChange={onChange} 
                         style = {{width: "100%"}}
-                        defaultValue={['Name', 'Email']}
                         >
                         <div style = {{display:"grid"}}>
                             <Checkbox value = "Name">Name</Checkbox>

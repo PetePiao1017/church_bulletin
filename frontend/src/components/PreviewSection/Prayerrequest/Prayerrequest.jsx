@@ -23,22 +23,24 @@ const Prayerrequest = (props) => {
                     !props.checkedvalues
                     ?   
                         <>
-                        <Form.Item label = "Name" >
-                            <Input type = "text" /> 
-                        </Form.Item>
-                       <Form.Item label = "Name">
-                            <Input type = "text" /> 
-                        </Form.Item>
+                        <p style={{textAlign:"left", fontSize:"8px"}}>Name</p>
+                        <input type = "text" />
+                        <p style={{textAlign:"left", fontSize:"8px"}}>Email</p>
+                        <input type = "text" />
                         </>
                     
                     :
                     props.checkedvalues.map((item, index) => {
-                        return(<Form.Item label = {item}>
-                            <Input type = "text" />
-                        </Form.Item>)
+                        return(
+                            <>
+                                <p style={{textAlign:"left", fontSize:"8px"}}>{item}</p>
+                                <input type = "text" />
+                            </>
+                        )
                     })
                 }
-                <Form.Item label = "Prayer Request">
+                <br />
+                <Form.Item label = "Prayer Request" style={{marginTop: "10px"}}>
                     <TextArea type="text" />
                 </Form.Item>
             </Form>

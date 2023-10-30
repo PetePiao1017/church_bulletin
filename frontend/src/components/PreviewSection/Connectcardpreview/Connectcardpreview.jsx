@@ -35,28 +35,30 @@ const Connectcardpreview = (props) => {
                     {bodyText.length === 0 ? "Type into the BODY TEXT field on the left for your text to show up here. Customize your copy with bold, italicized, or underlined text. Tip: Leaving a field blank in Loop will exclude it from your bulletin." : bodyText[0].str}
                 </p>
             </div>
-            <Form layout="vertical" style={{width : "80%", margin: "0 auto"}}>
+            <div  style={{width : "80%", margin: "0 auto"}}>
                 {
                     props.connectcard_checkedvalues.length === 0
                     ?   
                         <>
-                        <Form.Item label = "Name" >
-                            <Input type = "text" /> 
-                        </Form.Item>
-                        <Form.Item label = "Email">
-                            <Input type = "text" /> 
-                        </Form.Item>
+                            <p style={{textAlign:"left", fontSize:"8px"}}>Name</p>
+                            <input type = "text" />
+                            <p style={{textAlign:"left", fontSize:"8px"}}>Email</p>
+                            <input type = "text" />
+                        
                         </>
                     
                     :
                     connectcard_checkedvalues[0].arr.map((item, index) => {
                         return(
-                            <Form.Item label = {item}>
-                                <Input type = "text" />
-                            </Form.Item>)
+                            <>
+                                <p style={{textAlign:"left", fontSize:"8px"}}>{item}</p>
+                                <input type = "text" />
+                            </>
+                        )
                     })
                 }
-            </Form>
+            </div>
+            
             <div className="btn-link">   
                 <Button type="primary">Submit</Button>
             </div>

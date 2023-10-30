@@ -46,7 +46,7 @@ const Headerediting = (props) => {
                 <Button 
                     type = "primary"
                     style={{float:"right"}}    
-                >
+                >  
                     Done Editing
                 </Button>
             </Form>

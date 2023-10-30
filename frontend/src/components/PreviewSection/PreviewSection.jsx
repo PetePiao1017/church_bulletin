@@ -7,11 +7,14 @@ import Orderofservicepreview from './Orderofservicepreview/Orderofservicepreview
 import Prayerrequest from './Prayerrequest/Prayerrequest';
 import Videopreview from './Videopreview/Videopreview';
 import Websitepreview from './Websitepreview/Websitepreview';
+import Headerpreview from "./Headerpreview/Headerpreview";
 
 
 const PreviewSection = (props) => {
 
     switch(props.category){
+        case "Headerediting":
+            return <Headerpreview />
         case "Announcement":
             return <Announcepreview id = {props.id} />
         case "Connect Card":

@@ -1,4 +1,3 @@
-import { forEach } from "lodash";
 import {
 
     HEADER_IMAGE_URL,
@@ -11,7 +10,6 @@ import {
     ANNOUNCEMENT_IMAGE_URL, 
     ANNOUNCEMENT_DELETE_IMAGE_URL, 
     ANNOUNCEMENT_TITLE,
-    ANNOUNCEMENT_FILE,
 
     CONNECTCARD_BODY_TEXT,
     CONNECTCARD_IMAGE,
@@ -58,6 +56,7 @@ import {
     ONLINE_LINK,
     WEBSITE_EMBED_CODE,
     HEADER_TITLE,
+
   } from "../actions/types";
 
 const initialState = {
@@ -69,7 +68,7 @@ const initialState = {
     announcment_bodyText: [],
     announcment_buttonLink: [],
     announcment_buttonText: [],
-    announcment_imageurl: '',
+    announcment_imageurl: [],
     announcment_Title: [],
   
 
@@ -87,7 +86,7 @@ const initialState = {
     orderofservice_Title: [],
     orderofservice_Topic_Title: [],
     orderofservice_Topic_Content: [],
-    orderofservice_imageurl: '',
+    orderofservice_imageurl: [],
 
     event_Title: [],
     event_Date: [],
@@ -97,7 +96,7 @@ const initialState = {
     event_bodyText: [],
     event_btnText: [],
     event_btnLink: [],
-    event_imageurl: '',
+    event_imageurl: [],
 
     prayer_Title: [],
     prayer_bodyText: [],
@@ -116,9 +115,9 @@ const initialState = {
     video_Title: [],
     video_bodyText: [],
     video_Platform: [],
-    video_Link: []
+    video_Link: [],
 
-
+    flag: false,
 };
 
 function bulletinsReducer (state = initialState, action) {
@@ -234,14 +233,30 @@ function bulletinsReducer (state = initialState, action) {
           };
           
         case ANNOUNCEMENT_IMAGE_URL:
-          return {
-            ...state,
-            announcment_imageurl: payload
+          if(payload){
+            let index = state.announcment_imageurl.findIndex(item => item.id == payload.id);
+            if(index !== -1){
+              const updatedArray = [
+                ...state.announcment_imageurl.slice(0, index),
+                payload,
+                ...state.announcment_imageurl.slice(index + 1)
+              ];
+              return {
+                ...state,
+                announcment_imageurl: updatedArray
+              }
+            }
+            else{
+              return {
+                ...state,
+                announcment_imageurl: [...state.announcment_imageurl, payload]
+              }
+            }
           };
         case ANNOUNCEMENT_DELETE_IMAGE_URL:
           return {
             ...state,
-            announcment_imageurl: payload
+            announcment_imageurl: state.announcment_imageurl.filter(item => item.id !== payload)
           };
 
         case CONNECTCARD_TITLE:
@@ -521,15 +536,31 @@ function bulletinsReducer (state = initialState, action) {
           };
 
         case ORDEROFSERVICE_IMAGE_URL:
-          return{
-            ...state,
-            orderofservice_imageurl: payload
-          }
+          if(payload){
+            let index = state.orderofservice_imageurl.findIndex(item => item.id == payload.id);
+            if(index !== -1){
+              const updatedArray = [
+                ...state.orderofservice_imageurl.slice(0, index),
+                payload,
+                ...state.orderofservice_imageurl.slice(index + 1)
+              ];
+              return {
+                ...state,
+                orderofservice_imageurl: updatedArray
+              }
+            }
+            else{
+              return {
+                ...state,
+                orderofservice_imageurl: [...state.orderofservice_imageurl, payload]
+              }
+            }
+          };
         case ORDEROFSERVICE_DELETE_IMAGE_URL:
           return {
             ...state,
-            orderofservice_imageurl: ''
-          }
+            orderofservice_imageurl: state.orderofservice_imageurl.filter(item => item.id !== payload)
+          };
 
 
         case EVENT_TITLE:
@@ -704,16 +735,32 @@ function bulletinsReducer (state = initialState, action) {
           };
 
         case EVENT_IMAGE_URL:
-          return {
-            ...state,
-            event_imageurl: payload
-          }
+          if(payload){
+            let index = state.event_imageurl.findIndex(item => item.id == payload.id);
+            if(index !== -1){
+              const updatedArray = [
+                ...state.event_imageurl.slice(0, index),
+                payload,
+                ...state.event_imageurl.slice(index + 1)
+              ];
+              return {
+                ...state,
+                event_imageurl: updatedArray
+              }
+            }
+            else{
+              return {
+                ...state,
+                event_imageurl: [...state.event_imageurl, payload]
+              }
+            }
+          };
 
         case EVENT_DELETE_IMAGE_URL:
           return {
             ...state,
-            event_imageurl: ''
-          }
+            event_imageurl: state.event_imageurl.filter(item => item.id !== payload)
+          };
         case PRAYER_TITLE: 
           if(payload){
             let index = state.prayer_Title.findIndex(item => item.id === payload.id);
@@ -984,7 +1031,8 @@ function bulletinsReducer (state = initialState, action) {
               }
             }
           };
-        default:
+        
+          default:
           return state;
       }
 }

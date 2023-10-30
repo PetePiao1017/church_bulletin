@@ -10,10 +10,10 @@ import Websiteediting from './Websiteediting/Websiteediting';
 import Headerediting from "./Headerediting/Headerediting";
 
 const Sectionediting = (props) => {
-
+    console.log(props.category)
     switch(props.category){
         case "Headerediting":
-            return <Headerediting id = {props.id} />
+            return <Headerediting  />
         case "Announcement":
             return <Announceediting id = {props.id} />
         case "Connect Card":

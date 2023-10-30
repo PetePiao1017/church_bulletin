@@ -54,6 +54,7 @@ const Announceediting = (props) => {
                 <Form.Item label = "IMAGE">
                     <CustomUpload 
                         type = {"Announcement"}
+                        id = {props.id}
                     />
                 </Form.Item>
                 <Form.Item label = "BODY TEXT">

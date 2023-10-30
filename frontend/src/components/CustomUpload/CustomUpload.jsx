@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {connect} from 'react-redux';
+import axios  from "axios";
 import { PlusOutlined } from "@ant-design/icons";
 import './CustomUpload.scss';
 import { Button } from "antd";
@@ -18,32 +19,8 @@ const CustomUpload = (props) => {
 
     const [selectedFile, setSelectedFile] = useState()
     const [preview, setPreview] = useState()
+    let index;
 
-    // create a preview as a side effect, whenever selected file is changed
-    useEffect(() => {
-        if (!selectedFile) {
-            setPreview(undefined)
-            return
-        }
-        const objectUrl = URL.createObjectURL(selectedFile);
-        switch(props.type){
-            case "Announcement":
-                props.setAnnouncementImageUrl(objectUrl);
-                break
-            case "Headerediting":
-                props.setHeaderImageurl(objectUrl);
-                break
-            case "OrderofService":
-                props.setOrderOfServiceImageurl(objectUrl);
-                break
-            case "Event":
-                props.setEventImageUrl(objectUrl);
-        }
-        setPreview(objectUrl)
-
-        // free memory when ever this component is unmounted
-        return () => URL.revokeObjectURL(objectUrl)
-    }, [selectedFile])
 
     const onSelectFile = e => {
         if (!e.target.files || e.target.files.length === 0) {
@@ -52,22 +29,43 @@ const CustomUpload = (props) => {
             return
         }
         // I've kept this example simple by using the first image instead of multiple
-        setSelectedFile(e.target.files[0])
+        setSelectedFile(e.target.files[0]);
+        setPreview(URL.createObjectURL(e.target.files[0]));
+        switch(props.type){
+            case "Headerediting":
+                props.setHeaderImageurl(e.target.files[0]);
+                break
+            case "Announcement":
+                props.setAnnouncementImageUrl(e.target.files[0], props.id);
+                break
+            case "OrderofService":
+                props.setOrderOfServiceImageurl(e.target.files[0], props.id);
+                break
+            case "Event":
+                props.setEventImageUrl(e.target.files[0], props.id);
+            default:
+                break
+
+        }
+
     }
 
     const onChangeImage = () => {
         switch(props.type){
             case "Announcement":
-                props.setAnnouncementDeleteImageUrl("");
+                index = props.announcement_imageurl.findIndex(item => item.id === props.id);
+                props.setAnnouncementDeleteImageUrl(props.announcement_imageurl[index], props.id);
                 break
             case "Headerediting":
-                props.setHeaderDeleteImageurl("");
+                props.setHeaderDeleteImageurl("", props.header_imageurl);
                 break
             case "OrderofService":
-                props.setOrderOfServiceDeleteImageurl("");
+                index = props.orderofservice_imageurl.findIndex(item => item.id === props.id);
+                props.setOrderOfServiceDeleteImageurl(props.orderofservice_imageurl[index], props.id);
                 break
             case "Event":
-                props.setEventDeleteImageUrl("");
+                index = props.event_imageurl.findIndex(item => item.id === props.id);
+                props.setEventDeleteImageUrl(props.event_imageurl[index], props.id);
                 break
         }
         document.getElementById("file-upload").value = "";
@@ -85,7 +83,7 @@ const CustomUpload = (props) => {
                         </div>
                     : <img src={preview}  style={{width:"100%"}}/>
                 }
-                <input type='file' onChange={onSelectFile} id = "file-upload"  style={{display:"none"}}/>
+                <input type='file' onChange={(e) => onSelectFile(e)} id = "file-upload"  style={{display:"none"}}/>
             </label>
             {
                 selectedFile && <Button 
@@ -101,7 +99,14 @@ const CustomUpload = (props) => {
 }
 
 
-export default connect(null, {
+const mapStateToProps = (state) => ({
+    header_imageurl: state.builletins.header_imageurl,
+    announcement_imageurl: state.builletins.announcment_imageurl,
+    orderofservice_imageurl: state.builletins.orderofservice_imageurl,
+    event_imageurl: state.builletins.event_imageurl,
+})
+
+export default connect(mapStateToProps, {
     setAnnouncementImageUrl, 
     setAnnouncementDeleteImageUrl,
     setHeaderDeleteImageurl,
