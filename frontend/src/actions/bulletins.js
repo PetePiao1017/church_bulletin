@@ -13,12 +13,12 @@ import {
     CONNECTCARD_BODY_TEXT,
     CONNECTCARD_CHECKED_VALUES,
     CONNECTCARD_QUESTION_ONE,
-    CONNECTCARD_QUESTION_ONE_OPTION_ONE,
-    CONNECTCARD_QUESTION_ONE_OPTION_TWO,
+    CONNECTCARD_OPTION_ONE,
     CONNECTCARD_QUESTION_TWO,
-    CONNECTCARD_QUESTION_TWO_OPTION_ONE,
-    CONNECTCARD_QUESTION_TWO_OPTION_TWO,
+    CONNECTCARD_OPTION_TWO,
     CONNECTCARD_TITLE,
+    CONNECTCARD_IMAGE_URL,
+    CONNECTCARD_DELETE_IMAGE_URL,
 
     EVENT_BODY_TEXT,
     EVENT_BTN_LINK,
@@ -74,6 +74,9 @@ const uploadApi = axios.create({
 // SEND REDUX STORE TO BACKEND
 export const sendDataToBack = (bulletins) => async (dispatch) => {
     let result = await api.post('/bulletins', bulletins);
+    if(result.data === "OK"){
+        alert("Success");
+    }
 }
 
 // CREATE NEW BULLETIN
@@ -194,19 +197,13 @@ export const setConnectCardQuestionOne = (tempObj) => async (dispatch) => {
     })
 }
 
-export const setConnectCardQuestionOneOptionOne = (tempObj) => async (dispatch) => {
+export const setConnectCardOptionOne = (tempObj) => async (dispatch) => {
     dispatch({
-        type: CONNECTCARD_QUESTION_ONE_OPTION_ONE,
+        type: CONNECTCARD_OPTION_ONE,
         payload: tempObj
     })
 }
 
-export const setConnectCardQuestionOneOptionTwo = (tempObj) => async (dispatch) => {
-    dispatch({
-        type: CONNECTCARD_QUESTION_ONE_OPTION_TWO,
-        payload: tempObj
-    })
-}
 
 export const setConnectCardQuestionTwo = (tempObj) => async (dispatch) => {
     dispatch({
@@ -215,16 +212,10 @@ export const setConnectCardQuestionTwo = (tempObj) => async (dispatch) => {
     })
 }
 
-export const setConnectCardQuestionTwoOptionOne = (tempObj) => async (dispatch) => {
-    dispatch({
-        type: CONNECTCARD_QUESTION_TWO_OPTION_ONE,
-        payload: tempObj
-    })
-}
 
-export const setConnectCardQuestionTwoOptionTwo = (tempObj) => async (dispatch) => {
+export const setConnectCardOptionTwo = (tempObj) => async (dispatch) => {
     dispatch({
-        type: CONNECTCARD_QUESTION_TWO_OPTION_TWO,
+        type: CONNECTCARD_OPTION_TWO,
         payload: tempObj
     })
 }
@@ -233,6 +224,31 @@ export const setConnectCardCheckedValues = (tempObj) => async (dispatch) => {
     dispatch({
         type: CONNECTCARD_CHECKED_VALUES,
         payload: tempObj
+    })
+}
+
+export const setConnectCardImageurl = (file, id) => async (dispatch) => {
+    let formData = new FormData();
+    formData.append("file", file);
+    
+    let imageUrl = (await uploadApi.post('/upload', formData)).data;
+
+    let tempObj = {
+        id: id,
+        str: imageUrl
+    }
+
+    dispatch({
+        type: CONNECTCARD_IMAGE_URL,
+        payload: tempObj
+    })
+}
+
+export const setConnectCardDeleteImageUrl = (imageUrl, id) => async (dispatch) => {
+    api.post('/upload/del', {imageUrl: imageUrl.str});
+    dispatch({
+        type: CONNECTCARD_DELETE_IMAGE_URL,
+        payload: id
     })
 }
 

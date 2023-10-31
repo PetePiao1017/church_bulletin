@@ -107,7 +107,8 @@ const OrderOfServiceediting = (props) => {
                                     />
                                 }
                                 <Form.Item>
-                                    <Input.TextArea name="topic_content" value={props.orderofservice_TOpic_Content} onChange={(e) => onStateChange(e, item)} rows = {4} />
+                                    <Input.TextArea 
+                                        name="topic_content" value={props.orderofservice_TOpic_Content} onChange={(e) => onStateChange(e, item)} rows = {4} />
                                 </Form.Item>
                             </>
                         )

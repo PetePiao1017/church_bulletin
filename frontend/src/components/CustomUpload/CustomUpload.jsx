@@ -12,6 +12,8 @@ import { setAnnouncementImageUrl,
         setOrderOfServiceDeleteImageurl,
         setEventImageUrl,
         setEventDeleteImageUrl,
+        setConnectCardImageurl,
+        setConnectCardDeleteImageUrl,
     } from "../../actions/bulletins";
 
 
@@ -43,6 +45,8 @@ const CustomUpload = (props) => {
                 break
             case "Event":
                 props.setEventImageUrl(e.target.files[0], props.id);
+            case "Connect Card":
+                props.setConnectCardImageurl(e.target.files[0], props.id);
             default:
                 break
 
@@ -66,6 +70,10 @@ const CustomUpload = (props) => {
             case "Event":
                 index = props.event_imageurl.findIndex(item => item.id === props.id);
                 props.setEventDeleteImageUrl(props.event_imageurl[index], props.id);
+                break
+            case "Connect Card":
+                index = props.connectcard_imageurl.findIndex(item => item.id === props.id);
+                props.setConnectCardDeleteImageUrl(props.connectcard_imageurl[index], props.id);
                 break
         }
         document.getElementById("file-upload").value = "";
@@ -104,6 +112,7 @@ const mapStateToProps = (state) => ({
     announcement_imageurl: state.builletins.announcment_imageurl,
     orderofservice_imageurl: state.builletins.orderofservice_imageurl,
     event_imageurl: state.builletins.event_imageurl,
+    connectcard_imageurl: state.builletins.connectcard_imageurl,
 })
 
 export default connect(mapStateToProps, {
@@ -115,4 +124,6 @@ export default connect(mapStateToProps, {
     setOrderOfServiceDeleteImageurl,
     setEventImageUrl,
     setEventDeleteImageUrl,
+    setConnectCardDeleteImageUrl,
+    setConnectCardImageurl,
 })(CustomUpload)

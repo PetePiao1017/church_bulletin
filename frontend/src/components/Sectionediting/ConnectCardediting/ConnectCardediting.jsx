@@ -1,6 +1,6 @@
 import React,{useState} from "react";
 import { Button,  Form, Input, Upload,message, Checkbox} from 'antd';
-import { PictureOutlined, UploadOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 import { connect } from 'react-redux';
 import './ConnectCardediting.scss';
 
@@ -9,10 +9,8 @@ import {
     setConnectCardBodyText,
     setConnectCardQuestionOne,
     setConnectCardQuestionTwo,
-    setConnectCardQuestionOneOptionTwo,
-    setConnectCardQuestionTwoOptionTwo,
-    setConnectCardQuestionOneOptionOne,
-    setConnectCardQuestionTwoOptionOne,
+    setConnectCardOptionOne,
+    setConnectCardOptionTwo,
     setConnectCardCheckedValues
 } from '../../../actions/bulletins';
 import CustomUpload from "../../CustomUpload/CustomUpload";
@@ -28,6 +26,12 @@ const ConnectCardediting = (props) => {
         }
         props.setConnectCardCheckedValues(tempObj);
     }
+
+    const [firstoptions, setFirstoptions] = useState(['','']);
+    const [secondoptions, setSecondoptions] = useState(['', '']);
+    let optionone = [];
+    let optiontwo = [];
+
     const onStateChange = (e) => {
         let tempObj = {
             id: props.id,
@@ -43,23 +47,40 @@ const ConnectCardediting = (props) => {
             case "questionOne":
                 props.setConnectCardQuestionOne(tempObj);
                 break
-            case "question_one_option_one":
-                props.setConnectCardQuestionOneOptionOne(tempObj);
-                break
-            case "question_one_option_two":
-                props.setConnectCardQuestionOneOptionTwo(tempObj);
+            
             case "questionTwo":
                 props.setConnectCardQuestionTwo(tempObj);
                 break
-            case "question_two_option_one":
-                props.setConnectCardQuestionTwoOptionOne(tempObj);
-                break
-            case "question_two_option_two":
-                props.setConnectCardQuestionTwoOptionTwo(tempObj);
         }
     }
 
-
+    const onOptionChange = (e, index) => {
+        let tempObj;
+        switch(e.target.name){
+            case "option_one":
+                optionone = [
+                    ...firstoptions.slice(0,index), 
+                    e.target.value, 
+                    ...firstoptions.slice(index+1)
+                ];
+                tempObj = {
+                    id : props.id,
+                    str: optionone,
+                }
+                props.setConnectCardOptionOne(tempObj);
+                setFirstoptions(optionone);
+                break
+            case "option_two":
+                optiontwo = [...secondoptions.slice(0,index), e.target.value, ...secondoptions.slice(index+1)];
+                tempObj = {
+                    id : props.id,
+                    str: optiontwo,
+                }
+                props.setConnectCardOptionTwo(tempObj);
+                setSecondoptions(optiontwo);
+                break
+        }
+    }
 
     return(
         <div className="announcment">
@@ -77,6 +98,7 @@ const ConnectCardediting = (props) => {
                 <Form.Item label = "IMAGE">
                     <CustomUpload
                         type = "Connect Card"
+                        id = {props.id}
                         />
                 </Form.Item>
                 <Form.Item label = "BODY TEXT">
@@ -108,26 +130,48 @@ const ConnectCardediting = (props) => {
                         name = "questionOne"
                         value = {props.questionOne}
                         onChange={onStateChange}
-                        placeholder="I made a question today"
+                        placeholder="I made a decision today"
                     />
                 </Form.Item>
                 <Form.Item label = "OPTIONS">
                     <Input
                         type = "text"
                         placeholder="To Follow Jesus"
-                        name="question_one_option_one"
+                        name="option_one"
                         value={props.questionOneOptionOne}
-                        onChange={onStateChange}
+                        onChange={(e) => onOptionChange(e, 0)}
                         style={{marginBottom:"20px"}}
-                        />
+                    />
                     <Input
                         type = "text"
                         placeholder="To Redency my life to Jesus"
-                        name="question_one_option_two"
-                        onChange={onStateChange}
+                        name="option_one"
+                        onChange={(e) => onOptionChange(e, 1)}
                         value={props.questionOneOptionTwo}
                         style={{marginBottom:"20px"}}
-                        />
+                    />
+                    {
+                        firstoptions.map((item, index) => {
+                            if(index >=2){
+                                return (
+                                    <Input
+                                        key = {index}
+                                        type = "text"  
+                                        style={{marginBottom:"20px"}} 
+                                        name = "option_one"
+                                        onChange={(e) => onOptionChange(e, index)}
+                                    />
+                                )
+                            }
+                        })
+                    }
+                    <p 
+                        style={{color:"#0D6EFD",cursor: "pointer"}}
+                        onClick={() => setFirstoptions([...firstoptions, ''])}
+                    >
+                        <PlusOutlined />
+                        Add more options
+                    </p>
                 </Form.Item>
                 <Form.Item label = "QUESTION 2">
                     <Input
@@ -139,20 +183,44 @@ const ConnectCardediting = (props) => {
                     />
                 </Form.Item>
                 <Form.Item label = "OPTIONS">
-                    <Input
+                <Input
                         type = "text"
                         placeholder="Friend/Family"
-                        onChange={onStateChange}
-                        name="question_two_option_one"
+                        name="option_two"
+                        value={props.questionOneOptionOne}
+                        onChange={(e) => onOptionChange(e, 0)}
                         style={{marginBottom:"20px"}}
-                        />
+                    />
                     <Input
                         type = "text"
-                        placeholder="Church/Website"
-                        onChange={onStateChange}
-                        name="question_two_option_two"
+                        placeholder="Church Website"
+                        name="option_two"
+                        onChange={(e) => onOptionChange(e, 1)}
+                        value={props.questionOneOptionTwo}
                         style={{marginBottom:"20px"}}
-                        />
+                    />
+                    {
+                        secondoptions.map((item, index) => {
+                            if(index >=2){
+                                return (
+                                    <Input 
+                                        key = {index}
+                                        type = "text"  
+                                        style={{marginBottom:"20px"}} 
+                                        name = "option_two"
+                                        onChange={(e) => onOptionChange(e, index)}
+                                    />
+                                )
+                            }
+                        })
+                    }
+                    <p 
+                        style={{color:"#0D6EFD",cursor: "pointer"}}
+                        onClick={() => setSecondoptions([...secondoptions, ''])}
+                    >
+                        <PlusOutlined />
+                        Add more options
+                    </p>
                 </Form.Item>
                 <Button 
                     type = "primary"
@@ -178,10 +246,8 @@ export default connect(mapStateToProps, {
     setConnectCardTitle,
     setConnectCardBodyText,
     setConnectCardQuestionOne,
-    setConnectCardQuestionOneOptionOne,
-    setConnectCardQuestionOneOptionTwo,
+    setConnectCardOptionOne,
     setConnectCardQuestionTwo,
-    setConnectCardQuestionTwoOptionOne,
-    setConnectCardQuestionTwoOptionTwo,
+    setConnectCardOptionTwo,
     setConnectCardCheckedValues,
 })(ConnectCardediting)

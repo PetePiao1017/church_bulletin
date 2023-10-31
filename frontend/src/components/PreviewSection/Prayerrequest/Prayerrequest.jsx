@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 const Prayerrequest = (props) => {
     let title = props.title.filter((item) => item.id === props.id);
     let bodyText = props.bodyText.filter((item) => item.id === props.id);
+    let checkedvalue = props.checkedvalues.filter((item) => item.id === props.id);
     return (
         <div className='scroll-bar' 
             style={{
@@ -20,7 +21,7 @@ const Prayerrequest = (props) => {
             </div>
             <Form layout="vertical" style={{width : "80%", margin: "0 auto"}}>
                 {
-                    !props.checkedvalues
+                    checkedvalue.length === 0
                     ?   
                         <>
                         <p style={{textAlign:"left", fontSize:"8px"}}>Name</p>
@@ -30,7 +31,7 @@ const Prayerrequest = (props) => {
                         </>
                     
                     :
-                    props.checkedvalues.map((item, index) => {
+                    checkedvalue[0].str.map((item, index) => {
                         return(
                             <>
                                 <p style={{textAlign:"left", fontSize:"8px"}}>{item}</p>

@@ -13,13 +13,12 @@ import {
     ANNOUNCEMENT_TITLE,
 
     CONNECTCARD_BODY_TEXT,
-    CONNECTCARD_IMAGE,
+    CONNECTCARD_IMAGE_URL,
+    CONNECTCARD_DELETE_IMAGE_URL,
     CONNECTCARD_QUESTION_ONE,
-    CONNECTCARD_QUESTION_ONE_OPTION_ONE,
-    CONNECTCARD_QUESTION_ONE_OPTION_TWO,
+    CONNECTCARD_OPTION_ONE,
     CONNECTCARD_QUESTION_TWO,
-    CONNECTCARD_QUESTION_TWO_OPTION_ONE,
-    CONNECTCARD_QUESTION_TWO_OPTION_TWO,
+    CONNECTCARD_OPTION_TWO,
     CONNECTCARD_TITLE,
     CONNECTCARD_CHECKED_VALUES,
 
@@ -75,14 +74,12 @@ const initialState = {
   
 
     connectcard_Title: [],
-    connectcard_Image: '',
+    connectcard_imageurl: [],
     connectcard_bodyText: [],
     connectcard_Question_One: [],
-    connectcard_Question_One_Option_One:[],
-    connectcard_Question_One_Option_Two:[],
+    connectcard_Option_One:[],
     connectcard_Question_Two: [],
-    connectcard_Question_Two_Option_One: [],
-    connectcard_Question_Two_Option_Two: [],
+    connectcard_Option_Two: [],
     connectcard_checkedvalues: [],
 
     orderofservice_Title: [],
@@ -259,6 +256,7 @@ function bulletinsReducer (state = initialState, action) {
               }
             }
           };
+        
         case ANNOUNCEMENT_DELETE_IMAGE_URL:
           return {
             ...state,
@@ -288,10 +286,32 @@ function bulletinsReducer (state = initialState, action) {
           };
           
 
-        case CONNECTCARD_IMAGE:
+        case CONNECTCARD_IMAGE_URL:
+          if(payload){
+            let index = state.connectcard_imageurl.findIndex(item => item.id == payload.id);
+            if(index !== -1){
+              const updatedArray = [
+                ...state.connectcard_imageurl.slice(0, index),
+                payload,
+                ...state.connectcard_imageurl.slice(index + 1)
+              ];
+              return {
+                ...state,
+                connectcard_imageurl: updatedArray
+              }
+            }
+            else{
+              return {
+                ...state,
+                connectcard_imageurl: [...state.connectcard_imageurl, payload]
+              }
+            }
+          };
+        
+        case CONNECTCARD_DELETE_IMAGE_URL:
           return {
             ...state,
-            connectcard_Image: payload
+            connectcard_imageurl: state.connectcard_imageurl.filter(item => item.id !== payload)
           };
         
         case CONNECTCARD_BODY_TEXT:
@@ -337,53 +357,6 @@ function bulletinsReducer (state = initialState, action) {
               }
             }
           };
-          
-
-        case CONNECTCARD_QUESTION_ONE_OPTION_ONE:
-          if(payload){
-            let index = state.connectcard_Question_One_Option_One.findIndex(item => item.id == payload.id);
-            if(index !== -1){
-              const updatedArray = [
-                ...state.connectcard_Question_One_Option_One.slice(0, index),
-                payload,
-                ...state.connectcard_Question_One_Option_One.slice(index + 1)
-              ];
-              return {
-                ...state,
-                connectcard_Question_One_Option_One: updatedArray
-              }
-            }
-            else{
-              return {
-                ...state,
-                connectcard_Question_One_Option_One: [...state.connectcard_Question_One_Option_One, payload]
-              }
-            }
-          };
-          
-        
-        case CONNECTCARD_QUESTION_ONE_OPTION_TWO:
-          if(payload){
-            let index = state.connectcard_Question_One_Option_Two.findIndex(item => item.id == payload.id);
-            if(index !== -1){
-              const updatedArray = [
-                ...state.connectcard_Question_One_Option_Two.slice(0, index),
-                payload,
-                ...state.connectcard_Question_One_Option_Two.slice(index + 1)
-              ];
-              return {
-                ...state,
-                connectcard_Question_One_Option_Two: updatedArray
-              }
-            }
-            else{
-              return {
-                ...state,
-                connectcard_Question_One_Option_Two: [...state.connectcard_Question_One_Option_Two, payload]
-              }
-            }
-          };
-          
  
         case CONNECTCARD_QUESTION_TWO:
           if(payload){
@@ -403,52 +376,6 @@ function bulletinsReducer (state = initialState, action) {
               return {
                 ...state,
                 connectcard_Question_Two: [...state.connectcard_Question_Two, payload]
-              }
-            }
-          };
-          
-        
-        case CONNECTCARD_QUESTION_TWO_OPTION_ONE:
-          if(payload){
-            let index = state.connectcard_Question_Two_Option_One.findIndex(item => item.id == payload.id);
-            if(index !== -1){
-              const updatedArray = [
-                ...state.connectcard_Question_Two_Option_One.slice(0, index),
-                payload,
-                ...state.connectcard_Question_Two_Option_One.slice(index + 1)
-              ];
-              return {
-                ...state,
-                connectcard_Question_Two_Option_One: updatedArray
-              }
-            }
-            else{
-              return {
-                ...state,
-                connectcard_Question_Two_Option_One: [...state.connectcard_Question_Two_Option_One, payload]
-              }
-            }
-          };
-          
-        
-        case CONNECTCARD_QUESTION_TWO_OPTION_TWO:
-          if(payload){
-            let index = state.connectcard_Question_Two_Option_Two.findIndex(item => item.id == payload.id);
-            if(index !== -1){
-              const updatedArray = [
-                ...state.connectcard_Question_Two_Option_Two.slice(0, index),
-                payload,
-                ...state.connectcard_Question_Two_Option_Two.slice(index + 1)
-              ];
-              return {
-                ...state,
-                connectcard_Question_Two_Option_Two: updatedArray
-              }
-            }
-            else{
-              return {
-                ...state,
-                connectcard_Question_Two_Option_Two: [...state.connectcard_Question_Two_Option_Two, payload]
               }
             }
           };
@@ -475,7 +402,49 @@ function bulletinsReducer (state = initialState, action) {
             }
           };
           
-
+        case CONNECTCARD_OPTION_ONE:
+          if(payload){
+            let index = state.connectcard_Option_One.findIndex(item => item.id == payload.id);
+            if(index !== -1){
+              const updatedArray = [
+                ...state.connectcard_Option_One.slice(0, index),
+                payload,
+                ...state.connectcard_Option_One.slice(index + 1)
+              ];
+              return {
+                ...state,
+                connectcard_Option_One: updatedArray
+              }
+            }
+            else{
+              return {
+                ...state,
+                connectcard_Option_One: [...state.connectcard_Option_One, payload]
+              }
+            }
+          };
+        
+        case CONNECTCARD_OPTION_TWO:
+            if(payload){
+              let index = state.connectcard_Option_Two.findIndex(item => item.id == payload.id);
+              if(index !== -1){
+                const updatedArray = [
+                  ...state.connectcard_Option_Two.slice(0, index),
+                  payload,
+                  ...state.connectcard_Option_Two.slice(index + 1)
+                ];
+                return {
+                  ...state,
+                  connectcard_Option_Two: updatedArray
+                }
+              }
+              else{
+                return {
+                  ...state,
+                  connectcard_Option_Two: [...state.connectcard_Option_Two, payload]
+                }
+              }
+            };
 // Order Of Service
         case ORDEROFSERVICE_TITLE:
           if(payload){
@@ -811,10 +780,26 @@ function bulletinsReducer (state = initialState, action) {
           };
 
         case PRAYER_CHECKED_VALUE:
-          return {
-            ...state,
-            prayer_checkedvalue: payload
-          }
+          if(payload){
+            let index = state.prayer_checkedvalue.findIndex(item => item.id === payload.id);
+            if(index !== -1){
+              const updatedArray = [
+                ...state.prayer_checkedvalue.slice(0, index),
+                payload,
+                ...state.prayer_checkedvalue.slice(index + 1)
+              ];
+              return {
+                ...state,
+                prayer_checkedvalue: updatedArray
+              }
+            }
+            else{
+              return {
+                ...state,
+                prayer_checkedvalue: [...state.prayer_checkedvalue, payload]
+              }
+            }
+          };
         
         case ONLINE_TITLE:
           if(payload){

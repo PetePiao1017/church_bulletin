@@ -1,12 +1,12 @@
-import React,{useEffect, useState} from "react";
-import { Button,  Form, Input, Upload,message, Checkbox, Row, Col} from 'antd';
-import { PictureOutlined, UploadOutlined } from "@ant-design/icons";
+import React from "react";
+import { Button,  Form, Input, Checkbox} from 'antd';
 
 import {
     setPrayerTitle,
     setPrayerBodyText,
     setPrayerCheckvalue
 } from "../../../actions/bulletins";
+
 import { connect } from "react-redux";
 
 import './PrayerRequestediting.scss'
@@ -32,7 +32,11 @@ const PrayerRequestediting = (props) => {
 
     
     const onChange = (checkedValues) => {
-        props.setPrayerCheckvalue(checkedValues);
+        let tempObj = {
+            id : props.id,
+            str: checkedValues
+        }
+        props.setPrayerCheckvalue(tempObj);
     };
 
 
@@ -54,12 +58,13 @@ const PrayerRequestediting = (props) => {
                 </Form.Item>
 
                 <Form.Item label = "SELECT FIELDS TO INCLUDE">
-                    <Checkbox.Group 
+                <   Checkbox.Group 
                         onChange={onChange} 
                         style = {{width: "100%"}}
+                        defaultValue={['Name', 'Email']}
                         >
                         <div style = {{display:"grid"}}>
-                            <Checkbox value = "Name">Name</Checkbox>
+                            <Checkbox value = "Name" >Name</Checkbox>
                             <Checkbox value = "Email">Email</Checkbox>
                             <Checkbox value = "Phonenumber">Phonenumber</Checkbox>
                             <Checkbox value = "Address">Address</Checkbox>
