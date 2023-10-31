@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { v4 as uuidv6 } from 'uuid';
+import { jwtDecode } from "jwt-decode";
 import { Link } from "react-router-dom";
 import { Button, Dropdown,Tabs, Modal, DatePicker, Row, Col,} from 'antd';
 import { useNavigate } from "react-router-dom";
@@ -7,7 +8,7 @@ import {connect} from 'react-redux';
 import {ArrowLeftOutlined } from '@ant-design/icons';
 import { Addsection, Sectionediting, PreviewSecton, BulletIns, Headerpreview } from '../../components';
 import {logout} from '../../actions/auth';
-import { setHeaderDate} from '../../actions/bulletins';
+import { setHeaderDate, sendDataToBack, createNewBulletin} from '../../actions/bulletins';
 import {ExclamationCircleFilled} from "@ant-design/icons";
 
 import "./Main.scss";
@@ -17,7 +18,6 @@ const { confirm } = Modal;
 
 const Main = (props) => {
   const navigate = useNavigate();
-
   const showConfirm = () => {
     confirm({
       title: 'Have you saved the editings?',
@@ -33,10 +33,17 @@ const Main = (props) => {
   };
 
   useEffect(() => {
-    if(!localStorage.getItem("token")){
+    const token = localStorage.getItem("token");
+    if(!token)
+    {
       navigate('/signin', {replace : true})
     }
-
+    else
+    {
+      const decoded = jwtDecode(token);
+      let user_id = decoded.user.id;
+      setUserid(user_id)
+    }
   },[])
 
   useEffect(() => {
@@ -52,12 +59,13 @@ const Main = (props) => {
   const [localbulletins, setLocalbulletins] = useState([]);
   const [editingPanel, setEditingPanel] = useState("");
   const [confirmsave, setConfirmsave] = useState(false);
-  const [modal, contextHolder] = Modal.useModal();
+  const [userid, setUserid] = useState("");
   const showModal = () => {
     setOpen(true);
   };
 
   const handleOk = () => {
+    props.createNewBulletin(userid);
     setConfirmLoading(true);
     setTimeout(() => {
       setOpen(false);
@@ -201,7 +209,10 @@ const Main = (props) => {
                       <div className='button-group'>
                         <Button 
                           type = "primary"
-                          onClick={() => setConfirmsave(true)}
+                          onClick={() => {
+                            setConfirmsave(true);
+                            props.sendDataToBack(props.bulletins);
+                          }}
                         >
                           Save
                         </Button>
@@ -324,4 +335,9 @@ const mapStateToProps = (state) => ({
   bulletins: state.builletins
 })
 
-export default connect(mapStateToProps, {logout, setHeaderDate})(Main)
+export default connect(mapStateToProps, {
+  logout, 
+  setHeaderDate,
+  sendDataToBack,
+  createNewBulletin,
+})(Main)

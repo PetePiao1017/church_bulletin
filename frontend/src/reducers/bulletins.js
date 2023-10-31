@@ -3,6 +3,7 @@ import {
     HEADER_IMAGE_URL,
     HEADER_DATE,
     HEADER_DELETE_IMAGE_URL,
+    CREATE_NEW_BULLETIN,
 
     ANNOUNCEMENT_BODY_TEXT, 
     ANNOUNCEMENT_BUTTON_LINK, 
@@ -64,6 +65,7 @@ const initialState = {
     header_date: '',
     header_title: '',
     header_imageurl: '',
+    bulletein_id: '',
 
     announcment_bodyText: [],
     announcment_buttonLink: [],
@@ -117,13 +119,17 @@ const initialState = {
     video_Platform: [],
     video_Link: [],
 
-    flag: false,
 };
 
 function bulletinsReducer (state = initialState, action) {
     const { type, payload } = action;
 
     switch (type) {
+        case CREATE_NEW_BULLETIN:
+          return {
+            ...state,
+            bulletein_id: payload,
+          }
         case HEADER_DATE:
           return{
             ...state,

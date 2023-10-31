@@ -56,16 +56,36 @@ import {
     WEBSITE_TITLE,
     WEBSITE_TYPE,
     HEADER_IMAGE_URL,
+
+    CREATE_NEW_BULLETIN
 } from './types';
 
 import axios from 'axios';
 import api from '../utils/api';
+
 const uploadApi = axios.create({
     baseURL: '/api',
     headers: {
       'Content-Type': 'multipart/form-data',
     }
 });
+
+
+// SEND REDUX STORE TO BACKEND
+export const sendDataToBack = (bulletins) => async (dispatch) => {
+    let result = await api.post('/bulletins', bulletins);
+}
+
+// CREATE NEW BULLETIN
+export const createNewBulletin = (userid) => async (dispatch) => {
+    let res = await api.post('/bulletins/new', {userid});
+    console.log(res);
+    dispatch({
+        type: CREATE_NEW_BULLETIN,
+        payload: res.data.bulletin_id
+    })
+} 
+
 // HEADER
 export const setHeaderTitle = (text) => async (dispatch) => {
     dispatch({

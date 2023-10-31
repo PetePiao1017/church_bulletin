@@ -10,7 +10,6 @@ import "./Headerediting.scss"
 const Headerediting = (props) => {
     
 
-
     const onDateChange = (date, dateString) => {
         props.setHeaderDate(dateString)
     }
@@ -19,7 +18,6 @@ const Headerediting = (props) => {
         props.setHeaderTitle(e.target.value);
     }
 
-    
     return(
         <div style={{width:"100%", margin: "0 auto"}}>
             <h3>Edit Header</h3>
@@ -45,7 +43,7 @@ const Headerediting = (props) => {
                 </Form.Item>
                 <Button 
                     type = "primary"
-                    style={{float:"right"}}    
+                    style={{float:"right"}}
                 >  
                     Done Editing
                 </Button>

@@ -17,6 +17,7 @@ app.use(express.static("img_uploads"));
 app.use('/api/users', require('./routes/api/users'));
 app.use('/api/auth', require('./routes/api/auth'));
 app.use('/api/upload', require('./routes/api/upload'));
+app.use('/api/bulletins', require('./routes/api/bulletins'));
 
  
 // Serve static assets in production
