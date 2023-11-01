@@ -6,9 +6,27 @@ const BulletinSchema = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: 'user'
   },
-  header_id :{
-    type: Schema.Types.ObjectId,
-    ref: 'header'
+  list_category: [
+    {
+      id :{
+        type: String,
+      },
+      title: {
+        type: String,
+      },
+      type: {
+        type: String,
+      }
+    }
+  ],
+  header_title: {
+    type: String,
+  },
+  header_date: {
+    type: String,
+  },
+  header_imageurl: {
+    type: String,
   },
 });
 

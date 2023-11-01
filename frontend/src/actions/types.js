@@ -7,7 +7,11 @@ export const LOGIN_FAIL = 'LOGIN_FAIL';
 export const LOGOUT = 'LOGOUT';
 export const SET_ALERT = 'SET_ALERT';
 export const REMOVE_ALERT = 'REMOVE_ALERT';
-export const CREATE_NEW_BULLETIN = "CREATE_NEW_BULLETIN"
+export const CREATE_NEW_BULLETIN = "CREATE_NEW_BULLETIN";
+export const GET_BULLETIN = "GET_BULLETIN";
+export const CLEAN_ERROR = "CLEAN_ERROR";
+export const CLEAR_REDUX_STORE = "CLEAR_REDUX_STORE";
+export const RETRIEVE_DATA = "RETRIEVE_DATA";
 
 export const HEADER_TITLE = "HEADER_TITLE"
 export const HEADER_DATE = "HEADER_DATE"

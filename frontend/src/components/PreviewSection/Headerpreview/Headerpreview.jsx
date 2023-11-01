@@ -6,7 +6,7 @@ const Headerpreview = (props) => {
     return (
         <div className="scroll-bar" style={{margin : "0"}}>
             <h3 className='app-header' style={{marginTop:"0", marginBottom:"0"}}>
-                {!props.title ? props.user.church_name + " Bulletin" : props.title}
+                {!props.title ? "   " + " Bulletin" : props.title}
             </h3>
             <h3 className='app-date'></h3>
             <p style={{marginTop:"2px", fontSize:"10px"}}>{convertDate(props._date_)}</p>

@@ -2,6 +2,9 @@ import {
     HEADER_TITLE,
     HEADER_DATE,
     HEADER_DELETE_IMAGE_URL,
+    GET_BULLETIN,
+    CLEAR_REDUX_STORE,
+    RETRIEVE_DATA,
 
     ANNOUNCEMENT_BODY_TEXT, 
     ANNOUNCEMENT_BUTTON_LINK, 
@@ -70,10 +73,26 @@ const uploadApi = axios.create({
     }
 });
 
+// GET BULLETIN
+export const getBulletins = (userid) =>  async (dispatch) => {
+    let res = await api.post('/bulletins/retrieve', {userid});
+    dispatch({
+        type: RETRIEVE_DATA,
+        payload: res.data
+    })
+}
+
+// CLEAR REDUX STORE WHEN USER LOGS IN
+export const clearReduxStore = () => async (dispatch) => {
+    dispatch({
+        type: CLEAR_REDUX_STORE,
+        payload: null
+    })
+}
 
 // SEND REDUX STORE TO BACKEND
-export const sendDataToBack = (bulletins) => async (dispatch) => {
-    let result = await api.post('/bulletins', bulletins);
+export const sendDataToBack = (bulletins, localbulletins) => async (dispatch) => {
+    let result = await api.post('/bulletins', {bulletins, localbulletins});
     if(result.data === "OK"){
         alert("Success");
     }
@@ -82,7 +101,6 @@ export const sendDataToBack = (bulletins) => async (dispatch) => {
 // CREATE NEW BULLETIN
 export const createNewBulletin = (userid) => async (dispatch) => {
     let res = await api.post('/bulletins/new', {userid});
-    console.log(res);
     dispatch({
         type: CREATE_NEW_BULLETIN,
         payload: res.data.bulletin_id

@@ -7,6 +7,7 @@ import {
   AUTH_ERROR,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
+  CLEAN_ERROR,
   LOGOUT
 } from './types';
 
@@ -63,12 +64,22 @@ export const login = (email, password) => async (dispatch) => {
   try {
     const res = await api.post('/auth', body);
 
-    dispatch({
-      type: LOGIN_SUCCESS,
-      payload: res.data
-    });
-
-    dispatch(loadUser());
+    if(_.has(res.data, 'errors'))
+    {
+      dispatch({
+        type: LOGIN_FAIL,
+        payload: res.data.errors
+      })
+    }
+    else
+    {
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: res.data
+      });
+      dispatch(loadUser());
+    }
+    
   } catch (err) {
     const errors = err.response.data.errors;
 
@@ -85,5 +96,12 @@ export const logout = () => async (dispatch) => {
   dispatch({
     type: LOGOUT,
     payload: null
+  })
+}
+
+export const setCleanErrors = () => async (dispatch) => {
+  dispatch({
+    type: CLEAN_ERROR,
+    payload: null,
   })
 }

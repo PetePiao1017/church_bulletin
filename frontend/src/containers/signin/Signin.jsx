@@ -3,7 +3,7 @@ import './Signin.scss'
 import { Input, Button, Form, notification } from 'antd';
 import { useNavigate } from "react-router-dom";
 import { connect } from 'react-redux';
-import { login } from '../../actions/auth';
+import { login, setCleanErrors } from '../../actions/auth';
 
 const Signin = (props) => {
 
@@ -16,8 +16,14 @@ const Signin = (props) => {
         });
     };
 
+
     useEffect(() => {
-        props.errors.map((item, index) => openNotificationWithIcon('error',props.errors[index], "Errors"))
+        props.setCleanErrors();
+    },[])
+    useEffect(() => {
+        props.errors.map((item, index) => 
+        openNotificationWithIcon('error',props.errors[index], "Errors"));
+        
     }, [props.errors])
 
     useEffect(() => {
@@ -121,4 +127,4 @@ const mapStateToProps = (state) => ({
     errors: state.auth.errors
 })
 
-export default connect(mapStateToProps, {login} )(Signin)
+export default connect(mapStateToProps, {login, setCleanErrors} )(Signin)

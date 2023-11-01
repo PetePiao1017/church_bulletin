@@ -4,6 +4,7 @@ import {
     HEADER_DATE,
     HEADER_DELETE_IMAGE_URL,
     CREATE_NEW_BULLETIN,
+    CLEAR_REDUX_STORE,
 
     ANNOUNCEMENT_BODY_TEXT, 
     ANNOUNCEMENT_BUTTON_LINK, 
@@ -122,6 +123,64 @@ function bulletinsReducer (state = initialState, action) {
     const { type, payload } = action;
 
     switch (type) {
+        case CLEAR_REDUX_STORE:
+          return {
+            ...state,
+            header_date: '',
+            header_title: '',
+            header_imageurl: '',
+            bulletein_id: '',
+
+            announcment_bodyText: [],
+            announcment_buttonLink: [],
+            announcment_buttonText: [],
+            announcment_imageurl: [],
+            announcment_Title: [],
+          
+
+            connectcard_Title: [],
+            connectcard_imageurl: [],
+            connectcard_bodyText: [],
+            connectcard_Question_One: [],
+            connectcard_Option_One:[],
+            connectcard_Question_Two: [],
+            connectcard_Option_Two: [],
+            connectcard_checkedvalues: [],
+
+            orderofservice_Title: [],
+            orderofservice_Topic_Title: [],
+            orderofservice_Topic_Content: [],
+            orderofservice_imageurl: [],
+
+            event_Title: [],
+            event_Date: [],
+            event_Time_Start: [],
+            event_Time_End: [],
+            event_Location: [],
+            event_bodyText: [],
+            event_btnText: [],
+            event_btnLink: [],
+            event_imageurl: [],
+
+            prayer_Title: [],
+            prayer_bodyText: [],
+            prayer_checkedvalue: [],
+
+            online_Title: [],
+            online_bodyText: [],
+            online_Type:[],
+            online_Link:[],
+
+            website_Title: [],
+            website_Type: [],
+            website_Link: [],
+            website_embed_code: [],
+
+            video_Title: [],
+            video_bodyText: [],
+            video_Platform: [],
+            video_Link: [],
+          }
         case CREATE_NEW_BULLETIN:
           return {
             ...state,
@@ -1023,8 +1082,8 @@ function bulletinsReducer (state = initialState, action) {
             }
           };
         
-          default:
-          return state;
+        default:
+        return state;
       }
 }
 

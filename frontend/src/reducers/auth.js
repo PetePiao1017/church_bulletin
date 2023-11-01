@@ -6,6 +6,7 @@ import {
     LOGOUT,
     LOGIN_FAIL,
     REGISTER_FAIL,
+    CLEAN_ERROR,
   } from '../actions/types';
   
   const initialState = {
@@ -37,7 +38,7 @@ import {
       case LOGIN_FAIL:  
         return {
           ...state,
-          errors: [...state.errors, ...payload]
+          errors: [...payload]
         }
       case REGISTER_FAIL:  
         return {
@@ -60,6 +61,11 @@ import {
           loading: false,
           user: null
         };
+      case CLEAN_ERROR:
+        return{
+          ...state,
+          errors: []
+        }
       default:
         return state;
     }

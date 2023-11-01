@@ -8,7 +8,13 @@ import {connect} from 'react-redux';
 import {ArrowLeftOutlined } from '@ant-design/icons';
 import { Addsection, Sectionediting, PreviewSecton, BulletIns, Headerpreview } from '../../components';
 import {logout} from '../../actions/auth';
-import { setHeaderDate, sendDataToBack, createNewBulletin} from '../../actions/bulletins';
+import { 
+  setHeaderDate, 
+  sendDataToBack, 
+  createNewBulletin,
+  getBulletins,
+  clearReduxStore,
+} from '../../actions/bulletins';
 import {ExclamationCircleFilled} from "@ant-design/icons";
 
 import "./Main.scss";
@@ -42,7 +48,8 @@ const Main = (props) => {
     {
       const decoded = jwtDecode(token);
       let user_id = decoded.user.id;
-      setUserid(user_id)
+      setUserid(user_id);
+      props.getBulletins(user_id);
     }
   },[])
 
@@ -60,12 +67,15 @@ const Main = (props) => {
   const [editingPanel, setEditingPanel] = useState("");
   const [confirmsave, setConfirmsave] = useState(false);
   const [userid, setUserid] = useState("");
+
   const showModal = () => {
     setOpen(true);
   };
 
   const handleOk = () => {
     props.createNewBulletin(userid);
+    setLocalbulletins([]);
+    props.clearReduxStore();
     setConfirmLoading(true);
     setTimeout(() => {
       setOpen(false);
@@ -211,7 +221,7 @@ const Main = (props) => {
                           type = "primary"
                           onClick={() => {
                             setConfirmsave(true);
-                            props.sendDataToBack(props.bulletins);
+                            props.sendDataToBack(props.bulletins, localbulletins);
                           }}
                         >
                           Save
@@ -340,4 +350,6 @@ export default connect(mapStateToProps, {
   setHeaderDate,
   sendDataToBack,
   createNewBulletin,
+  getBulletins,
+  clearReduxStore,
 })(Main)

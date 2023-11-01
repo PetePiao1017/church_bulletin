@@ -70,16 +70,28 @@ router.post('/', async (req, res) => {
             prayer_bodyText,
             prayer_checkedvalue,
 
-        } = req.body;
+        } = req.body.bulletins;
         
-    
-        const header = new Header({
-            bulletein_id,
-            header_title,
-            header_date,
-            header_imageurl,
-        });
-        await header.save();
+        const {localbulletins} = req.body;
+
+        // Bulletin Save
+        let bulletin = await Bulletin.findOne({_id : bulletein_id});
+        if(bulletin){
+            let filter = {_id : bulletein_id}
+            let updateDoc = {
+                $set : {
+                    list_category: localbulletins,
+                    header_title,
+                    header_date,
+                    header_imageurl,
+                }
+            }
+
+            const result = await Bulletin.updateOne(filter, updateDoc);
+
+            console.log("result", result);
+        }
+
         
         // Announcement Save
         let announcement_tempArr = [
@@ -409,6 +421,29 @@ router.post('/new', async (req, res) => {
     if(result){
         res.status(200).send({bulletin_id: result._id});
     }
+})
+
+// @route    POST api/bulletin/retrieve
+// @desc     Get All available bulletins
+// @access   Private
+
+router.post('/retrieve', async (req, res) => {
+    try{
+        const {userid} = req.body;
+        const bulletin = await Bulletin.find({user_id : userid});
+    
+        if(bulletin){
+            console.log(bulletin)
+            res.status(200).send(bulletin);
+        }
+        else{
+            res.status(200).send("Empty");
+        }
+    }
+    catch(err) {
+        res.status(201).send(err)
+    }
+    
 })
 
 
