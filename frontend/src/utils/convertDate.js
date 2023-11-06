@@ -1,5 +1,4 @@
 export const convertDate = (str) => {
-    console.log(str)
     const arr = str.split('-');
     let year = arr[0];
     let day = arr[2];

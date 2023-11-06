@@ -1,0 +1,100 @@
+.device-component{
+    position: relative;
+    width:75%;
+    margin: 0 auto;
+    .indicator{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .circle{
+            width: 15px;
+            height: 15px;
+            background: #f08c7d;
+            box-shadow: 0 0 0 0 #f08c7d;
+            border-radius: 50%;
+        }
+        .circle-active{
+            width: 15px;
+            height: 15px;
+            background: #4ba8aa;
+            box-shadow: 0 0 0 0 #4ba8aa;
+            border-radius: 50%;
+        }
+        .due-date{
+            margin-left: 5px;
+            font-weight: 400;
+        }
+    }
+    .border-screen-extra{
+        position: relative;
+        border:3px solid #abaeb0;
+        border-radius:14%/7%;
+        box-shadow:  0 0 2px 2px #eeeef0, inset 0 0 0 7px #e2e3e4;
+        .tool-right{
+            position: absolute;
+            top: 23%;
+            right: -3%;
+            width: 2%;
+            height: 7.5%;
+            border-radius: 0 2px 2px 0;
+            background-color: #d8d9dc;
+        }
+        .tool-up{
+            position: absolute;
+            top: 20%;
+            left: -3%;
+            width: 2%;
+            height: 7.5%;
+            border-radius: 2px 0 0 2px;
+            background-color: #d8d9dc;
+        }
+        .tool-down{
+            position: absolute;
+            top: 29%;
+            left: -3%;
+            width: 2%;
+            height: 7.5%;
+            border-radius: 2px 0 0 2px;
+            background-color: #d8d9dc;
+        }
+        .border-screen{
+            border: 7px solid #d8d9dc;
+            border-radius: 14%/6%;
+            .device__screen{
+                border: 1px solid rgba(194,200,209,.5215686274509804);
+                border-radius: 10%/5%;
+                height: 55vh;
+                .scroll-bar{
+                    .title{
+                        text-align: center;
+                        margin-bottom: 0;
+                    }
+                    .date{
+                        text-align: center;
+                        font-size: 8px;
+                    }
+                    .header-image{
+                        width: 100%;
+                        height: 100px;
+                        img{
+                            width: 100%;
+                            height: 100%;
+                        }
+                    }
+                    .category{
+                        width: 93%;
+                        height: 30px;
+                        background-color: #f3f5f7;
+                        display: flex;
+                        justify-content: space-between;
+                        padding: 5px;
+                        margin-bottom: 5px;
+                        .title{
+                            font-size: 8px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

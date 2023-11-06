@@ -6,7 +6,13 @@ import { Button, Dropdown,Tabs, Modal, DatePicker, Row, Col,} from 'antd';
 import { useNavigate } from "react-router-dom";
 import {connect} from 'react-redux';
 import {ArrowLeftOutlined } from '@ant-design/icons';
+
+
 import { Addsection, Sectionediting, PreviewSecton, BulletIns, Headerpreview } from '../../components';
+import Upcoming from '../Upcoming/Upcoming';
+import Past from '../Past/Past';
+import Response from '../Response/Response';
+
 import {logout} from '../../actions/auth';
 import { 
   setHeaderDate, 
@@ -16,6 +22,8 @@ import {
   clearReduxStore,
 } from '../../actions/bulletins';
 import {ExclamationCircleFilled} from "@ant-design/icons";
+
+
 
 import "./Main.scss";
 
@@ -30,10 +38,10 @@ const Main = (props) => {
       icon: <ExclamationCircleFilled />,
       content: 'You have to save editings before you leave this page',
       onOk() {
-        console.log('OK');
+        props.sendDataToBack(props.bulletins, localbulletins);
       },
       onCancel() {
-        console.log('Cancel');
+        setNewbulletin(false)
       },
     });
   };
@@ -62,7 +70,7 @@ const Main = (props) => {
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState("a");
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [newbulletin, setNewbulletin] = useState(false)
+  const [newbulletin, setNewbulletin] = useState(false);
   const [localbulletins, setLocalbulletins] = useState([]);
   const [editingPanel, setEditingPanel] = useState("");
   const [confirmsave, setConfirmsave] = useState(false);
@@ -76,6 +84,7 @@ const Main = (props) => {
     props.createNewBulletin(userid);
     setLocalbulletins([]);
     props.clearReduxStore();
+    props.setHeaderDate(date)
     setConfirmLoading(true);
     setTimeout(() => {
       setOpen(false);
@@ -109,7 +118,6 @@ const Main = (props) => {
 
   const onDateChange = (date, dateString) => {
     setDate(dateString);
-    props.setHeaderDate(dateString)
   };
 
 
@@ -298,21 +306,16 @@ const Main = (props) => {
                     style={{marginLeft:"20px"}}
                 >
                   <TabPane tab="UPCOMING" key="1">
-                    <div className='button-bar'>
-                      <Button 
-                        type='primary' 
-                        style={{float:"right",marginRight:"20px"}}
-                        onClick={showModal}
-                      >
-                        Add New BulletIn
-                      </Button>
-                    </div>
+                    <Upcoming 
+                      callback = {showModal}
+                      editpageCallback = {() => setNewbulletin(true)}
+                    />
                   </TabPane>
                   <TabPane tab="PAST" key="2">
-                    Content of Tab Pane 2
+                    <Past />
                   </TabPane>
                   <TabPane tab="RESPONSES" key="3">
-                    Content of Tab Pane 3
+                    <Response />
                   </TabPane>  
                 </Tabs>
                 <Modal
@@ -333,7 +336,6 @@ const Main = (props) => {
                 </Modal>
               </div>
             }
-            
         </div>
     )
 }
