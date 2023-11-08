@@ -1,0 +1,29 @@
+.buttontext{
+    position: relative;
+    background-color: #1292ee;
+    border-radius: 5px;
+    width: 90%;
+    height: 70px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    .input-box{
+        height: 80%;
+        margin: auto;
+        width: 90%;
+        background-color: transparent;
+        border: none;
+        text-align: center;
+        font-size: 25px;
+    }
+    .input-box:focus{
+        outline: none;
+    }
+    .placeholder{
+        position: absolute;
+        left: 37%;
+        font-size: 25px;
+        color: rgb(236, 239, 240);
+    }
+}

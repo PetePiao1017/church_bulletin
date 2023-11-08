@@ -5,6 +5,10 @@ import BulletIns from "./Bulletins/Bulletins";
 import CustomUpload from "./CustomUpload/CustomUpload";
 import Headerpreview from "./PreviewSection/Headerpreview/Headerpreview";
 import Device from './Device/Device';
+import Toolbar from './Toolbar/Toolbar';
+import FileUpload from './FileUpload/FileUpload';
+import ImageUpload from './ImageUpload/ImageUpload';
+import ButtonText from "./ButtonText/ButtonText";
 
 export {
     Addsection,
@@ -14,4 +18,8 @@ export {
     CustomUpload,
     Headerpreview,
     Device,
+    Toolbar,
+    FileUpload,
+    ImageUpload,
+    ButtonText,
 }

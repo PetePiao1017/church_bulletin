@@ -1,0 +1,12 @@
+.file-upload {
+    border: 1px dashed #ccc;
+    display: flex;
+    width: 100%;
+    cursor: pointer;
+}
+input[type="file"] {
+    display: none;
+}
+label{
+    margin: 0 auto;
+}

@@ -2,13 +2,25 @@ import React, {useEffect, useState} from 'react';
 import { v4 as uuidv6 } from 'uuid';
 import { jwtDecode } from "jwt-decode";
 import { Link } from "react-router-dom";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import { Button, Dropdown,Tabs, Modal, DatePicker, Row, Col,} from 'antd';
 import { useNavigate } from "react-router-dom";
 import {connect} from 'react-redux';
-import {ArrowLeftOutlined } from '@ant-design/icons';
+import {ArrowLeftOutlined, PlusOutlined } from '@ant-design/icons';
 
 
-import { Addsection, Sectionediting, PreviewSecton, BulletIns, Headerpreview } from '../../components';
+import { 
+  Addsection, 
+  Sectionediting, 
+  PreviewSecton, 
+  BulletIns, 
+  Headerpreview,
+  FileUpload,
+  ImageUpload,
+  Toolbar,
+  ButtonText,
+} from '../../components';
 import Upcoming from '../Upcoming/Upcoming';
 import Past from '../Past/Past';
 import Response from '../Response/Response';
@@ -75,6 +87,10 @@ const Main = (props) => {
   const [editingPanel, setEditingPanel] = useState("");
   const [confirmsave, setConfirmsave] = useState(false);
   const [userid, setUserid] = useState("");
+  const [section, setSection] = useState([]);
+  const [content, setContent] = useState([]);
+  const [clicked, setClicked] = useState("");
+
 
   const showModal = () => {
     setOpen(true);
@@ -135,6 +151,49 @@ const Main = (props) => {
     setEditingPanel(item.content);
   }
 
+  const setContentValue = (id, type) => {
+    let index = content.findIndex(item => item.id === id);
+    let newObj = {
+      type: type,
+      value: null
+    }
+    let tempObj = {
+      id: id,
+      data: [...content[index].data, newObj]
+    }
+
+    setContent([
+      ...content.slice(0, index),
+      tempObj,
+      ...content.slice(index+1)
+    ])
+  }
+
+  const handleEditorChange = (item, index, value) =>{
+    console.log("item", item)
+    let contentIndex = content.findIndex(element => element.id === item);
+    console.log("content", content)
+    console.log("contentINdex", contentIndex)
+    let newObj = {
+      type: "edit",
+      value: value
+    }
+
+    let newContent = {
+      id: item,
+      data: [
+        ...content[contentIndex].data.slice(0, index),
+        newObj,
+        ...content[contentIndex].data.slice(index+1)
+      ]
+    }
+
+    setContent([
+      ...content.slice(0, contentIndex),
+      newContent,
+      ...content.slice(contentIndex + 1)
+    ])
+  }
   const items = [
       {
         key: '1',
@@ -243,13 +302,11 @@ const Main = (props) => {
                       >
                         <div className='device'>
                           <div className='border-screen-extra'>
-                            <div className='tool-right' />
-                            <div className='tool-up' />
-                            <div className='tool-down' />
-                            <div className='border-screen'>
-                              <div className='device__screen'>
+                            <div className='device__screen'>
                               { 
-                                  !editingPanel || editingPanel === "Headerediting" ?
+                                  !editingPanel || editingPanel === "Headerediting" 
+                                  
+                                  ?
                                     <div className='scroll-bar'>
                                       <div onClick={() => setEditingPanel(
                                         {
@@ -288,11 +345,83 @@ const Main = (props) => {
                                   />
                                 </div>
                               }
-                              </div>
+                            </div>
+                              {
+                                section.map((item, index) => {
+                                  return(
+                                    <Row
+                                      key = {index}
+                                      className = 'editing-page'
+                                      onClick = {() => { setClicked(item)}
+                                      }
+                                    >
+                                      <div className='quill-container'>
+                                        {
+                                          content[index].data.map((value, index) => {
+                                            switch(value.type){
+                                              case "edit":
+                                                return <ReactQuill 
+                                                          theme="snow" 
+                                                          value={value.value}
+                                                          onChange={(value) => 
+                                                            handleEditorChange(item, index, value)}
+                                                          key = {index}
+                                                        />
+                                              case "gallery":
+                                                return <ImageUpload 
+                                                          key = {index}
+                                                          index = {"image" + item + index}
+                                                        />
+                                              case "attach":
+                                                return <FileUpload
+                                                          key = {index}
+                                                          index = {"attach" + item + index}
+                                                          />
+                                              case "cursor":
+                                                return <ButtonText
+                                                            key={index}
+                                                            />
+                                            }
+                                          })
+                                        }
+                                      </div>
+                                      {
+                                        clicked === item 
+                                          ? 
+                                          <Toolbar
+                                            id = {item}
+                                            setContentValueCallback = {setContentValue}
+                                          /> 
+                                          : ""
+                                      }
+                                    </Row>
+                                  )
+                                })
+                              }
+                              <br />
+                              <br />
+                              <br />
+                              <Row className='add-section-btn'>
+                                <Button 
+                                  type='default' 
+                                  size='large'
+                                  onClick={ () => {
+                                    let id = uuidv6();
+                                    setSection([...section, id]);
+                                    let tempObj = {
+                                      id: id,
+                                      data: []
+                                    }
+                                    setContent([...content, tempObj])
+                                  }}
+                                >
+                                  <PlusOutlined />
+                                  Add Section
+                                </Button>
+                              </Row>
                             </div>
                           </div>
                         </div>
-                      </div>
                     </Col>
                 </Row>
               </div>

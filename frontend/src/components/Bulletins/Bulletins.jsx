@@ -84,7 +84,7 @@ const BulletIns = (props) => {
 
     const getListStyle = (isDraggingOver) => ({
         background: "transparent",
-        width: "90%",
+        width: "95%",
     });
 
 
