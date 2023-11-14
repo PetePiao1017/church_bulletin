@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
-import './FileUpload.scss'
+import {connect} from 'react-redux';
+
+import './FileUpload.scss';
+import { setSectionImageUpload } from '../../actions/bulletins';
 
 
 
 
-function FileUpload({index}) {
-  const [selectedFile, setSelectedFile] = useState(null);
+
+function FileUpload(props) {
   const [filename, setFilename] = useState('');
 
   const onSelectFile = (e) => {
     const file = e.target.files[0];
-    setSelectedFile(file);
     setFilename(file.name)
-
+    
     if (file) {
+      props.setSectionImageUpload(props.id, props.sectionId, file, "file");
       const reader = new FileReader();
       reader.readAsDataURL(file);
     }
@@ -22,7 +25,7 @@ function FileUpload({index}) {
   return (
     <div style={{ marginTop: '20px', marginBottom: '20px' }}>
       <label 
-        htmlFor={`file-upload${index}`}
+        htmlFor={`file-upload${props.index}`}
         className="file-upload"
         id = "label"
         >
@@ -40,10 +43,10 @@ function FileUpload({index}) {
             {!filename ? "Upload your file" : filename}
           </h3>
         </div>
-        <input type="file" onChange={(e) => onSelectFile(e)} id={`file-upload${index}`} style={{ display: 'none' }} />
+        <input type="file" onChange={(e) => onSelectFile(e)} id={`file-upload${props.index}`} style={{ display: 'none' }} />
       </label>
     </div>
   );
 }
 
-export default FileUpload;
+export default connect(null, {setSectionImageUpload})(FileUpload);

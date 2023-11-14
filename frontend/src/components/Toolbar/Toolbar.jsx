@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useMemo, } from "react";
 import { Dropdown, Button, ColorPicker, theme } from 'antd';
-import { ArrowUpOutlined, DeleteOutlined } from "@ant-design/icons";
 import './Toolbar.scss'
 
 const Toolbar = (props) =>{
@@ -42,13 +41,14 @@ const Toolbar = (props) =>{
         },
         {
           label: 
-          <div style={{
-            display:"flex",
-            float: "right"
-        }}>
-            <ArrowUpOutlined />
-            <DeleteOutlined />
-          </div>,
+                <Button 
+                    type = "primary" 
+                    danger 
+                    style={{width: "100%"}}
+                    onClick={() => props.setContentValueToolbarCallback(props.id, "delete")}
+                >
+                    Delete
+                </Button>,
           key: '3',
         },
       ];      
@@ -80,9 +80,6 @@ const Toolbar = (props) =>{
             case "quote":
                 setExplanation("Add an inspirational quote to  your note");
                 break
-            case "signup":
-                setExplanation("Add a sign up");
-                break
             default:
                 setExplanation("video");
                 break
@@ -112,7 +109,7 @@ const Toolbar = (props) =>{
                     onMouseLeave={() => setExplanation("")}
                     onClick={(e) => {
                         e.stopPropagation();
-                        props.setContentValueCallback(props.id, "edit");
+                        props.setContentValueToolbarCallback(props.id, "edit");
                     }}
                 />
                 <img 
@@ -122,7 +119,7 @@ const Toolbar = (props) =>{
                     onMouseLeave={() => setExplanation("")}
                     onClick={(e) => {
                         e.stopPropagation();
-                        props.setContentValueCallback(props.id, "gallery")
+                        props.setContentValueToolbarCallback(props.id, "gallery")
                     }}
                 />
                 <img 
@@ -132,7 +129,7 @@ const Toolbar = (props) =>{
                     onMouseLeave={() => setExplanation("")}
                     onClick={(e) => {
                         e.stopPropagation();
-                        props.setContentValueCallback(props.id, "attach")
+                        props.setContentValueToolbarCallback(props.id, "attach")
                     }}
                 />
                 <img 
@@ -142,7 +139,7 @@ const Toolbar = (props) =>{
                     onMouseLeave={() => setExplanation("")}
                     onClick={(e) => {
                         e.stopPropagation();
-                        props.setContentValueCallback(props.id, "cursor")
+                        props.setContentValueToolbarCallback(props.id, "cursor")
                     }}
                 />
                 <img 
@@ -152,7 +149,7 @@ const Toolbar = (props) =>{
                     onMouseLeave={() => setExplanation("")}
                     onClick={(e) => {
                         e.stopPropagation();
-                        props.setContentValueCallback(props.id, "event")
+                        props.setContentValueToolbarCallback(props.id, "event")
                     }}
                 />
                 <img 
@@ -162,7 +159,7 @@ const Toolbar = (props) =>{
                     onMouseLeave={() => setExplanation("")}
                     onClick={(e) => {
                         e.stopPropagation();
-                        props.setContentValueCallback(props.id, "video")
+                        props.setContentValueToolbarCallback(props.id, "video")
                     }}
                 />
                 <img 
@@ -172,7 +169,7 @@ const Toolbar = (props) =>{
                     onMouseLeave={() => setExplanation("")}
                     onClick={(e) => {
                         e.stopPropagation();
-                        props.setContentValueCallback(props.id, "checked")
+                        props.setContentValueToolbarCallback(props.id, "checked")
                     }}
                 />  
                 <img 
@@ -182,17 +179,7 @@ const Toolbar = (props) =>{
                     onMouseLeave={() => setExplanation("")}
                     onClick={(e) => {
                         e.stopPropagation();
-                        props.setContentValueCallback(props.id, "quote")
-                    }}
-                />
-                <img 
-                    className = "signup" 
-                    src="./signup_icon.png" 
-                    onMouseOver={() => showExplanation("signup")}
-                    onMouseLeave={() => setExplanation("")}
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        props.setContentValueCallback(props.id, "signup")
+                        props.setContentValueToolbarCallback(props.id, "quote")
                     }}
                 />
                 <Dropdown

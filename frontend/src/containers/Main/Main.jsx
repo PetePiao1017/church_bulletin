@@ -2,24 +2,17 @@ import React, {useEffect, useState} from 'react';
 import { v4 as uuidv6 } from 'uuid';
 import { jwtDecode } from "jwt-decode";
 import { Link } from "react-router-dom";
-import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { Button, Dropdown,Tabs, Modal, DatePicker, Row, Col,} from 'antd';
 import { useNavigate } from "react-router-dom";
 import {connect} from 'react-redux';
-import {ArrowLeftOutlined, PlusOutlined } from '@ant-design/icons';
-
-
+import {ArrowLeftOutlined } from '@ant-design/icons';
 import { 
   Addsection, 
   Sectionediting, 
   PreviewSecton, 
   BulletIns, 
   Headerpreview,
-  FileUpload,
-  ImageUpload,
-  Toolbar,
-  ButtonText,
 } from '../../components';
 import Upcoming from '../Upcoming/Upcoming';
 import Past from '../Past/Past';
@@ -83,14 +76,15 @@ const Main = (props) => {
   const [date, setDate] = useState("a");
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [newbulletin, setNewbulletin] = useState(false);
+  const [bulletinItem, setBulletinItem] = useState({});
   const [localbulletins, setLocalbulletins] = useState([]);
   const [editingPanel, setEditingPanel] = useState("");
   const [confirmsave, setConfirmsave] = useState(false);
   const [userid, setUserid] = useState("");
-  const [section, setSection] = useState([]);
   const [content, setContent] = useState([]);
-  const [clicked, setClicked] = useState("");
+  const [toolbarvisible, setToolbarVisible] = useState(false);
 
+ 
 
   const showModal = () => {
     setOpen(true);
@@ -122,12 +116,21 @@ const Main = (props) => {
     if(method == "add") {
       
       let type = ev.dataTransfer.getData("id");
-      let temp = {
-        id: uuidv6(),
-        type: type,
-        title: type,
+      let id = uuidv6();
+      let temp;
+      if(type === "Add Section"){
+        temp = {
+          id,
+          type,
+          data: []
+        }
+        setContent([...content, temp])
       }
-      setLocalbulletins([...localbulletins, temp])
+      else{
+        temp = {id, type};
+      }
+      setBulletinItem(temp)
+      
     }
   }
 
@@ -138,42 +141,33 @@ const Main = (props) => {
 
 
   const getValueCallback = (id) => {
-    let temp = {
-      id: uuidv6(),
-      type: id,
-      title: id
-    }
-    setLocalbulletins([...localbulletins, temp])
+      let type = id;
+      let identifier = uuidv6();
+      let temp;
+      if(type === "Add Section"){
+        temp = {
+          id: identifier,
+          type,
+          data: []
+        }
+        setContent([...content, temp])
+      }
+      else{
+        temp = {
+          id : identifier, 
+          type: id,
+        };
+      }
+      setBulletinItem(temp);
   }
 
   const setEditingpanelCallback = (item) => {
-    console.log(item.content)
-    setEditingPanel(item.content);
+    setEditingPanel(item);
   }
 
-  const setContentValue = (id, type) => {
-    let index = content.findIndex(item => item.id === id);
-    let newObj = {
-      type: type,
-      value: null
-    }
-    let tempObj = {
-      id: id,
-      data: [...content[index].data, newObj]
-    }
-
-    setContent([
-      ...content.slice(0, index),
-      tempObj,
-      ...content.slice(index+1)
-    ])
-  }
-
+  
   const handleEditorChange = (item, index, value) =>{
-    console.log("item", item)
     let contentIndex = content.findIndex(element => element.id === item);
-    console.log("content", content)
-    console.log("contentINdex", contentIndex)
     let newObj = {
       type: "edit",
       value: value
@@ -194,6 +188,7 @@ const Main = (props) => {
       ...content.slice(contentIndex + 1)
     ])
   }
+  
   const items = [
       {
         key: '1',
@@ -214,6 +209,7 @@ const Main = (props) => {
         ),
       },
   ];
+
     return(
         <div className='main-container'>
             <div className='header'>
@@ -288,7 +284,6 @@ const Main = (props) => {
                           type = "primary"
                           onClick={() => {
                             setConfirmsave(true);
-                            props.sendDataToBack(props.bulletins, localbulletins);
                           }}
                         >
                           Save
@@ -302,7 +297,11 @@ const Main = (props) => {
                       >
                         <div className='device'>
                           <div className='border-screen-extra'>
-                            <div className='device__screen'>
+                            <div 
+                              className='device__screen'
+                              onMouseDown={() => setToolbarVisible(true)}
+                              onMouseLeave={() => setToolbarVisible(false)}
+                            >
                               { 
                                   !editingPanel || editingPanel === "Headerediting" 
                                   
@@ -319,106 +318,35 @@ const Main = (props) => {
                                       </div>
                                       <div className='bulletins'>
                                         {
-                                            <BulletIns 
-                                              bulletins = {localbulletins}
+                                            <BulletIns
+                                              bulletInOneItem = {bulletinItem}
                                               setEditingpanelCallback = {setEditingpanelCallback}
+                                              handleEditorChangeCallback = {handleEditorChange}
+                                              toolbarvisible = {toolbarvisible}
                                             />
                                         }
-                                        </div>
+                                      </div>
                                     </div>
                                   : 
                                   <div className='preview'>
-                                  <p 
-                                    className='app-back' 
-                                    onClick={ () => setEditingPanel("")}
-                                    style={{
-                                      float: "left", 
-                                      marginLeft:"7%", 
-                                      fontSize:"8px"
-                                    }}
-                                  >
-                                    <ArrowLeftOutlined />   Back
-                                  </p> 
-                                  <PreviewSecton
-                                    category = {editingPanel.type} 
-                                    id = {editingPanel.id} 
-                                  />
+                                    <p 
+                                      className='app-back' 
+                                      onClick={ () => setEditingPanel("")}
+                                      style={{
+                                        float: "left", 
+                                        marginLeft:"7%", 
+                                        fontSize:"8px"
+                                      }}
+                                    >
+                                    </p> 
+                                    <PreviewSecton
+                                      category = {editingPanel.type} 
+                                      id = {editingPanel.id} 
+                                    />
                                 </div>
                               }
                             </div>
-                              {
-                                section.map((item, index) => {
-                                  return(
-                                    <Row
-                                      key = {index}
-                                      className = 'editing-page'
-                                      onClick = {() => { setClicked(item)}
-                                      }
-                                    >
-                                      <div className='quill-container'>
-                                        {
-                                          content[index].data.map((value, index) => {
-                                            switch(value.type){
-                                              case "edit":
-                                                return <ReactQuill 
-                                                          theme="snow" 
-                                                          value={value.value}
-                                                          onChange={(value) => 
-                                                            handleEditorChange(item, index, value)}
-                                                          key = {index}
-                                                        />
-                                              case "gallery":
-                                                return <ImageUpload 
-                                                          key = {index}
-                                                          index = {"image" + item + index}
-                                                        />
-                                              case "attach":
-                                                return <FileUpload
-                                                          key = {index}
-                                                          index = {"attach" + item + index}
-                                                          />
-                                              case "cursor":
-                                                return <ButtonText
-                                                            key={index}
-                                                            />
-                                            }
-                                          })
-                                        }
-                                      </div>
-                                      {
-                                        clicked === item 
-                                          ? 
-                                          <Toolbar
-                                            id = {item}
-                                            setContentValueCallback = {setContentValue}
-                                          /> 
-                                          : ""
-                                      }
-                                    </Row>
-                                  )
-                                })
-                              }
-                              <br />
-                              <br />
-                              <br />
-                              <Row className='add-section-btn'>
-                                <Button 
-                                  type='default' 
-                                  size='large'
-                                  onClick={ () => {
-                                    let id = uuidv6();
-                                    setSection([...section, id]);
-                                    let tempObj = {
-                                      id: id,
-                                      data: []
-                                    }
-                                    setContent([...content, tempObj])
-                                  }}
-                                >
-                                  <PlusOutlined />
-                                  Add Section
-                                </Button>
-                              </Row>
+                              
                             </div>
                           </div>
                         </div>

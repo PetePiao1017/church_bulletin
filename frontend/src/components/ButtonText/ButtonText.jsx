@@ -1,51 +1,73 @@
 import React, { useState } from "react";
 import './ButtonText.scss'
 
-const ButtonText = () => {
+const ButtonText = (props) => {
 
     const [visible, setVisible] = useState(false);
+
+    const [bordervisible, setBordervisible] = useState(true);
 
     const [placeholdervisible, setPlaceholderVisible] = useState(true);
 
     const [value, setValue] = useState("");
 
-    console.log(visible)
 
     const onChange = (e) => {
-        setValue(e.target.value)
+        if(!e.target.value) setPlaceholderVisible(true)
+        setValue(e.target.value);
+        props.buttonEditerCallback(e.target.value, props.id)
     }
     const showInput = () => {
-        console.log("OK")
         setVisible(true);
     }
 
+    const lostFocus = () => {
+        if(!value) setPlaceholderVisible(true)
+    }
 
+    const showCursor = () => {
+        document.getElementById(`${props.index}`).focus()
+    }
     return(
         <div 
-            className="buttontext"
-            onMouseDown={() => showInput()}
+            className="buttontext-container"
+            onFocus={() => setBordervisible(true)}
+            onBlur={() => setBordervisible(false)}
+            style={{
+                border: !bordervisible ? "none": "1px solid #57b0fb"
+                
+            }}
         >
-            {
-                visible ? 
-                    <input 
-                        type = "text" 
-                        className="input-box"
-                        value = {value}
-                        onChange={onChange}
-                        name = "button-text"
-                        placeholder="abcdef"
-                        onFocus={() => {setPlaceholderVisible(false); showInput()}}
-                    />
+            <div 
+                className="buttontext"
+                onMouseDown={() => showInput()}
+            >
+                {
+                    visible ? 
+                        <input
+                            id = {props.index}
+                            type = "text" 
+                            className="input-box"
+                            value = {value}
+                            onChange={onChange}
+                            name = "button-text"
+                            onFocus={() => {setPlaceholderVisible(false); showInput()}}
+                            onBlur = {() => lostFocus()}
+                        />
+                        : ""
+                }
+                {
+                    placeholdervisible ? 
+                    <p 
+                        className="placeholder"
+                        onClick={() => showCursor()}    
+                    >
+                        Button Text
+                    </p>
                     : ""
-            }
-            {
-                placeholdervisible ? 
-                <p className="placeholder">
-                    Button Text
-                </p>
-                : ""
-            }
-            
+                }
+                
+            </div>
         </div>
     )
 }

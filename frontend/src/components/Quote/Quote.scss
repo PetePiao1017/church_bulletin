@@ -1,0 +1,53 @@
+.quote-container{
+    border: 1px solid #57b0fb;
+    border-radius: 5px;
+    padding: 20px;
+    display: block;
+    height: 50px;
+    position: relative;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    .quote-text{
+        border: none;
+        font-size: 20px;
+        float: left;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .quote-text:focus{
+        outline: none;
+    }
+    .quote-text::placeholder{
+        font-style: italic;
+    }
+    .quote-person{
+        font-size: 20px;
+        width: 30%;
+        border: none;
+        float: right;
+    }
+    .quote-person:focus{
+        outline: none;
+    }
+    .quote-person::placeholder{
+        font-style: italic;
+    }
+    .delete-icon{
+        position: absolute;
+        top: -12%;
+        right: 5%;
+        cursor: pointer;
+        color: rgb(223, 58, 58);
+        font-size: 25px;
+    }
+    .delete-icon:hover{
+        color: wheat;
+    }
+    .drag-icon{
+        position: absolute;
+        top: -12%;
+        right: 12%;
+        cursor: pointer;
+        font-size: 25px;
+    }
+}

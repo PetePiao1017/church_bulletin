@@ -2,7 +2,6 @@ import {
     HEADER_TITLE,
     HEADER_DATE,
     HEADER_DELETE_IMAGE_URL,
-    GET_BULLETIN,
     CLEAR_REDUX_STORE,
     RETRIEVE_DATA,
 
@@ -60,7 +59,12 @@ import {
     WEBSITE_TYPE,
     HEADER_IMAGE_URL,
 
-    CREATE_NEW_BULLETIN
+    CREATE_NEW_BULLETIN,
+
+    SET_TODO_LIST,
+    SET_DETAILED_TODO_LIST,
+    SET_SECTION_BUTTON_TEXT,
+    SET_SECTION_IMAGE_UPLOAD,
 } from './types';
 
 import axios from 'axios';
@@ -72,6 +76,22 @@ const uploadApi = axios.create({
       'Content-Type': 'multipart/form-data',
     }
 });
+
+// Todo list for section
+export const setTodoList = (data) => async (dispatch) => {
+    dispatch({
+        type: SET_TODO_LIST,
+        payload: data
+    })
+}
+
+// Todo list for detailed element section
+export const setDetailedTodoList = (id,data) => async (dispatch) => {
+    dispatch({
+        type: SET_DETAILED_TODO_LIST,
+        payload: {id, data}
+    })
+}
 
 // GET BULLETIN
 export const getBulletins = (userid) =>  async (dispatch) => {
@@ -95,6 +115,28 @@ export const sendDataToBack = (bulletins, localbulletins) => async (dispatch) =>
     let result = await api.post('/bulletins', {bulletins, localbulletins});
     if(result.data === "OK"){
         alert("Success");
+    }
+}
+
+// SET SECTION IMAGE
+export const setSectionImageUpload = (id, sectionId, file, fileType) => async (dispatch) => {
+    let formData = new FormData();
+    if(fileType === "image"){
+        formData.append("file", file);
+        let imageUrl = (await uploadApi.post('/upload', formData)).data;
+        dispatch({
+            type: SET_SECTION_IMAGE_UPLOAD,
+            payload: {id, sectionId, imageUrl, fileType}
+        })
+    }
+    else{
+        formData.append("file", file);
+        let returnUrl = (await uploadApi.post('/upload', formData)).data;
+        dispatch({
+            type: SET_SECTION_IMAGE_UPLOAD,
+            payload: {id, sectionId, returnUrl, fileType}
+
+        })
     }
 }
 

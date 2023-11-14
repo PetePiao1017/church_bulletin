@@ -1,30 +1,36 @@
 import React, { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import {connect} from 'react-redux';
+import { isEmpty } from "lodash";
+import { v4 as uuidv6 } from 'uuid';
+import { Toolbar } from '../../components';
+
 
 import { RightOutlined } from "@ant-design/icons";
 import * as S from "./Styles";
-import "./Bulletins.scss"
+import "./Bulletins.css"
+import AddSectionList from "../AddSectionList/AddSectionList";
+
+import { setTodoList } from "../../actions/bulletins";
 
 
 const BulletIns = (props) => {
 
-    const [todoList, setTodoList] = useState([{}]);
+    const [clicked, setClicked] = useState("");
+
+
     useEffect(() => {
-        setTodoList(props.bulletins.map((item) => {
-            return {
-                id: Math.random().toString(),
-                content: item
-            }
-        }))
-    },[props.bulletins])
+      if( !isEmpty(props.bulletInOneItem) ) props.setTodoList([...props.todoList, props.bulletInOneItem]);
+    },[props.bulletInOneItem])
+
 
     const handleGetListWithSetter = (listName) => {
         switch (listName) {
           case "todoList":
-            return { list: todoList, setList: setTodoList };
+            return { list: props.todoList, setList: props.setTodoList };
         }
     };
+
 
     const handleOnDragEnd = (result) => {
         const { source, destination } = result;
@@ -71,7 +77,6 @@ const BulletIns = (props) => {
         const listClone = Array.from(list);
         const [removed] = listClone.splice(sourceIndex, 1);
         listClone.splice(destinationIndex, 0, removed);
-    
         return listClone;
     };
     
@@ -179,10 +184,72 @@ const BulletIns = (props) => {
       }
     }
 
+    const setSectionData = (id, type) => {
+      let index = props.todoList.findIndex(item => item.id === id);
+      let updatedValue = {
+        id: uuidv6(),
+        type,
+        value: null,
+      }
+      const tempData = {
+        id,
+        type: "Add Section",
+        data: [...props.todoList[index].data, updatedValue]
+      }
+
+      props.setTodoList([
+        ...props.todoList.slice(0, index),
+        tempData,
+        ...props.todoList.slice(index + 1)]
+      )
+    }
+    
     const createDraggable = (list) => {
-        return list.map((item, index) => {
-            return (
-            <Draggable 
+      return list.map((item, index) => {
+        if(item.type === "Add Section"){
+          return(
+            <Draggable
+                key={item.id} 
+                draggableId={item.id} 
+                index={index}
+            >
+                {(provided, snapshot) => (
+                    <div
+                        {...provided.draggableProps}
+                        ref={provided.innerRef}
+                        {...provided.dragHandleProps}
+                        style={
+                            getItemStyle(
+                            snapshot.isDragging,
+                            provided.draggableProps.style
+                            )
+                        }
+                    >
+                    <div className="editing-page" onClick = {() => setClicked(item.id)}>
+                      <div className='quill-container'>
+                        <AddSectionList
+                          sectionId = {item.id}
+                          item = {item}
+                        />
+                      </div>
+                      {
+                        clicked === item.id && props.toolbarvisible
+                          ? 
+                          <Toolbar
+                            id = {item.id}
+                            setContentValueToolbarCallback = {setSectionData}
+                          /> 
+                          : ""
+                      }
+                    </div>
+                    </div>
+                )}
+            </Draggable>
+        )
+        }
+        else{
+          return (
+            <Draggable
                 key={item.id} 
                 draggableId={item.id} 
                 index={index}
@@ -208,10 +275,9 @@ const BulletIns = (props) => {
                           justifyContent:"space-between",
                           backgroundColor: "rgb(247, 250, 252)",
                         }}
-                        
                     >
                         <p>{
-                          item.content === undefined ? " " : showTitle(item.content.type, item.content.id)
+                          showTitle(item.type, item.id)
                         }</p>
                         <RightOutlined />
                     </div>
@@ -219,14 +285,15 @@ const BulletIns = (props) => {
                 )}
             </Draggable>
             );
-        });
-    };
+        }
+      })
+    }
 
     
     return (
         <S.ListWrapper>
           <DragDropContext onDragEnd={handleOnDragEnd}>
-            {createDroppable("todoList", todoList)}
+            {createDroppable("todoList", props.todoList)}
           </DragDropContext>
         </S.ListWrapper>
     );
@@ -243,6 +310,7 @@ const mapStateToProps = (state) => ({
   prayer_title: state.builletins.prayer_Title,
   video_title: state.builletins.video_Title,
   website_title: state.builletins.website_Title,
+  todoList: state.builletins.todoList,
 })
 
-export default connect(mapStateToProps)(BulletIns)
+export default connect(mapStateToProps, {setTodoList})(BulletIns)

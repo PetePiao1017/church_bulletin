@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import {connect} from 'react-redux';
+import { setSectionImageUpload } from '../../actions/bulletins';
 import './ImageUpload.scss'
-
 
 function getImageDimensions(base64Image) {
     return new Promise((resolve, reject) => {
@@ -20,16 +21,17 @@ function getImageDimensions(base64Image) {
     });
 }
 
-function ImageUpload({index}) {
-  const [selectedFile, setSelectedFile] = useState(null);
+function ImageUpload(props) {
   const [preview, setPreview] = useState(null);
   const [height, setHeight] = useState(0)
 
   const onSelectFile = (e) => {
     const file = e.target.files[0];
-    setSelectedFile(file);
+    
+    
 
     if (file) {
+      props.setSectionImageUpload(props.id, props.sectionId, file, "image");
       const reader = new FileReader();
       reader.onload = (event) => {
         setPreview(event.target.result);
@@ -48,12 +50,12 @@ function ImageUpload({index}) {
   return (
     <div style={{ marginTop: '20px', marginBottom: '20px' }}>
       <label 
-        htmlFor={`file-upload${index}`}
+        htmlFor={`file-upload${props.index}`}
         className="custom-file-upload"
         style={{
           height:height === 0 ? "200px" :height
         }}
-        id = {`${index}`}
+        id = {`${props.index}`}
         >
         {!preview ? (
           <div
@@ -68,10 +70,10 @@ function ImageUpload({index}) {
         ) : (
           <img src={preview} alt="Preview" style={{ width: '100%', height: 'auto' }} />
         )}
-        <input type="file" onChange={(e) => onSelectFile(e)} id={`file-upload${index}`} style={{ display: 'none' }} />
+        <input type="file" onChange={(e) => onSelectFile(e)} id={`file-upload${props.index}`} style={{ display: 'none' }} />
       </label>
     </div>
   );
 }
 
-export default ImageUpload;
+export default connect(null, {setSectionImageUpload})(ImageUpload);

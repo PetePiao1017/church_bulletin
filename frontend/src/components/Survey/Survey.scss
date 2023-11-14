@@ -1,0 +1,60 @@
+.survey-container{
+    border: 1px solid #57b0fb;
+    border-radius: 5px;
+    padding: 5px;
+    position: relative;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    .survey{
+        border: 1px solid grey;
+        padding: 5px;
+        .title{
+            width: 95%;
+            font-size: 20px;
+            border: none;
+        }
+        .title:focus{
+            outline: none;
+        }
+        .answer{
+            display: flex;
+            flex-direction: column;
+            .radio-group{
+                float: left;
+                margin-left: 10px;
+                .one-survey{
+                    .answer-text{
+                        width: 90%;
+                        border: none;
+                    }
+                    .answer-text:focus{
+                        outline: none;
+                    }
+                }
+            }
+        }
+    }
+    .delete-icon{
+        position: absolute;
+        top: -12%;
+        right: 5%;
+        cursor: pointer;
+        color: rgb(223, 58, 58);
+        font-size: 25px;
+    }
+    .delete-icon:hover{
+        color: wheat;
+    }
+    .drag-icon{
+        position: absolute;
+        top: -12%;
+        right: 12%;
+        cursor: pointer;
+        font-size: 25px;
+    }
+}
+
+// .ant-radio-group{
+//     float: left;
+//     margin-top: 15px;
+// }

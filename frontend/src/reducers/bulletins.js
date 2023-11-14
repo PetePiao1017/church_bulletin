@@ -57,6 +57,9 @@ import {
     ONLINE_LINK,
     WEBSITE_EMBED_CODE,
     HEADER_TITLE,
+    SET_TODO_LIST,
+    SET_DETAILED_TODO_LIST,
+    SET_SECTION_IMAGE_UPLOAD,
 
   } from "../actions/types";
 
@@ -116,6 +119,8 @@ const initialState = {
     video_bodyText: [],
     video_Platform: [],
     video_Link: [],
+
+    todoList: [],
 
 };
 
@@ -504,7 +509,75 @@ function bulletinsReducer (state = initialState, action) {
                 }
               }
             };
-// Order Of Service
+
+        case SET_TODO_LIST:
+          return{
+            ...state,
+            todoList: payload,
+          }
+
+        case SET_DETAILED_TODO_LIST:
+          let {id, data} = payload;
+          let index = state.todoList.findIndex(item => item.id === id);
+          let updatedValue = {
+            id,
+            type: "Add Section",
+            data,
+          }
+          let updatedArray = [...state.todoList.slice(0, index), updatedValue, ...state.todoList.slice(index + 1)];
+          return{
+            ...state,
+            todoList: updatedArray
+          }
+        case SET_SECTION_IMAGE_UPLOAD:
+          let section_index = state.todoList.findIndex(item => item.id === payload.sectionId);
+          console.log("~~~", section_index)
+          let image_index = state.todoList[section_index].data.findIndex(item => item.id === payload.id);
+          if (payload.fileType === "image"){
+            let updated_imagedata = {
+              id: payload.id,
+              type: "gallery",
+              value: payload.imageUrl,
+            }
+            let updatedSectionArray = [...state.todoList[section_index].data.slice(0, image_index), updated_imagedata, ...state.todoList[section_index].data.slice(image_index + 1)];
+
+            let image_updatedValue = {
+              id: payload.sectionId,
+              type: "Add Section",
+              data: updatedSectionArray
+            }
+  
+            let finalUpdateArray = [...state.todoList.slice(0, section_index), image_updatedValue, ...state.todoList.slice(section_index + 1)];
+            return {
+              ...state,
+              todoList: finalUpdateArray
+            }
+          }
+          
+          else{
+            let updated_imagedata = {
+              id: payload.id,
+              type: "attach",
+              value: payload.returnUrl,
+            }
+            let updatedSectionArray = [...state.todoList[section_index].data.slice(0, image_index), updated_imagedata, ...state.todoList[section_index].data.slice(image_index + 1)];
+
+            let image_updatedValue = {
+              id: payload.sectionId,
+              type: "Add Section",
+              data: updatedSectionArray
+            }
+  
+            let finalUpdateArray = [...state.todoList.slice(0, section_index), image_updatedValue, ...state.todoList.slice(section_index + 1)];
+            return {
+              ...state,
+              todoList: finalUpdateArray
+            }
+          }
+          
+
+          
+        // Order Of Service
         case ORDEROFSERVICE_TITLE:
           if(payload){
             let index = state.orderofservice_Title.findIndex(item => item.id == payload.id);
