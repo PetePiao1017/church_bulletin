@@ -1,39 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button,  Form, Input, Radio,message} from 'antd';
 import {connect} from 'react-redux';
 
-import {
-    setWebsiteTitle,
-    setWebsiteType,
-    setWebsiteLink,
-    setEmbedCode
-} from '../../../actions/bulletins';
+import {setSmallSectionData,} from '../../../actions/bulletins';
 
 const Websiteediting = (props) => {
     let title,link, embed_code;
+    const [type, setType] = useState("Website");
     const onStateChange = (e) => {
-        let tempObj = {
-            id: props.id,
-            str: e.target.value
-        }
         switch(e.target.name) {
             case "title":
                 title += e.target.value;
-                props.setWebsiteTitle(tempObj);
+                props.setSmallSectionData(props.id, "Website", "title", e.target.value);
                 break
             case "link":
                 link += e.target.value;
-                props.setWebsiteLink(tempObj);
+                props.setSmallSectionData(props.id, "Website", "link", e.target.value);
                 break
             case "embed_code":
                 embed_code += e.target.value;
-                props.setEmbedCode(tempObj);
+                props.setSmallSectionData(props.id, "Website", "embed_code", e.target.value);
                 break
         }
     }
 
     const onRadioChange = (e) => {
-        props.setWebsiteType(e.target.value);
+        props.setSmallSectionData(props.id, "Website", "websiteType", e.target.value);
     }
 
 
@@ -56,7 +48,7 @@ const Websiteediting = (props) => {
                     </Radio.Group>
                 </Form.Item>
                 {
-                    props.type === "Website"
+                    type === "Website"
                     ?
                         <Form.Item label = "Website Link">
                             <Input type = "text" name="link" value={link} onChange={onStateChange} placeholder="yourwebsite.com" />
@@ -81,15 +73,7 @@ const Websiteediting = (props) => {
     )
 }
 
-const mapStateToProps = (state) => ({
-    title: state.builletins.Website_Title,
-    type: state.builletins.website_Type,
-    link: state.builletins.website_Link
-})
 
-export default connect(mapStateToProps,{
-    setWebsiteTitle,
-    setWebsiteType,
-    setWebsiteLink,
-    setEmbedCode,
+export default connect(null,{
+    setSmallSectionData,
 }) (Websiteediting)

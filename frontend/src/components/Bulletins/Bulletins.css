@@ -33,3 +33,13 @@
 .sc-hKFymg{
     width: 100%!important;
 }
+.delete-icon{
+    cursor: pointer;
+    color: rgb(223, 58, 58);
+    font-size: 20px;
+}
+.delete-icon:hover{
+    cursor: pointer;
+    color: rgb(223, 150, 150);
+    font-size: 20px;
+}

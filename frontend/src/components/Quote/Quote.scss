@@ -34,20 +34,13 @@
     }
     .delete-icon{
         position: absolute;
-        top: -12%;
-        right: 5%;
+        top: -1%;
+        right: 2%;
         cursor: pointer;
         color: rgb(223, 58, 58);
         font-size: 25px;
     }
     .delete-icon:hover{
         color: wheat;
-    }
-    .drag-icon{
-        position: absolute;
-        top: -12%;
-        right: 12%;
-        cursor: pointer;
-        font-size: 25px;
     }
 }

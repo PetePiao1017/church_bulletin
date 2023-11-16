@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {connect} from 'react-redux';
+import { DeleteFilled } from '@ant-design/icons';
 
 import './FileUpload.scss';
 import { setSectionImageUpload } from '../../actions/bulletins';
@@ -23,7 +24,7 @@ function FileUpload(props) {
   };
 
   return (
-    <div style={{ marginTop: '20px', marginBottom: '20px' }}>
+    <div style={{ marginTop: '20px', marginBottom: '20px', border: "1px solid #57b0fb", padding:"5px", position: "relative"}}>
       <label 
         htmlFor={`file-upload${props.index}`}
         className="file-upload"
@@ -44,6 +45,12 @@ function FileUpload(props) {
           </h3>
         </div>
         <input type="file" onChange={(e) => onSelectFile(e)} id={`file-upload${props.index}`} style={{ display: 'none' }} />
+        <div style={{display: "inline"}}>
+            <DeleteFilled 
+              className="delete-icon-file" 
+              onClick={() => props.deleteItemCallback(props.id)}
+            />
+        </div>
       </label>
     </div>
   );

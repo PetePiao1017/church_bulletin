@@ -38,35 +38,36 @@ const Upcoming = (props) => {
     }
 
     useEffect(() => {
-        const todayObj = {
-            header_date: convertDate(),
-            header_title: "",
-            header_imageurl: "",
-            usre_id: 'today',
-            _id: '',
-            list_category: null
-        }
-        let temp = props.data;
+        console.log("abcd")
+        // const todayObj = {
+        //     header_date: convertDate(),
+        //     header_title: "",
+        //     header_imageurl: "",
+        //     usre_id: 'today',
+        //     _id: '',
+        //     list_category: null
+        // }
+        // let temp = props.data;
 
-        let index = temp.findIndex(item => item.header_date === convertDate());
+        // let index = temp.findIndex(item => item.header_date === convertDate());
 
-        if(index !== -1) setActive(temp[index])
+        // if(index !== -1) setActive(temp[index])
 
-        temp.push(todayObj);
+        // temp.push(todayObj);
 
-        temp.sort((a,b) => {
-            const dateA = new Date(a.header_date);
-            const dateB = new Date(b.header_date);
+        // temp.sort((a,b) => {
+        //     const dateA = new Date(a.header_date);
+        //     const dateB = new Date(b.header_date);
 
-            return dateA - dateB; 
-        });
+        //     return dateA - dateB; 
+        // });
 
         
-        let todayIndex = temp.findIndex(item => item.usre_id === "today");
+        // let todayIndex = temp.findIndex(item => item.usre_id === "today");
 
-        setUpcoming(temp.slice(todayIndex+1,temp.length));
+        // setUpcoming(temp.slice(todayIndex+1,temp.length));
 
-        setPast(temp.slice(0, todayIndex - 1));
+        // setPast(temp.slice(0, todayIndex - 1));
 
 
     },[props.data])
@@ -119,7 +120,7 @@ const Upcoming = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-    data: state.retrieved.retrieved_data
+    data: state.builletins.retrieve
 })
 
 export default connect(mapStateToProps)(Upcoming);

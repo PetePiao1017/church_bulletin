@@ -2,6 +2,7 @@
     border-radius: 5px;
     padding: 2px;
     margin-bottom: 10px;
+    position: relative;
     .calendar{
         .month{
             background:rgb(209, 45, 45);
@@ -57,5 +58,17 @@
                 justify-content: space-around;
             }
         }
+    }
+    .delete-icon-event{
+        position: absolute;
+        top: 0%;
+        right: 1%;
+        cursor: pointer;
+        color: rgb(223, 58, 58);
+        font-size: 25px;
+    }
+    .delete-icon-event:hover{
+        color: wheat;
+        font-size: 25px;
     }
 }

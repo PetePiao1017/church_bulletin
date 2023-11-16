@@ -3,70 +3,89 @@ import './Orderofservicepreview.scss';
 import { connect } from "react-redux";
 
 const Orderofservicepreview = (props) => {
-    let title = props.title.filter((item) => item.id === props.id);
-    let orderofservice_Topic_Title = props.orderofservice_Topic_Title.filter((item) => item.id === props.id);
-    console.log(orderofservice_Topic_Title)
-    let orderofservice_Topic_Content = props.orderofservice_Topic_Content.filter(item => item.id === props.id);
-    let imageurl = props.imageurl.filter(item => item.id === props.id);
+    
+    const [title, setTitle] = useState("");
+    const [topic_title, setTopicTitle] = useState([]);
+    const [topic_content, setTopicContent] = useState([]);
+    const [imageUrl, setImageUrl] = useState("");
+
+    useEffect(() => {
+        let index = props.todoList.findIndex(item => item.id === props.id);
+
+        if(index !== -1){
+            let title_index = props.todoList[index].data.findIndex(item => item.dataType === "title");
+            let topic_title_index = props.todoList[index].data.findIndex(item => item.dataType === "topic_title");
+            let topic_content_index = props.todoList[index].data.findIndex(item => item.dataType === "topic_content");
+            let imageUrl_index = props.todoList[index].data.findIndex(item => item.dataType === "imageUrl");
+
+            if(title_index !== -1) setTitle(props.todoList[index].data[title_index].value);
+            if(topic_title_index !== -1) setTopicTitle(props.todoList[index].data[topic_title_index].value);
+            if(topic_content_index !== -1) setTopicContent(props.todoList[index].data[topic_content_index].value);
+            if(imageUrl_index !== -1) setImageUrl(props.todoList[index].data[imageUrl_index].value);
+        }
+    },[props.todoList]);
+
     return(
-            <div className='scroll-bar' style={{margin:"0"}} >
-                <h3 className='app-header' style={{marginTop:"0"}}>
-                    {title.length === 0 ? "Order Of Service" : title[0].str}
+            <div className='scroll-bar'>
+                <br />
+                <br />
+                <br />
+                <h3 className='app-header'>
+                    {title === "" ? "Order Of Service" : title}
                 </h3>
                 <div className='app-image'>
                     
                 {
-                    imageurl.length === 0
-                    ? <img src = "./gallery.png"  style={{width:"50px"}} alt = "Gallery Image" />
-                    : <img src = {imageurl[0].str} alt = "preview" style = {{width : "100%", height:"100%"}} />
+                    imageUrl === 0
+                    ? <img src = "./gallery.png"  alt = "Gallery Image" />
+                    : <img src = {imageUrl} alt = "preview" style = {{width : "100%", height:"100%"}} />
                 }
                    
                 </div>
                 <div className="service-topic">
-                    <h3 className={orderofservice_Topic_Title.length === 0 ? "topic-header" :"topic-header-active"}>
+                    <h3 className={topic_title.length === 0 ? "topic-header" :"topic-header-active"}>
                         {
-                        orderofservice_Topic_Title.length === 0 ? "Service Topics 101" : orderofservice_Topic_Title[0].str[0]
+                        topic_title.length === 0 ? "Service Topics 101" : topic_title[0]
                         }
                     </h3>
-                    <p className={orderofservice_Topic_Content.length === 0 ? "topic-content" : "topic-content-active"}>
+                    <p className={topic_content.length === 0 ? "topic-content" : "topic-content-active"}>
                         {
-                        orderofservice_Topic_Content.length === 0 ? "Add edit and delete your service topics using the panel on the left Add edit and delete your service topics using the panel on the left"
-                        : orderofservice_Topic_Content[0].str[0]
+                        topic_content.length === 0 ? "Add edit and delete your service topics using the panel on the left Add edit and delete your service topics using the panel on the left"
+                        : topic_content[0]
                         }
                     </p>
                 </div>
                 <div className="service-topic">
-                    <h3 className={orderofservice_Topic_Title.length === 0 ? "topic-header" :"topic-header-active"}>
+                    <h3 className={topic_title.length === 0 ? "topic-header" :"topic-header-active"}>
                         {
-                        orderofservice_Topic_Title.length === 0 ? "Keep Everyone in loop" : orderofservice_Topic_Title[0].str[1]
+                        topic_title.length === 0 ? "Keep Everyone in loop" : topic_title[1]
                         }
                     </h3>
-                    <p className={orderofservice_Topic_Content.length === 0 ? "topic-content" : "topic-content-active"}>
+                    <p className={topic_content.length === 0 ? "topic-content" : "topic-content-active"}>
                         {
-                        orderofservice_Topic_Content.length === 0 ? "Add edit and delete your service topics using the panel on the left Add edit and delete your service topics using the panel on the left"
-                        : orderofservice_Topic_Content[0].str[1]
+                        topic_content.length === 0 ? "Add edit and delete your service topics using the panel on the left Add edit and delete your service topics using the panel on the left"
+                        : topic_content[1]
                         }
                     </p>
                 </div>
                 
                 {
-                    orderofservice_Topic_Title.length !== 0 ?
-                    orderofservice_Topic_Title[0].str.map((item, index) => {
+                    topic_title.length !== 0 ?
+                    topic_title.map((item, index) => {
                         if(index >= 2){
-                            console.log(orderofservice_Topic_Content)
                             return (
                                 <div className="service-topic">
                                     <h3 className="topic-header-active">
                                         {item}
                                     </h3>
                                     {
-                                        orderofservice_Topic_Content.length === 0 ? ""
+                                        topic_content.length === 0 ? ""
                                         :
                                         
                                         <p className="topic-content-active">
                                             {
-                                                orderofservice_Topic_Content[0].str.length >=2 
-                                                ? orderofservice_Topic_Content[0].str[index]
+                                                topic_content.length >=2 
+                                                ? topic_content[index]
                                                 : ""
                                             }
                                         </p>
@@ -84,10 +103,7 @@ const Orderofservicepreview = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-    title: state.builletins.orderofservice_Title,
-    orderofservice_Topic_Title: state.builletins.orderofservice_Topic_Title,
-    orderofservice_Topic_Content: state.builletins.orderofservice_Topic_Content,
-    imageurl: state.builletins.orderofservice_imageurl,
+    todoList: state.builletins.todoList
 })
 
 export default connect(mapStateToProps)(Orderofservicepreview)

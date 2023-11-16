@@ -3,7 +3,6 @@ import {Form, Input, Button, notification} from 'antd';
 import { useNavigate } from "react-router-dom";
 import {connect} from 'react-redux';
 import { register } from '../../actions/auth';
-import { setAlert } from '../../actions/alert';
 import './Signup.scss';
 
 const Signup = (props) => {
@@ -205,4 +204,4 @@ const mapStateToProps = (state) => ({
 });
   
 
-export default connect(mapStateToProps, {setAlert, register} )(Signup)
+export default connect(mapStateToProps, {register} )(Signup)

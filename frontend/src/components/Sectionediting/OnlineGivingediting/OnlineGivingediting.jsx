@@ -1,40 +1,31 @@
-import React,{useState} from "react";
-import { Button,  Form, Input, message, Select} from 'antd';
+import React from "react";
+import { Button,  Form, Input,Select} from 'antd';
 import {connect} from 'react-redux';
 
-import {
-    setOnlineTitle,
-    setOnlineBodyText,
-    setOnlineType,
-    setOnlineLink
-} from '../../../actions/bulletins';
+import { setSmallSectionData } from '../../../actions/bulletins';
 
 const OnlineGivingediting = (props) => {
    
     let title, bodyText, link;
     const onStateChange = (e) => {
-        let tempObj = {
-            id: props.id,
-            str: e.target.value
-        }
         switch(e.target.name) {
             case "title":
                 title += e.target.value;
-                props.setOnlineTitle(tempObj);
+                props.setSmallSectionData(props.id, "Online Giving", "title", e.target.value);
                 break
             case "bodyText":
                 bodyText += e.target.value;
-                props.setOnlineBodyText(tempObj);
+                props.setSmallSectionData(props.id, "Online Giving", "bodyText", e.target.value);
                 break
             case "link":
                 link += e.target.value;
-                props.setOnlineLink(tempObj);
+                props.setSmallSectionData(props.id, "Online Giving", "link", e.target.value);
                 break
         }
     }
 
     const onSelectChange = (value) =>{
-        props.setOnlineType(value);
+        props.setSmallSectionData(props.id, "Online Giving", "onlineType", value);
     }
 
 
@@ -95,16 +86,4 @@ const OnlineGivingediting = (props) => {
     )
 }
 
-const mapStateToProps = (state) => ({
-    title: state.builletins.Online_Title,
-    bodyText: state.builletins.online_bodyText,
-    type: state.builletins.online_Type,
-    link: state.builletins.online_Link
-})
-
-export default connect(mapStateToProps, {
-    setOnlineTitle,
-    setOnlineBodyText,
-    setOnlineType,
-    setOnlineLink
-})(OnlineGivingediting)
+export default connect(null, {setSmallSectionData })(OnlineGivingediting)

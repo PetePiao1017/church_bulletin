@@ -19,7 +19,7 @@ const Quote = (props) => {
         <div 
             className="quote-container"
             onFocus={() => setVisible(true)}
-            // onMouseLeave={() => setVisible(false)}
+            onBlur={() => setVisible(false)}
         >
             <input 
                 type = "text"
@@ -37,8 +37,10 @@ const Quote = (props) => {
             />
             {visible ?
                 <div style={{display: "inline"}}>
-                    <DragOutlined className="drag-icon"/>
-                    <DeleteFilled className="delete-icon" />
+                    <DeleteFilled 
+                        className="delete-icon" 
+                        onClick={() => props.deleteItemCallback(props.id)}
+                    />
                 </div>
             : ""}
         </div>

@@ -1,19 +1,11 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 import {connect} from 'react-redux';
-import axios  from "axios";
 import { PlusOutlined } from "@ant-design/icons";
 import './CustomUpload.scss';
 import { Button } from "antd";
-import { setAnnouncementImageUrl, 
-        setAnnouncementDeleteImageUrl,
-        setHeaderImageurl, 
-        setHeaderDeleteImageurl,
-        setOrderOfServiceImageurl,
-        setOrderOfServiceDeleteImageurl,
-        setEventImageUrl,
-        setEventDeleteImageUrl,
-        setConnectCardImageurl,
-        setConnectCardDeleteImageUrl,
+import { setImageUrl,
+        setDeleteImageUrl,
+        setSmallSectionData,
     } from "../../actions/bulletins";
 
 
@@ -21,7 +13,6 @@ const CustomUpload = (props) => {
 
     const [selectedFile, setSelectedFile] = useState()
     const [preview, setPreview] = useState()
-    let index;
 
 
     const onSelectFile = e => {
@@ -38,15 +29,15 @@ const CustomUpload = (props) => {
                 props.setHeaderImageurl(e.target.files[0]);
                 break
             case "Announcement":
-                props.setAnnouncementImageUrl(e.target.files[0], props.id);
+                props.setImageUrl(e.target.files[0], props.id, "Announcement", "imageUrl");
                 break
             case "OrderofService":
-                props.setOrderOfServiceImageurl(e.target.files[0], props.id);
+                props.setImageUrl(e.target.files[0], props.id, "Order Of Service", "imageUrl");
                 break
             case "Event":
-                props.setEventImageUrl(e.target.files[0], props.id);
+                props.setImageUrl(e.target.files[0], props.id, "Event", "imageUrl");
             case "Connect Card":
-                props.setConnectCardImageurl(e.target.files[0], props.id);
+                props.setImageUrl(e.target.files[0], props.id, "Connect Card", "imageUrl");
             default:
                 break
 
@@ -55,25 +46,25 @@ const CustomUpload = (props) => {
     }
 
     const onChangeImage = () => {
+        let index = props.todoList.findIndex(item => item.id === props.id);
+        let image_index = props.todoList[index].data.findIndex(item => item.dataType === "imageUrl");
+        let imageUrl = props.todoList[index].data[image_index];
+
         switch(props.type){
             case "Announcement":
-                index = props.announcement_imageurl.findIndex(item => item.id === props.id);
-                props.setAnnouncementDeleteImageUrl(props.announcement_imageurl[index], props.id);
+                props.setDeleteImageUrl(props.id, "Announcement", "imageUrl", imageUrl);
                 break
             case "Headerediting":
                 props.setHeaderDeleteImageurl("", props.header_imageurl);
                 break
             case "OrderofService":
-                index = props.orderofservice_imageurl.findIndex(item => item.id === props.id);
-                props.setOrderOfServiceDeleteImageurl(props.orderofservice_imageurl[index], props.id);
+                props.setDeleteImageUrl(props.id, "Order Of Service", "imageUrl", imageUrl);
                 break
             case "Event":
-                index = props.event_imageurl.findIndex(item => item.id === props.id);
-                props.setEventDeleteImageUrl(props.event_imageurl[index], props.id);
+                props.setDeleteImageUrl(props.id, "Event", "imageUrl", imageUrl);
                 break
             case "Connect Card":
-                index = props.connectcard_imageurl.findIndex(item => item.id === props.id);
-                props.setConnectCardDeleteImageUrl(props.connectcard_imageurl[index], props.id);
+                props.setDeleteImageUrl(props.id, "Connect Card", "imageUrl", imageUrl);
                 break
         }
         document.getElementById("file-upload").value = "";
@@ -108,22 +99,11 @@ const CustomUpload = (props) => {
 
 
 const mapStateToProps = (state) => ({
-    header_imageurl: state.builletins.header_imageurl,
-    announcement_imageurl: state.builletins.announcment_imageurl,
-    orderofservice_imageurl: state.builletins.orderofservice_imageurl,
-    event_imageurl: state.builletins.event_imageurl,
-    connectcard_imageurl: state.builletins.connectcard_imageurl,
+    todoList: state.builletins.todoList,
 })
 
 export default connect(mapStateToProps, {
-    setAnnouncementImageUrl, 
-    setAnnouncementDeleteImageUrl,
-    setHeaderDeleteImageurl,
-    setHeaderImageurl,
-    setOrderOfServiceImageurl,
-    setOrderOfServiceDeleteImageurl,
-    setEventImageUrl,
-    setEventDeleteImageUrl,
-    setConnectCardDeleteImageUrl,
-    setConnectCardImageurl,
+    setImageUrl, 
+    setDeleteImageUrl,
+    setSmallSectionData,
 })(CustomUpload)

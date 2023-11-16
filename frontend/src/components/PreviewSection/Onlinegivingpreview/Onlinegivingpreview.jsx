@@ -1,22 +1,43 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {Button} from 'antd'
 import { OnlineGiving } from "../../SVG";
 import { connect } from "react-redux";
 
 
 const Onlinegivingpreview = (props) => {
-    let title = props.title.filter((item) => item.id === props.id);
-    let bodyText = props.online_bodyText.filter((item) => item.id === props.id);
+
+    const [title, setTitle] = useState("");
+    const [bodyText, setBodyText] = useState("");
+    const [online_type, setOnlineType] = useState("Embed");
+
+    useEffect(() => {
+        let index = props.todoList.findIndex(item => item.id === props.id);
+
+        if(index !== -1){
+            let title_index = props.todoList[index].data.findIndex(item => item.dataType === "title");
+            let bodyText_index = props.todoList[index].data.findIndex(item => item.dataType === "bodyText");
+            let online_type_index = props.todoList[index].data.findIndex(item => item.dataType === "onlineType");
+
+            if(title_index !== -1) setTitle(props.todoList[index].data[title_index].value);
+            if(bodyText_index !== -1) setBodyText(props.todoList[index].data[bodyText_index].value);
+            if(online_type_index !== -1) setOnlineType(props.todoList[index].data[online_type_index].value);
+
+        }
+    },[props.todoList]);
+
     return(
         <div className='scroll-bar'>
+            <br />
+            <br />
+            <br />
             <h3 className='app-header'>
-                {title.length === 0 ? "Online Giving" : title[0].str}
+                {title === "" ? "Online Giving" : title}
             </h3>
             <div className="body-text">
-                <p> {bodyText.length === 0 ? "Type into the BODY TEXT field on the left for your text to show up here. Customize your copy with bold, italicized, or underlined text. Tip: Leaving a field blank in Loop will exclude it from your bulletin." : bodyText[0].str}</p>
+                <p> {bodyText === "" ? "Type into the BODY TEXT field on the left for your text to show up here. Customize your copy with bold, italicized, or underlined text. Tip: Leaving a field blank in Loop will exclude it from your bulletin." : bodyText}</p>
             </div>
             {
-                props.online_type == "Embed"
+                online_type == "Embed"
                 ?   <div style={{
                         display:"flex",
                         alignItems:"center",
@@ -35,9 +56,7 @@ const Onlinegivingpreview = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-    title: state.builletins.online_Title,
-    online_bodyText: state.builletins.online_bodyText,
-    online_type : state.builletins.online_Type
+    todoList: state.builletins.todoList
 })
 
 export default connect(mapStateToProps)(Onlinegivingpreview)

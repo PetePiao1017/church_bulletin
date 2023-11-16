@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {connect} from 'react-redux';
+import { DeleteFilled } from '@ant-design/icons';
 import { setSectionImageUpload } from '../../actions/bulletins';
 import './ImageUpload.scss'
 
@@ -48,31 +49,38 @@ function ImageUpload(props) {
   };
 
   return (
-    <div style={{ marginTop: '20px', marginBottom: '20px' }}>
-      <label 
-        htmlFor={`file-upload${props.index}`}
-        className="custom-file-upload"
-        style={{
-          height:height === 0 ? "200px" :height
-        }}
-        id = {`${props.index}`}
-        >
-        {!preview ? (
-          <div
-            style={{
-              margin: 'auto',
-              display: 'flex',
-              flexDirection: 'column',
-            }}
+      <div style={{ marginTop: '20px', marginBottom: '20px', border: "1px solid #57b0fb", padding:"5px", position: "relative" }}
+      >
+        <label 
+          htmlFor={`file-upload${props.index}`}
+          className="custom-file-upload"
+          style={{
+            height:height === 0 ? "200px" :height
+          }}
+          id = {`${props.index}`}
           >
-            <h3 style={{marginTop: "30%", marginBottom: "30%"}}>Upload your Image from your computer</h3>
-          </div>
-        ) : (
-          <img src={preview} alt="Preview" style={{ width: '100%', height: 'auto' }} />
-        )}
-        <input type="file" onChange={(e) => onSelectFile(e)} id={`file-upload${props.index}`} style={{ display: 'none' }} />
-      </label>
-    </div>
+          {!preview ? (
+            <div
+              style={{
+                margin: 'auto',
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+            >
+              <h3 style={{marginTop: "30%", marginBottom: "30%"}}>Upload your Image from your computer</h3>
+            </div>
+          ) : (
+            <img src={preview} alt="Preview" style={{ width: '100%', height: 'auto' }} />
+          )}
+          <input type="file" onChange={(e) => onSelectFile(e)} id={`file-upload${props.index}`} style={{ display: 'none' }} />
+        </label>
+        <div style={{display: "inline"}}>
+            <DeleteFilled 
+              className="delete-icon-image" 
+              onClick={() => props.deleteItemCallback(props.id)}
+            />
+        </div>
+      </div>
   );
 }
 

@@ -1,13 +1,9 @@
 import React, {useState}  from "react";
-import { Button,  Form, Input, Upload,message} from 'antd';
+import { Button,  Form, Input} from 'antd';
 import { connect } from "react-redux";
 import { PlusOutlined, } from "@ant-design/icons";
 
-import {
-    setOrderOfServiceTitle,
-    setOrderOfServiceTopicContent,
-    setOrderOfServiceTopicTitle
-} from '../../../actions/bulletins';
+import {setSmallSectionData} from '../../../actions/bulletins';
 import CustomUpload from "../../CustomUpload/CustomUpload";
 
 const OrderOfServiceediting = (props) => {
@@ -17,33 +13,20 @@ const OrderOfServiceediting = (props) => {
     const [content, setContent] = useState(['', '']);
     let tempTopic = [];
     let tempContent= [];
-    console.log(content)
     const onStateChange = (e, index) => {
-        let tempObj = {
-            id: props.id,
-            str: e.target.value
-        }
         switch(e.target.name) {
             case "title":
-                props.setOrderOfServiceTitle(tempObj);
+                props.setSmallSectionData(props.id, "Order Of Service", "title", e.target.value);
                 break
             case "topic_title":
                 tempTopic = [...topic.slice(0,index), e.target.value, ...topic.slice(index+1)];
-                tempObj = {
-                    id: props.id,
-                    str: tempTopic
-                }
                 setTopic(tempTopic)
-                props.setOrderOfServiceTopicTitle(tempObj);
+                props.setSmallSectionData(props.id, "Order Of Service", "topic_title", tempTopic);
                 break
             case "topic_content":
                 tempContent = [...content.slice(0,index), e.target.value, ...content.slice(index+1)];
-                tempObj = {
-                    id: props.id,
-                    str: tempContent
-                }
                 setContent(tempContent)
-                props.setOrderOfServiceTopicContent(tempObj);
+                props.setSmallSectionData(props.id, "Order Of Service", "topic_content", tempContent);
                 break
         }
     }
@@ -138,14 +121,5 @@ const OrderOfServiceediting = (props) => {
     )
 }
 
-const mapStateToProps = (state) => ({
-    title: state.builletins.orderofService_Title,
-    topic_title: state.builletins.orderofService_Topic_Title,
-    topic_content: state.builletins.orderofService_Topic_Content
-})
 
-export default connect(mapStateToProps, {
-    setOrderOfServiceTitle,
-    setOrderOfServiceTopicTitle,
-    setOrderOfServiceTopicContent
-})(OrderOfServiceediting)
+export default connect(null, {setSmallSectionData })(OrderOfServiceediting)

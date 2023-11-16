@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import ReactQuill from 'react-quill';
+import { DeleteFilled } from "@ant-design/icons";
 import 'react-quill/dist/quill.snow.css';
 
 import './Text.scss';
@@ -46,6 +47,14 @@ const Text = (props) => {
                     }
                 </div>
             }
+            {visible ?
+                <div style={{display: "inline"}}>
+                    <DeleteFilled 
+                        className="delete-icon" 
+                        onClick={() => props.deleteItemCallback(props.id)}
+                    />
+                </div>
+            : ""}
         </div>
     )
 }

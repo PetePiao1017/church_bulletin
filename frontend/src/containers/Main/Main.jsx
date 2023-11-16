@@ -3,7 +3,7 @@ import { v4 as uuidv6 } from 'uuid';
 import { jwtDecode } from "jwt-decode";
 import { Link } from "react-router-dom";
 import 'react-quill/dist/quill.snow.css';
-import { Button, Dropdown,Tabs, Modal, DatePicker, Row, Col,} from 'antd';
+import { Button, Dropdown,Tabs, Modal, DatePicker, Row, Col, notification} from 'antd';
 import { useNavigate } from "react-router-dom";
 import {connect} from 'react-redux';
 import {ArrowLeftOutlined } from '@ant-design/icons';
@@ -21,7 +21,6 @@ import Response from '../Response/Response';
 import {logout} from '../../actions/auth';
 import { 
   setHeaderDate, 
-  sendDataToBack, 
   createNewBulletin,
   getBulletins,
   clearReduxStore,
@@ -36,6 +35,14 @@ const {TabPane} = Tabs;
 const { confirm } = Modal;
 
 const Main = (props) => {
+  const [api, contextHolder] = notification.useNotification();
+  const openNotificationWithIcon = (type) => {
+    api[type]({
+      message: 'Success',
+      description:
+        'Your data is successfully saved to the database',
+    });
+  };
   const navigate = useNavigate();
   const showConfirm = () => {
     confirm({
@@ -43,10 +50,23 @@ const Main = (props) => {
       icon: <ExclamationCircleFilled />,
       content: 'You have to save editings before you leave this page',
       onOk() {
-        props.sendDataToBack(props.bulletins, localbulletins);
       },
       onCancel() {
         setNewbulletin(false)
+      },
+    });
+  };
+
+  const showConfirm_Save = () => {
+    confirm({
+      title: 'Do you Want to Save Current Work?',
+      icon: <ExclamationCircleFilled />,
+      content: 'Some descriptions',
+      onOk() {
+        props.createNewBulletin(props.bulletins, props.auth.user._id);
+      },
+      onCancel() {
+        console.log('Cancel');
       },
     });
   };
@@ -72,27 +92,29 @@ const Main = (props) => {
     }
   },[props.isAuthenticated])
 
+
+  useEffect(() => {
+    if(props.save_success) openNotificationWithIcon('success')
+  },[props.save_success])
+
+
+
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState("a");
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [newbulletin, setNewbulletin] = useState(false);
   const [bulletinItem, setBulletinItem] = useState({});
-  const [localbulletins, setLocalbulletins] = useState([]);
   const [editingPanel, setEditingPanel] = useState("");
   const [confirmsave, setConfirmsave] = useState(false);
   const [userid, setUserid] = useState("");
   const [content, setContent] = useState([]);
   const [toolbarvisible, setToolbarVisible] = useState(false);
-
  
-
   const showModal = () => {
     setOpen(true);
   };
 
   const handleOk = () => {
-    props.createNewBulletin(userid);
-    setLocalbulletins([]);
     props.clearReduxStore();
     props.setHeaderDate(date)
     setConfirmLoading(true);
@@ -117,20 +139,10 @@ const Main = (props) => {
       
       let type = ev.dataTransfer.getData("id");
       let id = uuidv6();
-      let temp;
-      if(type === "Add Section"){
-        temp = {
-          id,
-          type,
-          data: []
-        }
-        setContent([...content, temp])
-      }
-      else{
-        temp = {id, type};
+      let temp = {
+        id, type, data: []
       }
       setBulletinItem(temp)
-      
     }
   }
 
@@ -141,22 +153,11 @@ const Main = (props) => {
 
 
   const getValueCallback = (id) => {
-      let type = id;
       let identifier = uuidv6();
-      let temp;
-      if(type === "Add Section"){
-        temp = {
-          id: identifier,
-          type,
-          data: []
-        }
-        setContent([...content, temp])
-      }
-      else{
-        temp = {
-          id : identifier, 
-          type: id,
-        };
+      let temp = {
+        id: identifier,
+        type: id,
+        data: []
       }
       setBulletinItem(temp);
   }
@@ -188,7 +189,6 @@ const Main = (props) => {
       ...content.slice(contentIndex + 1)
     ])
   }
-  
   const items = [
       {
         key: '1',
@@ -212,6 +212,7 @@ const Main = (props) => {
 
     return(
         <div className='main-container'>
+          {contextHolder}
             <div className='header'>
                 <span className='logo'>Church Bulletin</span>
                 <Dropdown
@@ -276,15 +277,16 @@ const Main = (props) => {
                       </Row>
                     </Col>
                     <Col 
-                      span = {16} 
-                      className='show-panel' 
+                      span = {16}
+                      className='show-panel'
                     >
                       <div className='button-group'>
                         <Button 
                           type = "primary"
                           onClick={() => {
                             setConfirmsave(true);
-                          }}
+                            showConfirm_Save();
+                            }}
                         >
                           Save
                         </Button>
@@ -296,7 +298,7 @@ const Main = (props) => {
                         onDrop={(e) => {onDrop(e, "add")}}
                       >
                         <div className='device'>
-                          <div className='border-screen-extra'>
+                          <div className='border-screen-extra'>             
                             <div 
                               className='device__screen'
                               onMouseDown={() => setToolbarVisible(true)}
@@ -328,21 +330,21 @@ const Main = (props) => {
                                       </div>
                                     </div>
                                   : 
-                                  <div className='preview'>
-                                    <p 
-                                      className='app-back' 
-                                      onClick={ () => setEditingPanel("")}
-                                      style={{
-                                        float: "left", 
-                                        marginLeft:"7%", 
-                                        fontSize:"8px"
-                                      }}
-                                    >
-                                    </p> 
-                                    <PreviewSecton
-                                      category = {editingPanel.type} 
-                                      id = {editingPanel.id} 
-                                    />
+                                  <div className='device-component'>
+                                    <div className='border-screen-extra'>
+                                        <div className='tool-right' />
+                                        <div className='tool-up' />
+                                        <div className='tool-down' />
+                                        <div className='border-screen'>
+                                          <div className='device__screen'>
+                                            <PreviewSecton
+                                                category = {editingPanel.type} 
+                                                id = {editingPanel.id} 
+                                            />
+                                          </div>
+                                        </div>
+                                    </div>
+                                    
                                 </div>
                               }
                             </div>
@@ -399,15 +401,16 @@ const Main = (props) => {
 
 
 const mapStateToProps = (state) => ({
+  auth: state.auth,
   isAuthenticated: state.auth.isAuthenticated,
   token: state.auth.token,
-  bulletins: state.builletins
+  bulletins: state.builletins,
+  save_success: state.builletins.save_success,
 })
 
 export default connect(mapStateToProps, {
   logout, 
   setHeaderDate,
-  sendDataToBack,
   createNewBulletin,
   getBulletins,
   clearReduxStore,

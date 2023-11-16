@@ -81,8 +81,10 @@ const Survey = (props) => {
             </div>
             {visible ?
                 <div style={{display: "inline"}}>
-                    <DragOutlined className="drag-icon"/>
-                    <DeleteFilled className="delete-icon" />
+                    <DeleteFilled 
+                        className="delete-icon" 
+                        onClick={() => props.deleteItemCallback(props.id)}
+                    />
                 </div>
             : ""}
         </div>

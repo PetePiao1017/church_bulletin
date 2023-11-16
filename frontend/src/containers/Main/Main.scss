@@ -69,7 +69,6 @@
                 }
                 .draggable {
                     cursor: grab;
-
                     .icon_group{
                         display: flex;
                         justify-content: center;
@@ -158,7 +157,8 @@
                             margin: 20px auto;
                             margin-top: 20px;
                             padding-top: 20px;
-                            box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;                            position: relative;
+                            box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;                            
+                            position: relative;
                             .quill-container{
                                 width: 95%;
                                 margin: 0 auto;
@@ -171,10 +171,52 @@
                     }
                 }
                
-            .preview{
-                .app-back{
-                    cursor: pointer;
-                    padding-top: 15%;
+            .device-component{
+                position: relative;
+                width:400px;
+                margin: 0 auto;
+                .border-screen-extra{
+                    position: relative;
+                    border:3px solid #abaeb0;
+                    border-radius:14%/7%;
+                    box-shadow:  0 0 2px 2px #eeeef0, inset 0 0 0 7px #e2e3e4;
+                    .tool-right{
+                        position: absolute;
+                        top: 23%;
+                        right: -2.5%;
+                        width: 2%;
+                        height: 7.5%;
+                        border-radius: 0 2px 2px 0;
+                        background-color: #d8d9dc;
+                    }
+                    .tool-up{
+                        position: absolute;
+                        top: 20%;
+                        left: -2.5%;
+                        width: 2%;
+                        height: 7.5%;
+                        border-radius: 2px 0 0 2px;
+                        background-color: #d8d9dc;
+                    }
+                    .tool-down{
+                        position: absolute;
+                        top: 29%;
+                        left: -2.5%;
+                        width: 2%;
+                        height: 7.5%;
+                        border-radius: 2px 0 0 2px;
+                        background-color: #d8d9dc;
+                    }
+                    .border-screen{
+                        border: 7px solid #d8d9dc;
+                        border-radius: 14%/6%;
+                        .device__screen{
+                            border: 1px solid rgba(194,200,209,.5215686274509804);
+                            border-radius: 10%/5%;
+                            height: 80vh;
+                        }
+                    }
+                    
                 }
             }
                

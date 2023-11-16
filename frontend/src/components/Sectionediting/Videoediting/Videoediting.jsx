@@ -2,39 +2,30 @@ import React,{useState} from "react";
 import { Button,  Form, Input, Select,message} from 'antd';
 import {connect} from 'react-redux';
 
-import {
-    setVideoTitle,
-    setVideoBodyText,
-    setVideoPlatform,
-    setVideoLink
-} from '../../../actions/bulletins';
+import {setSmallSectionData,} from '../../../actions/bulletins';
 
 const Videoediting = (props) => {
 
     let title, bodyText, videoLink;
     const onStateChange = (e) => {
-        let tempObj = {
-            id: props.id,
-            str: e.target.value
-        }
         switch(e.target.name) {
             case "title":
                 title += e.target.value;
-                props.setVideoTitle(tempObj);
+                props.setSmallSectionData(props.id, "Video", "title", e.target.value);                
                 break
             case "bodyText":
                 bodyText += e.target.value;
-                props.setVideoBodyText(tempObj);
+                props.setSmallSectionData(props.id, "Video", "bodyText", e.target.value);
                 break
             case "video_Link":
                 videoLink += e.target.value;
-                props.setVideoLink(tempObj);
+                props.setSmallSectionData(props.id, "Video", "video_link", e.target.value);
                 break
         }
     }
 
     const onPlaformChage = (value) => {
-        props.setVideoPlatform(value);
+        props.setSmallSectionData(props.id, "Video", "platform", value);
     }
 
 
@@ -81,15 +72,7 @@ const Videoediting = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-    title: state.builletins.Video_Title,
-    bodyText: state.builletins.video_bodyText,
-    video_Platform: state.builletins.video_Platform,
-    video_Link: state.builletins.video_Link
+    todoList: state.builletins.todoList
 })
 
-export default connect(mapStateToProps,{
-    setVideoTitle,
-    setVideoBodyText,
-    setVideoPlatform,
-    setVideoLink
-})(Videoediting)
+export default connect(mapStateToProps,{setSmallSectionData})(Videoediting)

@@ -1,13 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {connect} from 'react-redux';
 import { Button,  Form, Input} from 'antd';
 
-import {    setAnnouncementTitle, 
-            setAnnouncementBodyText, 
-            setAnnouncementImage, 
-            setAnnouncementButtonLink, 
-            setAnnouncementButtonText,
-        } from '../../../actions/bulletins';
+import { setSmallSectionData } from '../../../actions/bulletins';
 
 import CustomUpload from "../../CustomUpload/CustomUpload";
 import './Announceediting.scss';
@@ -15,25 +10,42 @@ import './Announceediting.scss';
 
 const Announceediting = (props) => {
     
+    const [title, setTitle] = useState("");
+    const [imageUrl, setImageUrl] = useState("");
+    const [bodyText, setBodyText] = useState("");
+    const [buttonText, setButtonText] = useState("");
+    const [buttonLink, setButtonLink] = useState("");
 
+    useEffect(() => {
+        let index = props.todoList.findIndex(item => item.id === props.id);
+
+        if(index !== -1){
+            let title_index = props.todoList[index].data.findIndex(item => item.dataType === "title");
+            let bodyText_index = props.todoList[index].data.findIndex(item => item.dataType === "bodyText");
+            let buttonText_index = props.todoList[index].data.findIndex(item => item.dataType === "buttonText");
+            let image_index = props.todoList[index].data.findIndex(item => item.dataType === "imageUrl");
+
+            if(title_index !== -1) setTitle(props.todoList[index].data[title_index].value);
+            if(bodyText_index !== -1) setBodyText(props.todoList[index].data[bodyText_index].value);
+            if(buttonText_index !== -1) setButtonText(props.todoList[index].data[buttonText_index].value);
+            if(image_index !== -1) setImageUrl(props.todoList[index].data[image_index].value);
+
+        }
+    },[props.todoList]);
     
     const onChange = (e) => {
-        let tempObj = {
-            id: props.id,
-            str: e.target.value
-        }
         switch(e.target.name){
             case "title":
-                props.setAnnouncementTitle(tempObj);
+                props.setSmallSectionData(props.id, "Announcement", "title", e.target.value);
                 break
             case "bodyText":
-                props.setAnnouncementBodyText(tempObj);
+                props.setSmallSectionData(props.id, "Announcement", "bodyText", e.target.value);
                 break;
             case "buttonLink":
-                props.setAnnouncementButtonLink(tempObj);
+                props.setSmallSectionData(props.id, "Announcement", "buttonLink", e.target.value);
                 break;
             case "buttonText":
-                props.setAnnouncementButtonText(tempObj);
+                props.setSmallSectionData(props.id, "Announcement", "buttonText", e.target.value);
                 break;
         
         }
@@ -47,20 +59,21 @@ const Announceediting = (props) => {
                     <Input 
                         type = "text"
                         name = "title"
-                        value={props.title}
+                        value={title}
                         onChange={onChange}
                     />
                 </Form.Item>
                 <Form.Item label = "IMAGE">
                     <CustomUpload 
                         type = {"Announcement"}
+                        imageUrl = {imageUrl}
                         id = {props.id}
                     />
                 </Form.Item>
                 <Form.Item label = "BODY TEXT">
                     <Input.TextArea
                         name = "bodyText"
-                        value = {props.bodyText}
+                        value = {bodyText}
                         onChange={onChange}
                         rows = {4} 
                         />
@@ -71,14 +84,14 @@ const Announceediting = (props) => {
                         name = "buttonText"
                         placeholder="Button Text" 
                         style = {{marginBottom:"20px"}}
-                        value={props.buttonText}
+                        value={buttonText}
                         onChange={onChange}
                     />
                     <Input  
                         type="text"
                         name = "buttonLink"
                         placeholder="Button Link"
-                        value={props.buttonLink}
+                        value={buttonLink}
                         onChange={onChange}
                     />
                 </Form.Item>
@@ -92,15 +105,7 @@ const Announceediting = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-    title: state.builletins.announcement_Title,
-    bodyText: state.builletins.announcement_bodyText,
-    buttonText: state.builletins.announcement_buttonText,
-    buttonLink: state.builletins.announcement_buttonLink,
+    todoList: state.builletins.todoList
 })
 
-export default connect(mapStateToProps, {
-    setAnnouncementTitle,
-    setAnnouncementBodyText,
-    setAnnouncementButtonText,
-    setAnnouncementButtonLink,
-})(Announceediting)
+export default connect(mapStateToProps, { setSmallSectionData })(Announceediting)

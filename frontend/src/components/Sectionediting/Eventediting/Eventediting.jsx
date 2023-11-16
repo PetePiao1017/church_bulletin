@@ -2,16 +2,7 @@ import React, {useState}  from "react";
 import { Button,  Form, Input, DatePicker, TimePicker} from 'antd';
 
 
-import {
-    setEventTitle,
-    setEventDate,
-    setEventTimeStart,
-    setEventTimeEnd,
-    setEventLocation,
-    setEventBodyText,
-    setEventBtnText,
-    setEventBtnLink,
-} from '../../../actions/bulletins';
+import {setSmallSectionData } from '../../../actions/bulletins';
 import { connect } from "react-redux";
 import CustomUpload from "../../CustomUpload/CustomUpload";
 
@@ -20,38 +11,30 @@ const Eventediting = (props) => {
     const format = 'HH:mm';
 
     const onStateChage = (e) => {
-        let tempObj = {
-            id: props.id,
-            str: e.target.value
-        }
         switch(e.target.name) {
             case "title" :
-                props.setEventTitle(tempObj);
+                props.setSmallSectionData(props.id, "Event", "title", e.target.value);
                 break
             case "location":
                 location += e.target.value;
-                props.setEventLocation(tempObj);
+                props.setSmallSectionData(props.id, "Event", "location", e.target.value);
                 break
             case "bodyText":
                 bodyText += e.target.value;
-                props.setEventBodyText(tempObj);
+                props.setSmallSectionData(props.id, "Event", "bodyText", e.target.value);
                 break
             case "btnText":
                 btnText += e.target.value;
-                props.setEventBtnText(tempObj);
+                props.setSmallSectionData(props.id, "Event", "btnText", e.target.value);
                 break
             case "btnLink":
                 btnLink += e.target.value;
-                props.setEventBtnLink(tempObj);
+                props.setSmallSectionData(props.id, "Event", "btnLink", e.target.value);
         }
     }
 
     const onDateChage  = (date, dateString) => {
-        let tempObj = {
-            id: props.id,
-            str: dateString
-        }
-        props.setEventDate(tempObj);
+        props.setSmallSectionData(props.id, "Event", "date", dateString);
     }
 
     const onTimeStartChange = (time,timeString) => {
@@ -59,7 +42,7 @@ const Eventediting = (props) => {
             id: props.id,
             str: timeString
         }
-        props.setEventTimeStart(tempObj);
+        props.setSmallSectionData(props.id, "Event", "event_timestart", timeString);
     }
 
     const onTimeEndChange = (time, timeString) => {
@@ -67,7 +50,7 @@ const Eventediting = (props) => {
             id: props.id,
             str: timeString
         }
-        props.setEventTimeEnd(tempObj);
+        props.setSmallSectionData(props.id, "Event", "event_timeend", timeString);
     }
 
     return (
@@ -143,15 +126,4 @@ const Eventediting = (props) => {
     )
 }
 
-
-
-export default connect(null, {
-    setEventTitle,
-    setEventDate,
-    setEventTimeStart,
-    setEventTimeEnd,
-    setEventLocation,
-    setEventBodyText,
-    setEventBtnText,
-    setEventBtnLink,
-})(Eventediting)
+export default connect(null, {setSmallSectionData,})(Eventediting)

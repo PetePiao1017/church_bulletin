@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import {connect} from 'react-redux';
-import { isEmpty } from "lodash";
+import { isEmpty} from "lodash";
 import { v4 as uuidv6 } from 'uuid';
 import { Toolbar } from '../../components';
 
 
-import { RightOutlined } from "@ant-design/icons";
+import { DeleteFilled } from "@ant-design/icons";
 import * as S from "./Styles";
 import "./Bulletins.css"
 import AddSectionList from "../AddSectionList/AddSectionList";
@@ -20,7 +20,8 @@ const BulletIns = (props) => {
 
 
     useEffect(() => {
-      if( !isEmpty(props.bulletInOneItem) ) props.setTodoList([...props.todoList, props.bulletInOneItem]);
+      let index = props.todoList.findIndex(item => item.id === props.bulletInOneItem.id);
+      if( !isEmpty(props.bulletInOneItem) && index === -1 ) props.setTodoList([...props.todoList, props.bulletInOneItem]);
     },[props.bulletInOneItem])
 
 
@@ -34,7 +35,7 @@ const BulletIns = (props) => {
 
     const handleOnDragEnd = (result) => {
         const { source, destination } = result;
-    
+        console.log(result)
         if (!destination) return;
     
         if (source.droppableId === destination.droppableId) {
@@ -61,6 +62,7 @@ const BulletIns = (props) => {
         droppableSource,
         droppableDestination
       ) => {
+        console.log("abcdefg")
         const sourceListDetails = handleGetListWithSetter(sourceId);
         const destListDetails = handleGetListWithSetter(destId);
         const sourceClone = Array.from(sourceListDetails.list);
@@ -89,7 +91,7 @@ const BulletIns = (props) => {
 
     const getListStyle = (isDraggingOver) => ({
         background: "transparent",
-        width: "95%",
+        width: "98%",
     });
 
 
@@ -113,75 +115,18 @@ const BulletIns = (props) => {
         );
     };
 
-    const showTitle = (type, id) => {
-      let index;
-      switch(type) {
-        case "Announcement":
-          index = props.announcement_title.findIndex(item => item.id === id)
-          if(index !== -1){
-            return props.announcement_title[index].str;
-          }
-          else{
-            return "Announcement"
-          }
-
-        case "Event":
-          index = props.event_title.findIndex(item => item.id === id)
-          if(index !== -1){
-            return props.event_title[index].str;
-          }
-          else{
-            return "Event"
-          }
-        case "Order Of Service":
-          index = props.orderofservice_title.findIndex(item => item.id === id)
-          if(index !== -1){
-            return props.orderofservice_title[index].str;
-          }
-          else{
-            return "Order Of Service"
-          }
-        case "Connect Card":
-          index = props.connectcard_title.findIndex(item => item.id === id)
-          if(index !== -1){
-            return props.connectcard_title[index].str;
-          }
-          else{
-            return "Connect Card"
-          }
-        case "Online Giving":
-          index = props.online_title.findIndex(item => item.id === id)
-          if(index !== -1){
-            return props.online_title[index].str;
-          }
-          else{
-            return "Online Giving"
-          }
-        case "Video":
-          index = props.video_title.findIndex(item => item.id === id)
-          if(index !== -1){
-            return props.video_title[index].str;
-          }
-          else{
-            return "Video"
-          }
-        case "Website":
-          index = props.website_title.findIndex(item => item.id === id)
-          if(index !== -1){
-            return props.website_title[index].str;
-          }
-          else{
-            return "Website"
-          }
-        case "Prayer Request":
-          index = props.prayer_title.findIndex(item => item.id === id)
-          if(index !== -1){
-            return props.prayer_title[index].str;
-          }
-          else{
-            return "Prayer Request"
-          }
+    const showTitle = (type,id) => {
+      if(props.todoList){
+        let index = props.todoList.findIndex(item => item.id === id);
+        if (index !== -1){
+          let title_index = props.todoList[index].data.findIndex(item => item.dataType === "title");
+          if(title_index === -1) return type
+          else return props.todoList[index].data[title_index].value;
+        }
+        else return type
       }
+      return type;
+      
     }
 
     const setSectionData = (id, type) => {
@@ -269,7 +214,7 @@ const BulletIns = (props) => {
                     <div className="list"
                         onClick={() => props.setEditingpanelCallback(item)}
                         style={{
-                          fontSize:"10px", 
+                          fontSize:"10px",
                           color:"black", 
                           display:"flex", 
                           justifyContent:"space-between",
@@ -279,7 +224,14 @@ const BulletIns = (props) => {
                         <p>{
                           showTitle(item.type, item.id)
                         }</p>
-                        <RightOutlined />
+                        <DeleteFilled 
+                          className="delete-icon" 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            let temp = props.todoList.filter(element => element.id !== item.id);
+                            props.setTodoList(temp)
+                          }}
+                        />
                     </div>
                 </div>
                 )}
@@ -292,7 +244,9 @@ const BulletIns = (props) => {
     
     return (
         <S.ListWrapper>
-          <DragDropContext onDragEnd={handleOnDragEnd}>
+          <DragDropContext 
+            onDragEnd={handleOnDragEnd}
+          > 
             {createDroppable("todoList", props.todoList)}
           </DragDropContext>
         </S.ListWrapper>
@@ -301,15 +255,6 @@ const BulletIns = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-  announcement_title: state.builletins.announcment_Title,
-  orderofservice_title : state.builletins.orderofservice_Title,
-  event_title : state.builletins.event_Title,
-  connectcard_title: state.builletins.connectcard_Title,
-  online_title: state.builletins.online_Title,
-  orderofservice_title: state.builletins.orderofservice_Title,
-  prayer_title: state.builletins.prayer_Title,
-  video_title: state.builletins.video_Title,
-  website_title: state.builletins.website_Title,
   todoList: state.builletins.todoList,
 })
 

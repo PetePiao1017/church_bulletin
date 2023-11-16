@@ -13,6 +13,7 @@ const VideoSection = (props) => {
         <div 
             className="video-container"
             onFocus={() => setVisible(true)}
+            onBlur={() => setVisible(false)}
         >
             <input 
                 type = "text"
@@ -22,8 +23,10 @@ const VideoSection = (props) => {
                 />
             {visible ?
                 <div style={{display: "inline"}}>
-                    <DragOutlined className="drag-icon"/>
-                    <DeleteFilled className="delete-icon" />
+                    <DeleteFilled 
+                        className="delete-icon" 
+                        onClick={() => props.deleteItemCallback(props.id)}    
+                    />
                 </div>
             : ""}
         </div>

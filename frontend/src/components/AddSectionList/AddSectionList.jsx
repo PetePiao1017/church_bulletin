@@ -184,6 +184,9 @@ const AddSectionList= (props) => {
 
     }
     
+    const deleteItem = (id) => {
+      setTodoList(todoList.filter(item => item.id !== id));
+    }
     const elementBuilder = (str, id, index) => {
         switch(str){
             case "edit":
@@ -192,6 +195,7 @@ const AddSectionList= (props) => {
                         id = {id}
                         index = {index}
                         textEditerCallback = {textEditer}
+                        deleteItemCallback = {deleteItem}
                   />
             case "gallery":
               return <ImageUpload
@@ -199,6 +203,7 @@ const AddSectionList= (props) => {
                         key = {index}
                         index = {"image" + id + index}
                         sectionId = {props.sectionId}
+                        deleteItemCallback = {deleteItem}
                       />
             case "attach":
               return <FileUpload
@@ -206,6 +211,7 @@ const AddSectionList= (props) => {
                         key = {index}
                         index = {"attach" + id + index}
                         sectionId = {props.sectionId}
+                        deleteItemCallback = {deleteItem}
                         />
             case "cursor":
               return <ButtonText
@@ -214,6 +220,7 @@ const AddSectionList= (props) => {
                           key={index}
                           index = {"cursor" + id + index}
                           buttonEditerCallback = {buttonEditer}
+                          deleteItemCallback = {deleteItem}
                           />
             case "event":
               return <EventSection
@@ -221,6 +228,7 @@ const AddSectionList= (props) => {
                           key = {index}
                           index = {"event" + id + index}
                           eventEditerCallback = {eventEditer}
+                          deleteItemCallback = {deleteItem}
                           />
             case "video":
               return <VideoSection
@@ -228,6 +236,7 @@ const AddSectionList= (props) => {
                         key = {index}
                         index = {"video" + id + index}
                         videoEditerCallback = {videoEditer}
+                        deleteItemCallback = {deleteItem}
                         />
             case "checked":
               return <Survey
@@ -235,6 +244,7 @@ const AddSectionList= (props) => {
                           key = {index}
                           index = {"survey" + id + index}
                           surveyEditerCallback = {surveyEditer}
+                          deleteItemCallback = {deleteItem}
                       />
             case "quote":
               return <Quote
@@ -242,6 +252,7 @@ const AddSectionList= (props) => {
                         key = {index}
                         index = {"quote" + id + index}
                         quoteEditerCallback = {quoteEditer}
+                        deleteItemCallback = {deleteItem}
                         />
           }
     }

@@ -1,12 +1,10 @@
 import { combineReducers } from 'redux';
-import alert from './alert';
 import auth from './auth';
 import builletins from './bulletins';
-import retrieved from './retrieved';
+import retrieve from './retriveData';
 
 export default combineReducers({
   auth,
-  alert,
   builletins,
-  retrieved,
+  retrieve,
 });

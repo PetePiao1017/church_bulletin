@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { DeleteFilled } from "@ant-design/icons";
 import './ButtonText.scss'
 
 const ButtonText = (props) => {
@@ -31,11 +32,10 @@ const ButtonText = (props) => {
     return(
         <div 
             className="buttontext-container"
-            onFocus={() => setBordervisible(true)}
-            onBlur={() => setBordervisible(false)}
+            onFocus={() => {setBordervisible(true); setVisible(true)}}
+            onBlur={() => {setBordervisible(false); setVisible(false)}}
             style={{
                 border: !bordervisible ? "none": "1px solid #57b0fb"
-                
             }}
         >
             <div 
@@ -66,8 +66,15 @@ const ButtonText = (props) => {
                     </p>
                     : ""
                 }
-                
             </div>
+            {visible ?
+                <div style={{display: "inline"}}>
+                    <DeleteFilled 
+                        className="delete-icon-button" 
+                        onClick={() => props.deleteItemCallback(props.id)}
+                    />
+                </div>
+            : ""}
         </div>
     )
 }

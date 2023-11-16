@@ -1,24 +1,52 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {Button} from 'antd'
 import {connect} from 'react-redux';
 import "./Connectcardpreview.scss"
 
 const Connectcardpreview = (props) => {
-    let title = props.title.filter((item) => item.id === props.id);
-    let bodyText = props.bodyText.filter((item) => item.id === props.id);
-    let connectcard_checkedvalues = props.connectcard_checkedvalues.filter((item) => item.id === props.id);
-    let imageurl = props.imageurl.filter(item => item.id === props.id);
-    let questionOne = props.questionOne.filter(item => item.id === props.id);
-    let questionTwo = props.questionTwo.filter(item => item.id === props.id);
-    let optionone = props.optionone.filter(item => item.id === props.id);
-    let optiontwo = props.optiontwo.filter(item => item.id === props.id);
+
+    const [title, setTitle] = useState("");
+    const [bodyText, setBodyText] = useState("");
+    const [checkedValues, setCheckedValues] = useState([]);
+    const [questionone, setQuestionone] = useState("");
+    const [questiontwo, setQuestionTwo] = useState("");
+    const [optionone, setOptionone] = useState([]);
+    const [optiontwo, setOptiontwo] = useState([]);
+    const [imageUrl, setImageUrl] = useState("");
+
+    useEffect(() => {
+        let index = props.todoList.findIndex(item => item.id === props.id);
+
+        if(index !== -1){
+            let title_index = props.todoList[index].data.findIndex(item => item.dataType === "title");
+            let bodyText_index = props.todoList[index].data.findIndex(item => item.dataType === "bodyText");
+            let image_index = props.todoList[index].data.findIndex(item => item.dataType === "imageUrl");
+            let checkedvalues_index = props.todoList[index].data.findIndex(item => item.dataType === "checkedValues");
+            let questionone_index = props.todoList[index].data.findIndex(item => item.dataType === "questionOne");
+            let questiontwo_index = props.todoList[index].data.findIndex(item => item.dataType === "questionTwo");
+            let optionone_index = props.todoList[index].data.findIndex(item => item.dataType === "option_one");
+            let optiontwo_index = props.todoList[index].data.findIndex(item => item.dataType === "option_two");
+
+            if(title_index !== -1) setTitle(props.todoList[index].data[title_index].value);
+            if(bodyText_index !== -1) setBodyText(props.todoList[index].data[bodyText_index].value);
+            if(image_index !== -1) setImageUrl(props.todoList[index].data[image_index].value);
+            if(checkedvalues_index !== -1) setCheckedValues(props.todoList[index].data[checkedvalues_index].value);
+            if(questionone_index !== -1) setQuestionone(props.todoList[index].data[questionone_index].value);
+            if(questiontwo_index !== -1) setQuestionTwo(props.todoList[index].data[questiontwo_index].value);
+            if(optionone_index !== -1) setOptionone(props.todoList[index].data[optionone_index].value);
+            if(optiontwo_index !== -1) setOptiontwo(props.todoList[index].data[optiontwo_index].value);
+            
+
+        }
+    },[props.todoList]);
+
     return(
-        <div className='scroll-bar' 
-            style={{
-                marginTop:"0", 
-                height:"73vh"}} >
+        <div className='scroll-bar'>
+            <br />
+            <br />
+            <br />
             <h3 className='app-header'>
-                {title.length === 0 ? "Connect Card" : title[0].str}
+                {title === "" ? "Connect Card" : title}
             </h3>
             {
                 <div style={{
@@ -30,21 +58,21 @@ const Connectcardpreview = (props) => {
                     justifyContent: "center"
                     }}>
                     {
-                        imageurl.length === 0
-                        ? <img src = "./gallery.png"  style={{width:"50px"}} alt = "Gallery Image" />
-                        : <img src = {imageurl[0].str} alt = "preview" style = {{width : "100%", height:"100%"}} />
+                        imageUrl === ""
+                        ? <img src = "./gallery.png"   alt = "Gallery Image" />
+                        : <img src = {imageUrl} alt = "preview" style = {{width : "100%", height:"100%"}} />
                     }
                 </div>
                 
             }
             <div className="body-text">
                 <p>
-                    {bodyText.length === 0 ? "Type into the BODY TEXT field on the left for your text to show up here. Customize your copy with bold, italicized, or underlined text. Tip: Leaving a field blank in Loop will exclude it from your bulletin." : bodyText[0].str}
+                    {bodyText === "" ? "Type into the BODY TEXT field on the left for your text to show up here. Customize your copy with bold, italicized, or underlined text. Tip: Leaving a field blank in Loop will exclude it from your bulletin." : bodyText}
                 </p>
             </div>
             <div  style={{width : "80%", margin: "0 auto"}}>
                 {
-                    connectcard_checkedvalues.length === 0
+                    checkedValues.length === 0
                     ?   
                         <>
                             <p style={{textAlign:"left", fontSize:"8px"}}>Name</p>
@@ -55,7 +83,7 @@ const Connectcardpreview = (props) => {
                         </>
                     
                     :
-                    connectcard_checkedvalues[0].arr.map((item, index) => {
+                    checkedValues.map((item, index) => {
                         return(
                             <div key = {index}>
                                 <p style={{textAlign:"left", fontSize:"8px"}}>{item}</p>
@@ -68,9 +96,9 @@ const Connectcardpreview = (props) => {
             <div style={{textAlign:"left", fontSize:"9px", marginLeft: "10px"}}>
                 <p >
                     {
-                        questionOne.length === 0 
+                        questionone === ""
                         ? "I made a decision today"
-                        : questionOne[0].str
+                        : questionone
                     }
                 </p>
                 {
@@ -86,7 +114,7 @@ const Connectcardpreview = (props) => {
                         </div>
                     </div>
                     : 
-                    optionone[0].str.map((item, index) => {
+                    optionone.map((item, index) => {
                         return (
                             <div>
                                 <input key = {index} type = "checkbox" style={{verticalAlign: "middle"}} /> 
@@ -100,9 +128,9 @@ const Connectcardpreview = (props) => {
             <div style={{textAlign:"left", fontSize:"9px", marginLeft: "10px"}}>
                 <p >
                     {
-                        questionTwo.length === 0 
+                        questiontwo === "" 
                         ? "How did you hear about us?"
-                        : questionOne[0].str
+                        : questiontwo
                     }
                 </p>
                 {
@@ -118,7 +146,7 @@ const Connectcardpreview = (props) => {
                         </div>
                     </div>
                     : 
-                    optiontwo[0].str.map((item, index) => {
+                    optiontwo.map((item, index) => {
                         return (
                             <div>
                                 <input key = {index} type = "checkbox" style={{verticalAlign: "middle"}} /> 
@@ -137,14 +165,7 @@ const Connectcardpreview = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-    title: state.builletins.connectcard_Title,
-    bodyText: state.builletins.connectcard_bodyText,
-    questionOne: state.builletins.connectcard_Question_One,
-    questionTwo: state.builletins.connectcard_Question_Two,
-    optionone: state.builletins.connectcard_Option_One,
-    optiontwo: state.builletins.connectcard_Option_Two,
-    connectcard_checkedvalues : state.builletins.connectcard_checkedvalues,
-    imageurl: state.builletins.connectcard_imageurl
+    todoList: state.builletins.todoList
 })
 
 export default connect(mapStateToProps)(Connectcardpreview)

@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Row, Col, Dropdown, Space} from 'antd';
+import { DeleteFilled } from "@ant-design/icons";
 
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
@@ -106,6 +107,17 @@ const EventSection = (props) => {
                     
                 </div>
             </Col>
+            {
+                visible ?
+                <div style={{display: "inline"}}>
+                    <DeleteFilled 
+                        className="delete-icon-event" 
+                        onClick={() => props.deleteItemCallback(props.id)}
+                    />
+                </div>
+                :""
+            }
+            
         </Row>
     )
 }

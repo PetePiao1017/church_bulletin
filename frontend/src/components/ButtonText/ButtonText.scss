@@ -3,6 +3,7 @@
     border: 1px solid #1292ee;
     margin-top: 10px;
     margin-bottom: 10px;
+    position: relative;
     .buttontext{
         position: relative;
         background-color: #1292ee;
@@ -30,5 +31,16 @@
             font-size: 25px;
             color: rgb(236, 239, 240);
         }
+    }
+    .delete-icon-button{
+        position: absolute;
+        top: 2%;
+        right: 1%;
+        cursor: pointer;
+        color: rgb(223, 58, 58);
+        font-size: 25px;
+    }
+    .delete-icon-button:hover{
+        color: wheat;
     }
 }

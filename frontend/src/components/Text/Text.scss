@@ -1,0 +1,15 @@
+.text-container{
+    position: relative;
+    .delete-icon{
+        position: absolute;
+        top: 5%;
+        right: 2%;
+        cursor: pointer;
+        color: rgb(223, 58, 58);
+        font-size: 25px;
+    }
+    .delete-icon:hover{
+        color: wheat;
+        font-size: 25px;
+    }
+}

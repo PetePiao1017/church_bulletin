@@ -1,17 +1,31 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { connect } from "react-redux";
 import { Website } from "../../SVG";
 
 const Websitepreview = (props) => {
-    let title = props.title.filter((item) => item.id === props.id);
-    let embed_code = props.embed_code.filter((item) => item.id === props.id);
+    const [title, setTitle] = useState("");
+    const [link, setLink] = useState("");
+    const [embedcode, setEmbedcode] = useState("");
+
+    useEffect(() => {
+        let index = props.todoList.findIndex(item => item.id === props.id);
+
+        if(index !== -1){
+            let title_index = props.todoList[index].data.findIndex(item => item.dataType === "title");
+            let link_index = props.todoList[index].data.findIndex(item => item.dataType === "link");
+            let embedcode_index = props.todoList[index].data.findIndex(item => item.dataType === "embed_code");
+
+            if(title_index !== -1) setTitle(props.todoList[index].data[title_index].value);
+            if(link_index !== -1) setLink(props.todoList[index].data[link_index].value);
+            if(embedcode_index !== -1) setEmbedcode(props.todoList[index].data[embedcode_index].value);
+        }
+    },[props.todoList]);
     return (
         <div className='scroll-bar' style={{margin:"0"}} >
             <h3 className='app-header'>
-                {title.length === 0 ? "Website" : title[0].str}
+                {title === "" ? "Website" : title}
             </h3>
-            
-            {
+            {/* {
                 props.type === "Website" || props.type.length === 0
                 ? <div style={{
                     display:"flex", 
@@ -25,19 +39,16 @@ const Websitepreview = (props) => {
                 :   
                 <div className="body-text">
                     <p className="app-image">
-                        {embed_code.length === 0 ? " ":  embed_code[0].str}
+                        {embedcode === "" ? " ":  embedcode}
                     </p>
                 </div>
-            }
+            } */}
         </div>
     )
 }
 
 const mapStateToProps = (state) => ({
-    title: state.builletins.website_Title,
-    link: state.builletins.website_Link,
-    type: state.builletins.website_Type,
-    embed_code: state.builletins.website_embed_code,
+    todoList: state.builletins.todoList
 })
 
 export default connect(mapStateToProps) (Websitepreview)

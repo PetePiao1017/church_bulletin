@@ -6,19 +6,6 @@ const BulletinSchema = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: 'user'
   },
-  list_category: [
-    {
-      id :{
-        type: String,
-      },
-      title: {
-        type: String,
-      },
-      type: {
-        type: String,
-      }
-    }
-  ],
   header_title: {
     type: String,
   },
@@ -28,6 +15,7 @@ const BulletinSchema = new mongoose.Schema({
   header_imageurl: {
     type: String,
   },
+  todoList: [{}]
 });
 
 module.exports = mongoose.model('bulletin', BulletinSchema);

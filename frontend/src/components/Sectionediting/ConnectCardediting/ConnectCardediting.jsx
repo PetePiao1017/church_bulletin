@@ -1,30 +1,54 @@
-import React,{useState} from "react";
-import { Button,  Form, Input, Upload,message, Checkbox} from 'antd';
+import React,{useState, useEffect} from "react";
+import { Button,  Form, Input, Checkbox} from 'antd';
 import { PlusOutlined } from "@ant-design/icons";
 import { connect } from 'react-redux';
 import './ConnectCardediting.scss';
 
-import {    
-    setConnectCardTitle,
-    setConnectCardBodyText,
-    setConnectCardQuestionOne,
-    setConnectCardQuestionTwo,
-    setConnectCardOptionOne,
-    setConnectCardOptionTwo,
-    setConnectCardCheckedValues
-} from '../../../actions/bulletins';
+import {    setSmallSectionData, } from '../../../actions/bulletins';
 import CustomUpload from "../../CustomUpload/CustomUpload";
 
 const ConnectCardediting = (props) => {
  
 
 
-    const onChange = (checkedValues) => {
-        let tempObj = {
-            id : props.id,
-            arr: checkedValues
+    const [title, setTitle] = useState("");
+    const [bodyText, setBodyText] = useState("");
+    const [checkedValues, setCheckedValues] = useState([]);
+    const [questionone, setQuestionone] = useState("");
+    const [questiontwo, setQuestionTwo] = useState("");
+    const [optionone_, setOptionone] = useState([]);
+    const [optiontwo_, setOptiontwo] = useState([]);
+    const [imageUrl, setImageUrl] = useState("");
+
+    useEffect(() => {
+        let index = props.todoList.findIndex(item => item.id === props.id);
+
+        if(index !== -1){
+            let title_index = props.todoList[index].data.findIndex(item => item.dataType === "title");
+            let bodyText_index = props.todoList[index].data.findIndex(item => item.dataType === "bodyText");
+            let image_index = props.todoList[index].data.findIndex(item => item.dataType === "imageUrl");
+            let checkedvalues_index = props.todoList[index].data.findIndex(item => item.dataType === "checkedValues");
+            let questionone_index = props.todoList[index].data.findIndex(item => item.dataType === "questionOne");
+            let questiontwo_index = props.todoList[index].data.findIndex(item => item.dataType === "questionTwo");
+            let optionone_index = props.todoList[index].data.findIndex(item => item.dataType === "option_one");
+            let optiontwo_index = props.todoList[index].data.findIndex(item => item.dataType === "option_two");
+
+            if(title_index !== -1) setTitle(props.todoList[index].data[title_index].value);
+            if(bodyText_index !== -1) setBodyText(props.todoList[index].data[bodyText_index].value);
+            if(image_index !== -1) setImageUrl(props.todoList[index].data[image_index].value);
+            if(checkedvalues_index !== -1) setCheckedValues(props.todoList[index].data[checkedvalues_index].value);
+            if(questionone_index !== -1) setQuestionone(props.todoList[index].data[questionone_index].value);
+            if(questiontwo_index !== -1) setQuestionTwo(props.todoList[index].data[questiontwo_index].value);
+            if(optionone_index !== -1) setOptionone(props.todoList[index].data[optionone_index].value);
+            if(optiontwo_index !== -1) setOptiontwo(props.todoList[index].data[optiontwo_index].value);
+            
+
         }
-        props.setConnectCardCheckedValues(tempObj);
+    },[props.todoList]);
+
+
+    const onChange = (checkedValues) => {
+        props.setSmallSectionData(props.id, "Connect Card", "checkedValues", checkedValues);
     }
 
     const [firstoptions, setFirstoptions] = useState(['','']);
@@ -33,29 +57,23 @@ const ConnectCardediting = (props) => {
     let optiontwo = [];
 
     const onStateChange = (e) => {
-        let tempObj = {
-            id: props.id,
-            str: e.target.value
-        }
         switch(e.target.name) {
             case "title":
-                props.setConnectCardTitle(tempObj);
+                props.setSmallSectionData(props.id, "Connect Card", "title", e.target.value);
                 break
             case "bodyText":
-                props.setConnectCardBodyText(tempObj);
+                props.setSmallSectionData(props.id, "Connect Card", "bodyText", e.target.value);
                 break
             case "questionOne":
-                props.setConnectCardQuestionOne(tempObj);
+                props.setSmallSectionData(props.id, "Connect Card", "questionOne", e.target.value);
                 break
-            
             case "questionTwo":
-                props.setConnectCardQuestionTwo(tempObj);
+                props.setSmallSectionData(props.id, "Connect Card", "questionTwo", e.target.value);
                 break
         }
     }
 
     const onOptionChange = (e, index) => {
-        let tempObj;
         switch(e.target.name){
             case "option_one":
                 optionone = [
@@ -63,20 +81,12 @@ const ConnectCardediting = (props) => {
                     e.target.value, 
                     ...firstoptions.slice(index+1)
                 ];
-                tempObj = {
-                    id : props.id,
-                    str: optionone,
-                }
-                props.setConnectCardOptionOne(tempObj);
+                props.setSmallSectionData(props.id, "Connect Card", "option_one", optionone)
                 setFirstoptions(optionone);
                 break
             case "option_two":
                 optiontwo = [...secondoptions.slice(0,index), e.target.value, ...secondoptions.slice(index+1)];
-                tempObj = {
-                    id : props.id,
-                    str: optiontwo,
-                }
-                props.setConnectCardOptionTwo(tempObj);
+                props.setSmallSectionData(props.id, "Connect Card", "option_two", optiontwo)
                 setSecondoptions(optiontwo);
                 break
         }
@@ -90,7 +100,7 @@ const ConnectCardediting = (props) => {
                     <Input 
                         type = "text"
                         name = "title"
-                        value={props.title}
+                        value={title}
                         onChange={onStateChange}
                         placeholder="Connect Card"
                     />
@@ -104,7 +114,7 @@ const ConnectCardediting = (props) => {
                 <Form.Item label = "BODY TEXT">
                     <Input.TextArea 
                         name = "bodyText"
-                        value = {props.bodyText}
+                        value = {bodyText}
                         onChange={onStateChange}
                         rows = {4} />
                 </Form.Item>
@@ -128,7 +138,7 @@ const ConnectCardediting = (props) => {
                     <Input
                         type = "text"
                         name = "questionOne"
-                        value = {props.questionOne}
+                        value = {questionone}
                         onChange={onStateChange}
                         placeholder="I made a decision today"
                     />
@@ -138,7 +148,6 @@ const ConnectCardediting = (props) => {
                         type = "text"
                         placeholder="To Follow Jesus"
                         name="option_one"
-                        value={props.questionOneOptionOne}
                         onChange={(e) => onOptionChange(e, 0)}
                         style={{marginBottom:"20px"}}
                     />
@@ -147,7 +156,6 @@ const ConnectCardediting = (props) => {
                         placeholder="To Redency my life to Jesus"
                         name="option_one"
                         onChange={(e) => onOptionChange(e, 1)}
-                        value={props.questionOneOptionTwo}
                         style={{marginBottom:"20px"}}
                     />
                     {
@@ -177,7 +185,7 @@ const ConnectCardediting = (props) => {
                     <Input
                         type = "text"
                         name = "questionTwo"
-                        value={props.questionTwo}
+                        value={questiontwo}
                         onChange={onStateChange}
                         placeholder="How did you hear about us?"
                     />
@@ -232,22 +240,7 @@ const ConnectCardediting = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-    title: state.builletins.connectCard_Title,
-    bodyText: state.builletins.connectCard_bodyText,
-    questionOne: state.builletins.connectCard_Question_One,
-    questionOneOptionOne: state.builletins.connectCard_Question_One_Option_One,
-    questionOneOptionTwo: state.builletins.connectCard_Question_One_Option_Two,
-    questionTwo: state.builletins.connectCard_Question_Two,
-    questionTwoOptionOne: state.builletins.connectCard_Question_Two_Option_One,
-    questionTwoOptionTwo: state.builletins.connectCard_Question_Two_Option_Two,
+    todoList: state.builletins.todoList
 })
 
-export default connect(mapStateToProps, {
-    setConnectCardTitle,
-    setConnectCardBodyText,
-    setConnectCardQuestionOne,
-    setConnectCardOptionOne,
-    setConnectCardQuestionTwo,
-    setConnectCardOptionTwo,
-    setConnectCardCheckedValues,
-})(ConnectCardediting)
+export default connect(mapStateToProps, {setSmallSectionData,})(ConnectCardediting)

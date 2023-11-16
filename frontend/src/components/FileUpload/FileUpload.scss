@@ -10,3 +10,15 @@ input[type="file"] {
 label{
     margin: 0 auto;
 }
+.delete-icon-file{
+    position: absolute;
+    top: -2%;
+    right: 0%;
+    cursor: pointer;
+    color: rgb(223, 58, 58);
+    font-size: 20px;
+}
+.delete-icon-file:hover{
+    font-size: 20px;
+    color:wheat;
+}

@@ -1,11 +1,7 @@
 import React from "react";
 import { Button,  Form, Input, Checkbox} from 'antd';
 
-import {
-    setPrayerTitle,
-    setPrayerBodyText,
-    setPrayerCheckvalue
-} from "../../../actions/bulletins";
+import {setSmallSectionData} from "../../../actions/bulletins";
 
 import { connect } from "react-redux";
 
@@ -15,28 +11,20 @@ const PrayerRequestediting = (props) => {
     
     let bodyText;
     const onStateChange = (e) => {
-        let tempObj = {
-            id: props.id,
-            str: e.target.value
-        }
         switch(e.target.name) {
             case "title":
-                props.setPrayerTitle(tempObj);
+                props.setSmallSectionData(props.id, "Prayer Request", "title", e.target.value);
                 break
             case "bodyText" :
                 bodyText += e.target.value;
-                props.setPrayerBodyText(tempObj);
+                props.setSmallSectionData(props.id, "Prayer Request", "bodyText", e.target.value);
                 break
         }
     }
 
     
     const onChange = (checkedValues) => {
-        let tempObj = {
-            id : props.id,
-            str: checkedValues
-        }
-        props.setPrayerCheckvalue(tempObj);
+        props.setSmallSectionData(props.id, "Prayer Request", "checkedvalues", checkedValues);
     };
 
 
@@ -88,8 +76,4 @@ const mapStateToProps = (state) => ({
     prayer_bodyText: state.builletins.prayer_bodyText,
 })
 
-export default connect(mapStateToProps,{
-    setPrayerTitle,
-    setPrayerBodyText,
-    setPrayerCheckvalue,
-})(PrayerRequestediting)
+export default connect(mapStateToProps,{ setSmallSectionData })(PrayerRequestediting)
