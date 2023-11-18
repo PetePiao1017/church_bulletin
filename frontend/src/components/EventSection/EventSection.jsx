@@ -9,12 +9,20 @@ import './EventSection.scss';
 
 
 const EventSection = (props) => {
+
+    
     const [value, onChange] = useState(new Date());
     const [date, setDate] = useState(0);
     const [month, setMonth] = useState("");
     const [visible, setVisible] = useState(true);
     const [title, setTitle] = useState("");
     const [detail, setDetail] = useState("");
+
+    useEffect(() => {
+        const value = new Date();
+        setDate(value.getDate());
+        setMonth(value.toLocaleString("default", {month: 'long'}));
+    },[])
 
     const onTextChange = (e) => {
         if(e.target.name === "title") setTitle(e.target.value);
@@ -24,11 +32,20 @@ const EventSection = (props) => {
     useEffect(() => {
         props.eventEditerCallback(props.id, title, detail, date, month)
     },[title, detail,date,month])
+
     useEffect(() => {
-        setDate(value.getDate());
-        setMonth(value.toLocaleString('default', { month: 'long' }));
+        if(value !== new Date()){
+            setDate(value.getDate());
+            setMonth(value.toLocaleString('default', { month: 'long' }));
+        }
     },[value]);
 
+    useEffect(() => {
+        if(props.value.month) setMonth(props.value.month);
+        if(props.value.date) setDate(props.value.date);
+        if(props.value.title) setTitle(props.value.title);
+        if(props.value.detail) setDetail(props.value.detail);
+    },[props.value])
 
     const items = [
         {
@@ -50,7 +67,6 @@ const EventSection = (props) => {
             onBlur={() => setVisible(false)}
             style={{
                 border: !visible ? "none": "1px solid #57b0fb"
-                
             }}
         >
             <Col span = {4} className="calendar">
@@ -77,6 +93,7 @@ const EventSection = (props) => {
                         placeholder="Event Title"
                         name = "title"
                         onChange={(e) => onTextChange(e)}
+                        value = {title}
                     />
                 </div>
                 <div>
@@ -86,6 +103,7 @@ const EventSection = (props) => {
                         placeholder="Put any other details here... time, location, etc"
                         name = "detail"
                         onChange={(e) => onTextChange(e)}
+                        value = {detail}
                     />
                 </div>
                 <div className="event-description">

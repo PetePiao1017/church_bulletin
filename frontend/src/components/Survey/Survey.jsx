@@ -9,7 +9,7 @@ const Survey = (props) => {
 
     const [title, setTitle] = useState("");
     const [answer1, setAnswer1] = useState("");
-    const [answre2, setAnswer2] = useState("");
+    const [answer2, setAnswer2] = useState("");
     const [answer3, setAnswer3] = useState("");
 
 
@@ -21,8 +21,15 @@ const Survey = (props) => {
     }
 
     useEffect(() => {
-        props.surveyEditerCallback(props.id, title, answer1, answre2, answer3);
-    },[title, answer1, answre2, answer3])
+        props.surveyEditerCallback(props.id, title, answer1, answer2, answer3);
+    },[title, answer1, answer2, answer3])
+
+    useEffect(() => {
+        if(props.value.title) setTitle(props.value.title);
+        if(props.value.answer1) setAnswer1(props.value.answer1);
+        if(props.value.answer2) setAnswer2(props.value.answer2);
+        if(props.value.answer3) setAnswer3(props.value.answer3);
+    },[props.value])
     return (
         <div 
             className="survey-container"
@@ -40,6 +47,7 @@ const Survey = (props) => {
                     placeholder="Who is first?" 
                     className="title"
                     onChange={onChange}
+                    value={title}
                 />
                 <div className="answer">
                     <Radio.Group>
@@ -55,6 +63,7 @@ const Survey = (props) => {
                                     placeholder="Just a few"
                                     className="answer-text"
                                     onChange={onChange}
+                                    value={answer1}
                                 />
                             </Radio>
                             <Radio value = "apple1" className="one-survey">
@@ -64,6 +73,7 @@ const Survey = (props) => {
                                     placeholder="Too many to bother trying"
                                     className="answer-text"
                                     onChange={onChange}
+                                    value={answer2}
                                 />
                             </Radio>
                             <Radio value = "apple2" className="one-survey">
@@ -73,6 +83,7 @@ const Survey = (props) => {
                                     placeholder="I always bite it before I find out"
                                     className="answer-text"
                                     onChange={onChange}
+                                    value={answer3}
                                 />
                             </Radio>
                         </Space>

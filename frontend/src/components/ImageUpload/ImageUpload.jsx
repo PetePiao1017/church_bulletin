@@ -48,6 +48,28 @@ function ImageUpload(props) {
     }
   };
 
+  const renderImageComponent = () => {
+    if(!preview){
+      if(!props.imagesrc){
+          return(
+            <div
+            style={{
+              margin: 'auto',
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            <h3 style={{marginTop: "30%", marginBottom: "30%"}}>Upload your Image from your computer</h3>
+          </div>
+          )
+      }
+      else {
+        return <img src={props.imagesrc} alt="Preview" style={{ width: '100%', height: 'auto' }} />
+      }
+    }
+    else return <img src={preview} alt="Preview" style={{ width: '100%', height: 'auto' }} />
+  }
+
   return (
       <div style={{ marginTop: '20px', marginBottom: '20px', border: "1px solid #57b0fb", padding:"5px", position: "relative" }}
       >
@@ -59,19 +81,8 @@ function ImageUpload(props) {
           }}
           id = {`${props.index}`}
           >
-          {!preview ? (
-            <div
-              style={{
-                margin: 'auto',
-                display: 'flex',
-                flexDirection: 'column',
-              }}
-            >
-              <h3 style={{marginTop: "30%", marginBottom: "30%"}}>Upload your Image from your computer</h3>
-            </div>
-          ) : (
-            <img src={preview} alt="Preview" style={{ width: '100%', height: 'auto' }} />
-          )}
+            {renderImageComponent()}
+          
           <input type="file" onChange={(e) => onSelectFile(e)} id={`file-upload${props.index}`} style={{ display: 'none' }} />
         </label>
         <div style={{display: "inline"}}>
@@ -83,5 +94,6 @@ function ImageUpload(props) {
       </div>
   );
 }
+
 
 export default connect(null, {setSectionImageUpload})(ImageUpload);

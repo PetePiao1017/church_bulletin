@@ -15,15 +15,17 @@ import {
 
 import * as S from "./Styles";
 import "./AddSectionList.scss"
-import { setDetailedTodoList } from "../../actions/bulletins";
+import { setDetailedTodoList, setStoreToDoList } from "../../actions/bulletins";
 
 const AddSectionList= (props) => {
 
     const [todoList, setTodoList] = useState([]);
 
+
     useEffect(() => {
         if(props.item.data.length !== 0) setTodoList(props.item.data)
     },[props.item])
+
 
 
     const handleGetListWithSetter = (listName) => {
@@ -153,7 +155,7 @@ const AddSectionList= (props) => {
       let index = todoList.findIndex(item => item.id === id);
       let updatedValue = {
         id, 
-        type: "event",
+        type: "video",
         value: value
       }
       let tempList = [...todoList.slice(0, index), updatedValue, ...todoList.slice(index + 1)];
@@ -185,9 +187,11 @@ const AddSectionList= (props) => {
     }
     
     const deleteItem = (id) => {
-      setTodoList(todoList.filter(item => item.id !== id));
+      let temp = todoList.filter(item => item.id !== id)
+      setTodoList(temp);
+      props.setStoreToDoList(props.sectionId, temp);
     }
-    const elementBuilder = (str, id, index) => {
+    const elementBuilder = (str, id, index, value) => {
         switch(str){
             case "edit":
               return <Text
@@ -204,6 +208,7 @@ const AddSectionList= (props) => {
                         index = {"image" + id + index}
                         sectionId = {props.sectionId}
                         deleteItemCallback = {deleteItem}
+                        imagesrc = {value}
                       />
             case "attach":
               return <FileUpload
@@ -212,6 +217,7 @@ const AddSectionList= (props) => {
                         index = {"attach" + id + index}
                         sectionId = {props.sectionId}
                         deleteItemCallback = {deleteItem}
+                        value = {value}
                         />
             case "cursor":
               return <ButtonText
@@ -221,6 +227,7 @@ const AddSectionList= (props) => {
                           index = {"cursor" + id + index}
                           buttonEditerCallback = {buttonEditer}
                           deleteItemCallback = {deleteItem}
+                          value = {value}
                           />
             case "event":
               return <EventSection
@@ -229,6 +236,7 @@ const AddSectionList= (props) => {
                           index = {"event" + id + index}
                           eventEditerCallback = {eventEditer}
                           deleteItemCallback = {deleteItem}
+                          value  = {value}
                           />
             case "video":
               return <VideoSection
@@ -237,6 +245,7 @@ const AddSectionList= (props) => {
                         index = {"video" + id + index}
                         videoEditerCallback = {videoEditer}
                         deleteItemCallback = {deleteItem}
+                        value = {value}
                         />
             case "checked":
               return <Survey
@@ -245,6 +254,7 @@ const AddSectionList= (props) => {
                           index = {"survey" + id + index}
                           surveyEditerCallback = {surveyEditer}
                           deleteItemCallback = {deleteItem}
+                          value = {value}
                       />
             case "quote":
               return <Quote
@@ -253,6 +263,7 @@ const AddSectionList= (props) => {
                         index = {"quote" + id + index}
                         quoteEditerCallback = {quoteEditer}
                         deleteItemCallback = {deleteItem}
+                        value = {value}
                         />
           }
     }
@@ -278,7 +289,7 @@ const AddSectionList= (props) => {
                         }
                     >
                    
-                        { elementBuilder(item.type, item.id, index) }
+                        { elementBuilder(item.type, item.id, index, item.value) }
                     </div>
                 )}
             </Draggable>)
@@ -296,4 +307,4 @@ const AddSectionList= (props) => {
     
 }
 
-export default connect(null, {setDetailedTodoList})(AddSectionList)
+export default connect(null, {setDetailedTodoList, setStoreToDoList})(AddSectionList)

@@ -24,6 +24,7 @@ import {
   createNewBulletin,
   getBulletins,
   clearReduxStore,
+  setCurrentTodoList,
 } from '../../actions/bulletins';
 import {ExclamationCircleFilled} from "@ant-design/icons";
 
@@ -81,8 +82,8 @@ const Main = (props) => {
     {
       const decoded = jwtDecode(token);
       let user_id = decoded.user.id;
-      setUserid(user_id);
       props.getBulletins(user_id);
+      setUserid(user_id);
     }
   },[])
 
@@ -106,10 +107,13 @@ const Main = (props) => {
   const [bulletinItem, setBulletinItem] = useState({});
   const [editingPanel, setEditingPanel] = useState("");
   const [confirmsave, setConfirmsave] = useState(false);
-  const [userid, setUserid] = useState("");
   const [content, setContent] = useState([]);
   const [toolbarvisible, setToolbarVisible] = useState(false);
+  const [userid, setUserid] = useState("");
  
+  useEffect(() => {
+    if(!newbulletin && userid !== "") props.getBulletins(userid);
+  },[newbulletin])
   const showModal = () => {
     setOpen(true);
   };
@@ -209,6 +213,12 @@ const Main = (props) => {
         ),
       },
   ];
+
+  const changeToEditSection = (id) => {
+    let index = props.retrived_data.findIndex(item => item._id === id);
+    setNewbulletin(true);
+    props.setCurrentTodoList(props.retrived_data[index]);
+  }
 
     return(
         <div className='main-container'>
@@ -367,7 +377,7 @@ const Main = (props) => {
                   <TabPane tab="UPCOMING" key="1">
                     <Upcoming 
                       callback = {showModal}
-                      editpageCallback = {() => setNewbulletin(true)}
+                      editpageCallback = {(id) => changeToEditSection(id)}
                     />
                   </TabPane>
                   <TabPane tab="PAST" key="2">
@@ -406,6 +416,7 @@ const mapStateToProps = (state) => ({
   token: state.auth.token,
   bulletins: state.builletins,
   save_success: state.builletins.save_success,
+  retrived_data: state.retrieve.retrived_data,
 })
 
 export default connect(mapStateToProps, {
@@ -414,4 +425,5 @@ export default connect(mapStateToProps, {
   createNewBulletin,
   getBulletins,
   clearReduxStore,
+  setCurrentTodoList,
 })(Main)

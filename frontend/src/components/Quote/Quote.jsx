@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import './Quote.scss';
-import { DeleteFilled, DragOutlined } from "@ant-design/icons";
+import { DeleteFilled } from "@ant-design/icons";
 
 const Quote = (props) => {
     const [visible, setVisible] = useState(false);
@@ -15,6 +15,12 @@ const Quote = (props) => {
     useEffect(() => {
         props.quoteEditerCallback(props.id, content, writer);
     },[content, writer])
+
+    useEffect(() => {
+        if(props.value.content) setContent(props.value.content);
+        if(props.value.text) setWriter(props.value.text);
+    },[props.value])
+
     return(
         <div 
             className="quote-container"
@@ -27,6 +33,7 @@ const Quote = (props) => {
                 placeholder="Don't dig up in doubt what you planed in faith"
                 name = "content"
                 onChange={onChange}
+                value={content}
             />
             <input
                 type="text"
@@ -34,6 +41,7 @@ const Quote = (props) => {
                 placeholder="Elisabeth Elliot"
                 name = "writer"
                 onChange={onChange}
+                value={writer}
             />
             {visible ?
                 <div style={{display: "inline"}}>

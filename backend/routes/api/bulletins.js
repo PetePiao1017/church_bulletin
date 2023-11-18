@@ -3,7 +3,7 @@ const router = express.Router();
 
 const Bulletin = require('../../models/Bulletin');
 
-// @route    POST api/bulletin/new
+// @route    PUT api/bulletins
 // @desc     Put New data to the Bulletin
 // @access   Private
 router.post('/new', async (req, res) => {
@@ -27,7 +27,23 @@ router.post('/new', async (req, res) => {
     }
 })
 
-// @route    POST api/bulletin/retrieve
+// @route    DELETE api/bulletins
+// @desc     Delete Bulletin
+// @access   Private
+router.post('/del', async (req, res) => {
+    try{
+        const {user_id} = req.body;
+
+        const deletedBulletin = await Bulletin.findOneAndDelete({_id: user_id})
+        Bulletin.find({}).then(data => res.status(200).send({data})).catch(err => console.log(err))
+    }
+    catch(err){
+        res.status(404).send({err})
+    }
+})
+
+
+// @route    POST api/bulletins/retrieve
 // @desc     Get All available bulletins
 // @access   Private
 
@@ -37,7 +53,6 @@ router.post('/retrieve', async (req, res) => {
         const bulletin = await Bulletin.find({user_id : userid});
     
         if(bulletin){
-            console.log("bulletin", bulletin)
             res.status(200).send(bulletin);
         }
     }

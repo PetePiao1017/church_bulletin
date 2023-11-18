@@ -11,6 +11,8 @@ import {
     SET_SMALL_SECTION_DATA,
     DELETE_IMAGE_URL,
     SAVE_BULLETIN_SUCCESS,
+    SET_CURRENT_TODOLIST,
+    SET_DELTE_AFTER_TODOLIST,
   } from "../actions/types";
 
 const initialState = {
@@ -188,6 +190,36 @@ function bulletinsReducer (state = initialState, action) {
             ...state,
             save_success: true,
           }
+        case SET_CURRENT_TODOLIST:
+          const {header_date, header_imageurl, header_title, todoList} = payload; 
+          return {
+            ...state,
+            header_date,
+            header_imageurl,
+            header_title,
+            todoList,
+            bulletein_id: payload._id
+          }
+        case SET_DELTE_AFTER_TODOLIST:
+          let {list} = payload;
+          let section_id = payload.id
+          let section_Index = state.todoList.findIndex(item => item.id === section_id);
+          let updatedSectionValue = {
+            id: section_id,
+            type: "Add Section",
+            data: list
+          }
+
+          let updatedSectionTodoList = [
+            ...state.todoList.slice(0, section_Index),
+            updatedSectionValue,
+            ...state.todoList.slice(section_Index + 1)
+          ]
+          return {
+            ...state,
+            todoList: updatedSectionTodoList
+          }
+
         default:
           return state;
       }

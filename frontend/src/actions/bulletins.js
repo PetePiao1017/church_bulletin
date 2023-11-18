@@ -13,6 +13,8 @@ import {
     SET_SECTION_IMAGE_UPLOAD,
     SET_SMALL_SECTION_DATA,
     DELETE_IMAGE_URL,
+    SET_CURRENT_TODOLIST,
+    SET_DELTE_AFTER_TODOLIST,
 } from './types';
 
 import axios from 'axios';
@@ -156,5 +158,30 @@ export const setDeleteImageUrl = (id, category, dataType, imageUrl) => async (di
     dispatch({
         type: DELETE_IMAGE_URL,
         payload: {id, category}
+    })
+}
+
+
+export const setCurrentTodoList = (data) =>  async (dispatch) => {
+    dispatch({
+        type: SET_CURRENT_TODOLIST,
+        payload: data
+    })
+}
+
+export const deleteBulletin = (id) => async (dispatch) => {
+    const res = await api.post('./bulletins/del', {user_id: id});
+
+    dispatch({
+        type: RETRIEVE_DATA,
+        payload: res.data.data
+    })
+    
+}
+
+export const setStoreToDoList = (id, list) => async (dispatch) => {
+    dispatch({
+        type: SET_DELTE_AFTER_TODOLIST,
+        payload: {id, list}
     })
 }

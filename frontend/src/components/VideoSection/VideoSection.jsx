@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import './VideoSection.scss';
-import { DeleteFilled, DragOutlined } from "@ant-design/icons";
+import { DeleteFilled } from "@ant-design/icons";
 
 const VideoSection = (props) => {
     const [visible, setVisible] = useState(false);
@@ -15,11 +15,12 @@ const VideoSection = (props) => {
             onFocus={() => setVisible(true)}
             onBlur={() => setVisible(false)}
         >
-            <input 
+            <input
                 type = "text"
                 className="video-link"
                 placeholder="Type or Paste your video link"
                 onChange={onChange}
+                value={props.value}
                 />
             {visible ?
                 <div style={{display: "inline"}}>

@@ -38,38 +38,40 @@ const Upcoming = (props) => {
     }
 
     useEffect(() => {
-        console.log("abcd")
-        // const todayObj = {
-        //     header_date: convertDate(),
-        //     header_title: "",
-        //     header_imageurl: "",
-        //     usre_id: 'today',
-        //     _id: '',
-        //     list_category: null
-        // }
-        // let temp = props.data;
+        if(props.data.retrived_data.length !== 0){
+            const todayObj = {
+                header_date: convertDate(),
+                header_title: "",
+                header_imageurl: "",
+                usre_id: 'today',
+                _id: '',
+                todoList: null
+            }
+            let temp = props.data.retrived_data;
 
-        // let index = temp.findIndex(item => item.header_date === convertDate());
+    
+            let index = temp.findIndex(item => item.header_date === convertDate());
+    
+            if(index !== -1) setActive(temp[index])
+    
+            temp = [...temp, todayObj];
 
-        // if(index !== -1) setActive(temp[index])
+    
+            temp.sort((a,b) => {
+                const dateA = new Date(a.header_date);
+                const dateB = new Date(b.header_date);
+    
+                return dateA - dateB; 
+            });
+    
+            
+            let todayIndex = temp.findIndex(item => item.usre_id === "today");
 
-        // temp.push(todayObj);
-
-        // temp.sort((a,b) => {
-        //     const dateA = new Date(a.header_date);
-        //     const dateB = new Date(b.header_date);
-
-        //     return dateA - dateB; 
-        // });
-
-        
-        // let todayIndex = temp.findIndex(item => item.usre_id === "today");
-
-        // setUpcoming(temp.slice(todayIndex+1,temp.length));
-
-        // setPast(temp.slice(0, todayIndex - 1));
-
-
+    
+            setUpcoming(temp.slice(todayIndex+1,temp.length));
+    
+            setPast(temp.slice(0, todayIndex - 1));
+        }
     },[props.data])
 
 
@@ -88,24 +90,28 @@ const Upcoming = (props) => {
             <Divider />
             <div className='bulletin-preview'>
                 <Row>
-                    <Col span = {7} style={{padding: "20px"}}>
+                    <Col span = {6} style={{padding: "20px"}}>
                         <Device  
                             data = {!active ? past[past.length] : active } 
                             active = {true}
-                            editBulleteinCallback = {props.editpageCallback}
+                            editBulleteinCallback = {(id) => props.editpageCallback(id)}
                         />
                     </Col>
-                    <Col span = {17}>
+                    <Col span = {18}>
                         <Row wrap = {true} style={{padding: "10px", background:"#ECF1F7"}}>
                             {
-                                upcoming.map(item => {
+                                upcoming.map((item, index) => {
                                     return(
-                                        <Col span = {8} style={{marginBottom: "15px"}}>
-                                            <Device 
+                                        <Col 
+                                            span = {7} 
+                                            style={{marginBottom: "15px"}} 
+                                            key={index}
+                                        >
+                                            <Device
                                                 data = {item}
                                                 active = {false}
                                                 dateDifference = {calculateDifferentDays(item.header_date)}
-                                                editBulleteinCallback = {props.editpageCallback}
+                                                editBulleteinCallback = {(id) => props.editpageCallback(id)}
                                             />
                                         </Col>
                                     )
@@ -120,7 +126,7 @@ const Upcoming = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-    data: state.builletins.retrieve
+    data: state.retrieve
 })
 
 export default connect(mapStateToProps)(Upcoming);

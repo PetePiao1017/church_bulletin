@@ -29,6 +29,23 @@ const ButtonText = (props) => {
     const showCursor = () => {
         document.getElementById(`${props.index}`).focus()
     }
+
+    const renderText = () => {
+        if(!value) return <p style={{fontSize:"25px", textAlign: "center", color:"white"}}>{props.value}</p>
+        else return <p style={{fontSize:"25px", textAlign: "center", color:"white"}}>{value}</p>
+    }
+
+    const renderPlaceHolder = () => {
+        console.log(props.value)
+        if(placeholdervisible === true && props.value === ""){
+            return <p 
+            className="placeholder"
+            onClick={() => showCursor()}    
+        >
+            Button Text
+        </p>
+        }
+    }
     return(
         <div 
             className="buttontext-container"
@@ -54,18 +71,10 @@ const ButtonText = (props) => {
                             onFocus={() => {setPlaceholderVisible(false); showInput()}}
                             onBlur = {() => lostFocus()}
                         />
-                        : ""
+                        : renderText()
                 }
-                {
-                    placeholdervisible ? 
-                    <p 
-                        className="placeholder"
-                        onClick={() => showCursor()}    
-                    >
-                        Button Text
-                    </p>
-                    : ""
-                }
+                
+                {renderPlaceHolder()}
             </div>
             {visible ?
                 <div style={{display: "inline"}}>

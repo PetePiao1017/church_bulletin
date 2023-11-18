@@ -6,6 +6,7 @@ import { Button } from "antd";
 import { setImageUrl,
         setDeleteImageUrl,
         setSmallSectionData,
+        setHeaderImageurl,
     } from "../../actions/bulletins";
 
 
@@ -106,4 +107,5 @@ export default connect(mapStateToProps, {
     setImageUrl, 
     setDeleteImageUrl,
     setSmallSectionData,
+    setHeaderImageurl,
 })(CustomUpload)

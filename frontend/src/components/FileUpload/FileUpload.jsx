@@ -23,6 +23,15 @@ function FileUpload(props) {
     }
   };
 
+  const renderFileName = () => {
+    if(!filename){
+      if(props.value){
+        return props.value
+      }
+      else return "Upload your file"
+    }
+    else return filename
+  }
   return (
     <div style={{ marginTop: '20px', marginBottom: '20px', border: "1px solid #57b0fb", padding:"5px", position: "relative"}}>
       <label 
@@ -41,7 +50,7 @@ function FileUpload(props) {
           <h3 
             style={{marginTop: "5%", marginBottom: "5%"}}
           >
-            {!filename ? "Upload your file" : filename}
+            {renderFileName()}
           </h3>
         </div>
         <input type="file" onChange={(e) => onSelectFile(e)} id={`file-upload${props.index}`} style={{ display: 'none' }} />
