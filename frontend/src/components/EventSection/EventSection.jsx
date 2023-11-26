@@ -41,10 +41,12 @@ const EventSection = (props) => {
     },[value]);
 
     useEffect(() => {
-        if(props.value.month) setMonth(props.value.month);
-        if(props.value.date) setDate(props.value.date);
-        if(props.value.title) setTitle(props.value.title);
-        if(props.value.detail) setDetail(props.value.detail);
+        if(props.value){
+            if(props.value.month) setMonth(props.value.month);
+            if(props.value.date) setDate(props.value.date);
+            if(props.value.title) setTitle(props.value.title);
+            if(props.value.detail) setDetail(props.value.detail);
+        }
     },[props.value])
 
     const items = [

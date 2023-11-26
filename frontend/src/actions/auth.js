@@ -8,7 +8,8 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   CLEAN_ERROR,
-  LOGOUT
+  LOGOUT,
+  UPDATE_PROFILE,
 } from './types';
 
 
@@ -103,5 +104,12 @@ export const setCleanErrors = () => async (dispatch) => {
   dispatch({
     type: CLEAN_ERROR,
     payload: null,
+  })
+}
+
+export const updateProfile = (formData) => async (dispatch) => {
+  dispatch({
+    type: UPDATE_PROFILE,
+    payload: formData
   })
 }

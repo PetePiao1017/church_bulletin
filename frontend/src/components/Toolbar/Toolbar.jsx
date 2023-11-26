@@ -81,7 +81,7 @@ const Toolbar = (props) =>{
                 setExplanation("Add an inspirational quote to  your note");
                 break
             default:
-                setExplanation("video");
+                setExplanation("");
                 break
             
         }

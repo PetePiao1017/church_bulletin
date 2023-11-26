@@ -1,162 +1,211 @@
-import React, {useState} from "react";
-import {Row, Col, Button, Input, Form} from 'antd';
+import React, {useState, useEffect} from 'react';
+import {Form, Input, Button, Radio} from 'antd';
+import { useNavigate } from "react-router-dom";
 import {connect} from 'react-redux';
 
+import { updateProfile } from '../../actions/auth';
 const Profile = (props) => {
-    const [formData, setFormData] = useState({
-        church_name: props.church_name,
-        church_url: props.church_url,
-        firstname: props.firstname,
-        lastname: props.lastname,
-        email: props.email,
-        password: props.password,
-        confirm_password: props.password,
-    });
-    const onFinish = (e) => {
-        props.register('');
-    };
-    const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
+    const navigate = useNavigate();
+
+    const [formData, setFormData] = useState({
+        church_name: '',
+        church_url: '',
+        firstname: '',
+        lastname: '',
+        email: '',
+        password: '',
+        confirm_password: '',
+        public: true,
+    });
+
+    const [value, setValue] = useState(1);
+
+    useEffect(() => {
+        if(props.user){
+            setFormData({
+                church_name: props.user.church_name,
+                church_url: props.user.church_url,
+                firstname: props.user.firstname,
+                lastname: props.user.lastname,
+                email: props.user.email,
+                password: '',
+                confirm_password: '',
+                public: props.user.public,
+            })
+        }
+    },[props.user])
+    const { 
+        church_name, 
+        church_url,
+        firstname,
+        lastname,
+        email,
+        password,
+        confirm_password,
+    } = formData;
+
+    const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+    
+    const onFinish = (e) => {
+        props.updateProfile(formData);
+    };
+    
+    const onRadioChange = (e) => {
+        setValue(e.target.value);
+        if(e.target.value === 2){
+            setFormData({
+                ...formData,
+                public: false,
+            })
+        }
+    }
     return(
-        <div className="profile">
-            <h3 style={{textAlign: "center"}}>Edit Profile</h3>
-            <Row>
-                <Col span = {4} />
-                <Col span = {16}>
-                    <Form
-                        name = "basic"
-                        layout="vertical"
-                        onFinish = {onFinish}
-                        autoComplete='off'
+        <div className='signup-container'>
+            <div className='signup'>
+                <h3 className='title'>Edit Your Profile</h3>
+                <Form
+                    name = "basic"
+                    layout="vertical"
+                    onFinish = {onFinish}
+                    autoComplete='off'
+                >
+                    <Form.Item 
+                        label="Church Name"
+                        rules = {[
+                            {   required: true, 
+                                message: 'Please input your Church name!'
+                            }
+                        ]}
                     >
-                        <Form.Item 
-                            label="Church Name"
-                            rules = {[
-                                {   required: true, 
-                                    message: 'Please input your Church name!'
-                                }
-                            ]}
-                        >
-                            <Input 
-                                type = "text"
-                                name = "church_name"
-                                value = {props.church_name}
-                                onChange={onChange}
-                            />
-                        </Form.Item>
-                        <Form.Item 
-                            label="Choose the website for your bulletins"
-                            name = "bulletins"
-                            rules = {[
-                                {   required: true, 
-                                    message: 'Please input your bulletins!'
-                                }
-                            ]}    
-                        >
-                            <Input 
-                                type = "text"
-                                name = "church_url"
-                                value = {props.church_url}
-                                onChange={onChange}
-                            />
-                        </Form.Item>
-                        <Form.Item 
-                            label="First Name"
+                        <Input 
+                            type = "text"
+                            name = "church_name"
+                            value = {church_name}
+                            onChange={onChange}
+                        />
+                    </Form.Item>
+                    <Form.Item 
+                        label="Choose the website for your bulletins"
+                        rules = {[
+                            {   required: true, 
+                                message: 'Please input your bulletins!'
+                            }
+                        ]}    
+                    >
+                        <Input 
+                            type = "text"
+                            name = "church_url"
+                            value = {church_url}
+                            onChange={onChange}
+                        />
+                    </Form.Item>
+                    <Form.Item 
+                        label="First Name"
+                        rules = {[
+                            {   required: true, 
+                                message: 'Please input your first name'
+                            }
+                        ]}    
+                    >
+                        <Input 
+                            type = "text"
                             name = "firstname"
-                            rules = {[
-                                {   required: true, 
-                                    message: 'Please input your first name'
-                                }
-                            ]}    
-                        >
-                            <Input 
-                                type = "text"
-                                name = "firstname"
-                                value = {props.firstname}
-                                onChange={onChange}
-                            />
-                        </Form.Item>
-                        <Form.Item 
-                            label="Last Name"
+                            value = {firstname}
+                            onChange={onChange}
+                        />
+                    </Form.Item>
+                    <Form.Item 
+                        label="Last Name"
+                        rules = {[
+                            {   required: true, 
+                                message: 'Please input your last name!'
+                            }
+                        ]}    
+                    >
+                        <Input 
+                            type = "text"
                             name = "lastname"
-                            rules = {[
-                                {   required: true, 
-                                    message: 'Please input your last name!'
-                                }
-                            ]}    
-                        >
-                            <Input 
-                                type = "text"
-                                name = "lastname"
-                                value = {props.lastname}
-                                onChange={onChange}
-                            />
-                        </Form.Item>
-                        <Form.Item 
-                            label="Email Address"
-                            name="email"
-                            rules = {[
-                                {   required: true, 
-                                    message: 'Please input your email!'
-                                }
-                            ]}
-                        >
-                            <Input 
-                                type = "text"
-                                name = "email"
-                                value = {props.email}
-                                onChange={onChange}
-                            />
-                        </Form.Item>
-                        <Form.Item 
-                            label="Input Password"
+                            value = {lastname}
+                            onChange={onChange}
+                        />
+                    </Form.Item>
+                    <Form.Item 
+                        label="Email Address"
+                        rules = {[
+                            {   required: true, 
+                                message: 'Please input your email!'
+                            }
+                        ]}
+                    >
+                        <Input 
+                            type = "text"
+                            name = "email"
+                            value = {email}
+                            onChange={onChange}
+                        />
+                    </Form.Item>
+                    <Form.Item 
+                        label="Input Password"
+                        rules = {[
+                            {   required: true, 
+                                message: 'Please input your password!'
+                            }
+                        ]}
+                    >
+                        <Input 
+                            type = "password"
                             name = "password"
-                            rules = {[
-                                {   required: true, 
-                                    message: 'Please input your password!'
-                                }
-                            ]}
-                        >
-                            <Input 
-                                type = "password"
-                                name = "password"
-                                value = {props.password}
-                                onChange={onChange}
-                            />
-                        </Form.Item>
-                        <Form.Item 
-                            label="Confirm Password"
+                            value = {password}
+                            onChange={onChange}
+                        />
+                    </Form.Item>
+                    <Form.Item 
+                        label="Confirm Password"
+                        rules = {[
+                            {   required: true, 
+                                message: 'Please confirm your password'
+                            }
+                        ]}
+                    >
+                        <Input 
+                            type = "password"
                             name = "confirm_password"
-                            rules = {[
-                                {   required: true, 
-                                    message: 'Please confirm your password'
-                                }
-                            ]}
-                        >
-                            <Input 
-                                type = "password"
-                                name = "confirm_password"
-                                value = {props.confirm_password}
-                                onChange={onChange}
-                            />
-                        </Form.Item>
-                        <Button type = "primary" style={{float: "right", marginBottom: "20px"}}>Submit</Button>
-                    </Form>
-                </Col>
-                <Col span = {4} />
-            </Row>
+                            value = {confirm_password}
+                            onChange={onChange}
+                        />
+                    </Form.Item>
+                    <Form.Item 
+                        label="Which one do you want"
+                    >
+                        <Radio.Group onChange={onRadioChange} value={value}>
+                            <Radio value={1}>Make Public to Everyone</Radio>
+                            <Radio value={2}>Make Private to specific users</Radio>
+                        </Radio.Group>
+                    </Form.Item>
+                    <Button 
+                        type = "primary" 
+                        htmlType='submit'
+                    >
+                        Submit
+                    </Button>
+                    <Button 
+                        type = "primary"
+                        onClick={() => navigate('/main', {replace: true})}
+                        style={{float: "right"}}
+                    >
+                        Go Back
+                    </Button>
+                </Form>
+            </div>
         </div>
     )
 }
 
 
 const mapStateToProps = (state) => ({
-    church_name: state.auth.church_name,
-    church_url: state.auth.church_url,
-    firstname: state.auth.firstname,
-    lastname: state.auth.lastname,
-    email: state.auth.email,
-    paassword: state.auth.password,
-})
+    user: state.auth.user
+});
+  
 
-export default connect(mapStateToProps)(Profile)
+export default connect(mapStateToProps, {updateProfile})(Profile)

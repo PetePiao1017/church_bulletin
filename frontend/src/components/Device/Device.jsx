@@ -99,9 +99,25 @@ const Device = (props) => {
                                                                         </Col>
                                                                     </Row>
                                                                 case "video":
-                                                                    return <div className="video">
-                                                                            <p>{element.value}</p>
-                                                                        </div>
+                                                                    return <div 
+                                                                                className="video" 
+                                                                                style={{
+                                                                                    width: "100%", 
+                                                                                    height: "60px", 
+                                                                                    background:"#ffdde1",
+                                                                                    display: "flex",
+                                                                                    alignItems: "center",
+                                                                                    justifyContent: "center",
+                                                                                }}
+                                                                            >
+                                                                                <p style={{
+                                                                                    background: "white", 
+                                                                                    padding: "3px",
+                                                                                    borderRadius:"6px",
+                                                                                }}>
+                                                                                    {element.value}
+                                                                                </p>
+                                                                            </div>
                                                                 case "checked":
                                                                     return <div className="checked">
                                                                                 <h4>{element.value.title}</h4>
@@ -117,6 +133,7 @@ const Device = (props) => {
                                                                                                 name = "answer1"
                                                                                                 placeholder="Just a few"
                                                                                                 className="answer-text"
+                                                                                                value = {element.value.answer1}
                                                                                             />
                                                                                         </Radio>
                                                                                         <Radio value = "apple1" className="one-survey">
@@ -125,7 +142,7 @@ const Device = (props) => {
                                                                                                 name = "answer2"
                                                                                                 placeholder="Too many to bother trying"
                                                                                                 className="answer-text"
-                                                                                                
+                                                                                                value = {element.value.answer2}
                                                                                             />
                                                                                         </Radio>
                                                                                         <Radio value = "apple2" className="one-survey">
@@ -134,7 +151,7 @@ const Device = (props) => {
                                                                                                 name = "answer3"
                                                                                                 placeholder="I always bite it before I find out"
                                                                                                 className="answer-text"
-                                                                                                
+                                                                                                value = {element.value.answer3}
                                                                                             />
                                                                                         </Radio>
                                                                                     </Space>

@@ -25,10 +25,12 @@ const Survey = (props) => {
     },[title, answer1, answer2, answer3])
 
     useEffect(() => {
-        if(props.value.title) setTitle(props.value.title);
-        if(props.value.answer1) setAnswer1(props.value.answer1);
-        if(props.value.answer2) setAnswer2(props.value.answer2);
-        if(props.value.answer3) setAnswer3(props.value.answer3);
+        if(props.value){
+            if(props.value.title) setTitle(props.value.title);
+            if(props.value.answer1) setAnswer1(props.value.answer1);
+            if(props.value.answer2) setAnswer2(props.value.answer2);
+            if(props.value.answer3) setAnswer3(props.value.answer3);
+        }
     },[props.value])
     return (
         <div 

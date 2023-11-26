@@ -17,8 +17,10 @@ const Quote = (props) => {
     },[content, writer])
 
     useEffect(() => {
-        if(props.value.content) setContent(props.value.content);
-        if(props.value.text) setWriter(props.value.text);
+        if(props.value){
+            if(props.value.content) setContent(props.value.content);
+            if(props.value.text) setWriter(props.value.text);
+        }
     },[props.value])
 
     return(

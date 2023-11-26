@@ -9,21 +9,36 @@ const Bulletin = require('../../models/Bulletin');
 router.post('/new', async (req, res) => {
     
     const {bulletins, userId} = req.body;
-    const bulletin = new Bulletin(
-        {
-            user_id: userId,
-            header_date: bulletins.header_date,
+    let flag = false;
+    await Bulletin
+        .updateOne({_id : bulletins.bulletein_id}, {
+            eader_date: bulletins.header_date,
             header_imageurl: bulletins.header_imageurl,
             header_title: bulletins.header_title,
             todoList: bulletins.todoList,
-        }
-    );
-
-    let result = await bulletin.save();
-
+        })
+        .then(result => {
+            result.nModified == 1 ? flag = true : false;
+            res.status(200).send({success: true});
+        })
+        .catch(err => console.log(err))
+    if(!flag) {
+        const bulletin = new Bulletin(
+            {
+                user_id: userId,
+                header_date: bulletins.header_date,
+                header_imageurl: bulletins.header_imageurl,
+                header_title: bulletins.header_title,
+                todoList: bulletins.todoList,
+            }
+        );
     
-    if(result){
-        res.status(200).send({success: true});
+        let result = await bulletin.save();
+    
+        
+        if(result){
+            res.status(200).send({success: true});
+        }
     }
 })
 

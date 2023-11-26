@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Form, Input, Button, notification} from 'antd';
+import {Form, Input, Button, notification, Radio} from 'antd';
 import { useNavigate } from "react-router-dom";
 import {connect} from 'react-redux';
 import { register } from '../../actions/auth';
@@ -39,7 +39,10 @@ const Signup = (props) => {
         email: '',
         password: '',
         confirm_password: '',
+        public: true,
     });
+
+    const [value, setValue] = useState(1);
 
     const { 
         church_name, 
@@ -57,6 +60,16 @@ const Signup = (props) => {
         props.register(formData);
     };
     
+    const onRadioChange = (e) => {
+        setValue(e.target.value);
+        if(e.target.value === 2){
+            setFormData({
+                ...formData,
+                public: false,
+            })
+        }
+    }
+
     return(
         <div className='signup-container'>
             {contextHolder}
@@ -185,6 +198,14 @@ const Signup = (props) => {
                         sign in 
                         </span>
                     </p>
+                    <Form.Item 
+                        label="Which one do you want"
+                    >
+                        <Radio.Group onChange={onRadioChange} value={value}>
+                            <Radio value={1}>Make Public to Everyone</Radio>
+                            <Radio value={2}>Make Private to specific users</Radio>
+                        </Radio.Group>
+                    </Form.Item>
                     <Button 
                         type = "primary" 
                         htmlType='submit'

@@ -8,9 +8,8 @@ const Upcoming = (props) => {
     
     const [upcoming, setUpcoming] = useState([]);
 
-    const[past, setPast] = useState([]);
+    const[active, setActive] = useState([]);
 
-    const [active, setActive] = useState(null);
 
     const convertDate = () => {
         var x = new Date();
@@ -28,52 +27,56 @@ const Upcoming = (props) => {
         const date2 = new Date(dateString);
 
         // Calculate the time difference in milliseconds
-        const timeDifference = date2.getTime() - date1.getTime();
-
-        // Convert the time difference to days
-        const daysDifference = timeDifference / (1000 * 60 * 60 * 24);
+        const daysDifference = date2.getDate() - date1.getDate();
 
         return daysDifference;
 
     }
 
+    const calculateDatedifference = (date, today) => {
+        const dateObj = new Date(date);
+        const todayObj = new Date(today);
+    
+        return todayObj.getDate() - dateObj.getDate();
+    }
+
+    const compare = (a, b) => {
+        if(a.header_date > b.header_date) return 1;
+        if(a.header_date < b.header_date) return -1;
+        return 0;
+    }
+
     useEffect(() => {
         if(props.data.retrived_data.length !== 0){
-            const todayObj = {
-                header_date: convertDate(),
-                header_title: "",
-                header_imageurl: "",
-                usre_id: 'today',
-                _id: '',
-                todoList: null
+            const today = new Date().toISOString().split('T')[0];
+
+
+            let index = -1;
+            let temp = 1000;
+
+            for (let i = 0; i < props.data.retrived_data.length; i++) {
+                if (props.data.retrived_data[i].header_date < today) {
+                    let difference = calculateDatedifference(props.data.retrived_data[i].header_date, today);
+                    if(difference < temp) {
+                        temp = difference;
+                        index = i;
+                    }
+                } 
             }
-            let temp = props.data.retrived_data;
-
-    
-            let index = temp.findIndex(item => item.header_date === convertDate());
-    
-            if(index !== -1) setActive(temp[index])
-    
-            temp = [...temp, todayObj];
-
-    
-            temp.sort((a,b) => {
-                const dateA = new Date(a.header_date);
-                const dateB = new Date(b.header_date);
-    
-                return dateA - dateB; 
-            });
-    
-            
-            let todayIndex = temp.findIndex(item => item.usre_id === "today");
-
-    
-            setUpcoming(temp.slice(todayIndex+1,temp.length));
-    
-            setPast(temp.slice(0, todayIndex - 1));
+            if(index !== -1){
+                setActive(props.data.retrived_data[index]);
+                let tempObj = props.data.retrived_data[index];
+                props.data.retrived_data.sort(compare);
+                index = props.data.retrived_data.findIndex(item => item.header_date === tempObj.header_date);
+                setUpcoming(props.data.retrived_data.slice(index + 1));
+            }
+            else setUpcoming(props.data.retrived_data.reverse())
         }
     },[props.data])
 
+    useEffect(() => {
+        console.log("@#@@", upcoming);
+    },[upcoming])
 
     return(
         <div className='upcoming-container'>
@@ -91,11 +94,15 @@ const Upcoming = (props) => {
             <div className='bulletin-preview'>
                 <Row>
                     <Col span = {6} style={{padding: "20px"}}>
-                        <Device  
-                            data = {!active ? past[past.length] : active } 
-                            active = {true}
-                            editBulleteinCallback = {(id) => props.editpageCallback(id)}
-                        />
+                        {active.length === 0 
+                            ? "" 
+                            :
+                            <Device  
+                                data = {active}
+                                active = {true}
+                                editBulleteinCallback = {(id) => props.editpageCallback(id)}
+                            />
+                        }
                     </Col>
                     <Col span = {18}>
                         <Row wrap = {true} style={{padding: "10px", background:"#ECF1F7"}}>
