@@ -4,9 +4,8 @@ import setAuthToken from './utils/setAuthToken';
 // Redux
 import { Provider } from 'react-redux';
 import store from './store';
-import { loadUser } from './actions/auth';
 import { LOGOUT } from './actions/types';
-
+import { loadUser } from './actions/auth';
 
 
 function App() {

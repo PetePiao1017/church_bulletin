@@ -34,7 +34,9 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.4.2",
     "sass": "^1.69.4",
+    "socket.io-client": "^4.7.2",
     "styled-components": "^6.1.0",
+    "twilio": "^4.19.0",
     "uuid": "^9.0.1",
     "web-vitals": "^2.1.4"
   },

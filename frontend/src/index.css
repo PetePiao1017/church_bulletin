@@ -2,3 +2,6 @@ html, body {
     height: 100%;
     margin:0px;
 }
+.ant-modal{
+    width: 600px!important;
+}

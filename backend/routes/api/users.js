@@ -34,7 +34,6 @@ router.post(
         lastname,
         email, 
         password,
-        public
     } = req.body;
 
 
@@ -53,7 +52,6 @@ router.post(
         lastname,
         email,
         password,
-        public
       });
 
       const salt = await bcrypt.genSalt(10);

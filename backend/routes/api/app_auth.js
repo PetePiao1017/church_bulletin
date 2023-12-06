@@ -1,50 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const config = require('config');
 
 const AppUser = require('../../models/Appuser');
 const User = require('../../models/User');
-
-// @route    POST /signup
-// @desc     Register User
-// @access   Public
-
-router.post('/signup',
-    async (req, res) => {
-        const {email, password} = req.body;
-        try{
-            let user = await AppUser.findOne({email});
-
-            if(user) {
-                return res.status(201).send({errors: "User already exists"})
-            }
-
-            else{
-                const payload = {email};
-                let app_user = new AppUser({
-                    email,
-                    password,
-                });
-
-                const salt = await bcrypt.genSalt(10);
-                app_user.password = await bcrypt.hash(password, salt);
-
-                await app_user.save();
-                jwt.sign(payload, config.get('jwtSecret'),{ expiresIn: '5 days' },
-                    (err, token) => {
-                        if (err) throw err;
-                        res.json({ token });
-                    }
-                )
-            }
-        }
-        catch(err){
-            res.status(201).send({errors: err})
-        }
-    }
-);
 
 
 // @route    POST /signin
@@ -55,7 +14,8 @@ router.post(
     '/signin',
     async (req, res) => {
       const { email, password } = req.body;
-      const temp_arr = []
+      let public = [];
+      let private = [];
       try {
         let user = await AppUser.findOne({ email });
   
@@ -72,16 +32,57 @@ router.post(
             .json({ errors: [{ msg: 'Invalid Credentials' }] });
         }
         else{
-            let user = await User.find();
-            user.map(item => {
+            let admin_user = await User.find();
+            admin_user.map(item => {
                 let tempObj = {
                     id: item._id,
                     name: item.church_name,
                 }
-                temp_arr.push(tempObj);
-            })
-            res.status(200).send({temp_arr});
+                public.push(tempObj);
+                let index = user.invited.indexOf(item._id);
+                if(index !== -1){
+                  private.push(tempObj);
+                }
+            });
+            console.log(public);
+            console.log(private);
+            res.status(200).send({public, private});
         }
+      } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+      }
+    }
+);
+
+router.post(
+    '/signup',
+    async (req, res) => {
+      const { name, email, phonenumber, password } = req.body;
+      try {
+        let user = await AppUser.findOne({ email });
+  
+        if (user) {
+          return res
+            .status(201)
+            .json({ errors: [{ msg: 'User has already exists' }] });
+        }
+        
+        user = new AppUser({
+          fullname: name,
+          email,
+          phonenumber,
+          password,
+        })
+
+        const salt = await bcrypt.genSalt(10);
+
+        user.password = await bcrypt.hash(password, salt);
+
+        await user.save();
+
+        res.status(200).send({success: true});
+        
       } catch (err) {
         console.error(err.message);
         res.status(500).send('Server error');

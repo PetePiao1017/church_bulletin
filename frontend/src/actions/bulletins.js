@@ -7,7 +7,7 @@ import {
     HEADER_IMAGE_URL,
 
     SAVE_BULLETIN_SUCCESS,
-
+    SEND_SMS,
     SET_TODO_LIST,
     SET_DETAILED_TODO_LIST,
     SET_SECTION_IMAGE_UPLOAD,
@@ -15,6 +15,8 @@ import {
     DELETE_IMAGE_URL,
     SET_CURRENT_TODOLIST,
     SET_DELTE_AFTER_TODOLIST,
+    SET_PHONE_NUMBER,
+    SET_DATA_SOURCE,
 } from './types';
 
 import axios from 'axios';
@@ -44,8 +46,8 @@ export const setDetailedTodoList = (id,data) => async (dispatch) => {
 }
 
 // GET BULLETIN
-export const getBulletins = (userid) =>  async (dispatch) => {
-    let res = await api.post('/bulletins/retrieve', {userid});
+export const getBulletins = (userid, access) =>  async (dispatch) => {
+    let res = await api.post('/bulletins/retrieve', {userid, access});
     dispatch({
         type: RETRIEVE_DATA,
         payload: res.data
@@ -91,8 +93,8 @@ export const setSmallSectionData = (id, category, dataType, value) => async (dis
 }
 
 // CREATE NEW BULLETIN
-export const createNewBulletin = (bulletins, userId) => async (dispatch) => {
-    let res = await api.post('/bulletins/new', {bulletins, userId});
+export const createNewBulletin = (bulletins, userId, access) => async (dispatch) => {
+    let res = await api.post('/bulletins/new', {bulletins, userId, access});
     if(res.data.success){
         dispatch({
             type: SAVE_BULLETIN_SUCCESS,
@@ -185,3 +187,43 @@ export const setStoreToDoList = (id, list) => async (dispatch) => {
         payload: {id, list}
     })
 }
+
+export const setPhoneNumber = (data) => async (dispatch) => {
+    dispatch({
+        type: SET_PHONE_NUMBER,
+        payload: data
+    })
+}
+
+export const sendSMS = (number, user_id) => async (dispatch) => {
+    const result = await api.post('./bulletins/sms', {number, user_id});
+    dispatch({
+        type: SEND_SMS,
+        payload: number,
+    })
+}
+
+
+export const setDataSource = () => async (dispatch) => {
+    const result = await api.get('/auth/app');
+    
+    dispatch({
+        type: SET_DATA_SOURCE,
+        payload: result.data.data,
+    })
+}
+
+export const sendInvitation = (number, church_name, id, userId) =>  async (dispatch) => {
+    const result = await api.post('./bulletins/invitation', {number, church_name, id, userId});
+}
+
+
+export const acceptInvite = (appuser_id, user_id) => async (dispatch) => {
+    const result = api.post('./bulletins/invite_accept', {appuser_id, user_id});
+}
+
+export const rejectInvite = (appuser_id, user_id) => async (dispatch) => {
+    // const result = api.post('./bulletins/invite', {appuser_id, user_id});
+}
+
+

@@ -1,16 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {connect} from 'react-redux';
-
 import "./Device.scss"
 import { DeleteFilled, RightOutlined } from "@ant-design/icons";
 import {Text} from '../../components';
 import { Button, Row, Col, Space, Radio } from "antd";
 import { convertDate } from "../../utils/convertDate";
 
-import {deleteBulletin} from '../../actions/bulletins'
+import {deleteBulletin, sendSMS} from '../../actions/bulletins'
 
 
 const Device = (props) => {
+    const [number, setNumber] = useState([]);
+    const [user_id, setUserid] = useState("");
+    useEffect(() => {
+        if(props.data){
+            setNumber(props.data.number);
+        }
+    },[props.data])
+
+
+    useEffect(() => {
+        if(props.auth.user) {
+            setUserid(props.auth.user._id);
+        }
+    },[props.auth])
+
     return(
        <>
         {
@@ -43,7 +57,6 @@ const Device = (props) => {
                                     </div>
                                     : ""
                                 }
-                                
                                 {
                                     props.data.todoList ? props.data.todoList.map((item, index) => {
                                         if(item.type !== "Add Section"){
@@ -187,11 +200,12 @@ const Device = (props) => {
             : ""
         }
        </>
-        
     )
 }
 
+const mapStateToProps = (state) => ({
+    auth: state.auth,
+})
 
-
-export default connect(null, {deleteBulletin})(Device);
+export default connect(mapStateToProps, {deleteBulletin, sendSMS})(Device);
 

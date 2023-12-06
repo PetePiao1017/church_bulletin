@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import {connect} from 'react-redux';
-import {Button, Divider, Row, Col} from 'antd';
+import {Button, Divider, Row, Col, Modal, Table, Space} from 'antd';
 import { Device } from '../../components';
+import { setDataSource, sendInvitation } from '../../actions/bulletins';
+
+const { Column } = Table;
+
 
 
 const Upcoming = (props) => {
@@ -10,7 +14,20 @@ const Upcoming = (props) => {
 
     const[active, setActive] = useState([]);
 
+    const [tabledata, setTableData] = useState([]);
+    const [userId, setUserId] = useState("");
+    const [church_name, setChurchName] = useState("");
+    const [pending, setPending] = useState([]);
 
+    const renderInvitation = (str, key) => {
+        let index = pending.indexOf(key);
+        if(index === -1){
+            return checkInvited(str) ? "Invited" : "Invite"
+        }
+        else{
+            return "Pending..."
+        }
+    }
     const convertDate = () => {
         var x = new Date();
         var y = x.getFullYear().toString();
@@ -25,11 +42,11 @@ const Upcoming = (props) => {
     const calculateDifferentDays = (dateString) => {
         const date1 = new Date(convertDate());
         const date2 = new Date(dateString);
+        let Difference_In_Time = date2.getTime() - date1.getTime(); 
+      
+        let Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24); 
 
-        // Calculate the time difference in milliseconds
-        const daysDifference = date2.getDate() - date1.getDate();
-
-        return daysDifference;
+        return Difference_In_Days;
 
     }
 
@@ -45,6 +62,18 @@ const Upcoming = (props) => {
         if(a.header_date < b.header_date) return -1;
         return 0;
     }
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+    const handleOk = () => {
+        setIsModalOpen(false);
+    };
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
 
     useEffect(() => {
         if(props.data.retrived_data.length !== 0){
@@ -75,18 +104,59 @@ const Upcoming = (props) => {
     },[props.data])
 
     useEffect(() => {
-        console.log("@#@@", upcoming);
-    },[upcoming])
+        props.setDataSource();
+    },[])
+
+    useEffect(() => {
+        if(props.appuser){
+            let tempArr = [];
+            props.appuser.forEach((item, index) =>  {
+                let tempObj = {
+                    key: index.toString(),
+                    id: item._id,
+                    fullName: item.fullname,
+                    email: item.email,
+                    phone_number: item.phonenumber,
+                    invite: item.invited
+                }
+
+                tempArr.push(tempObj);
+            })
+            setTableData(tempArr);
+        }
+    },[props.appuser])
+
+    const checkInvited = (invite_arr) => {
+        let index = invite_arr.indexOf(userId);
+        if(index === -1) {
+            return false
+        }
+        else return true;
+    }
+
+    useEffect(() => {
+        if(props.user){
+            setUserId(props.user._id);
+            setChurchName(props.user.church_name);
+        }
+    },[props.user])
 
     return(
         <div className='upcoming-container'>
             <div className='new-bulletin-btn'>
                 <Button 
-                type='primary' 
-                style={{float:"right",marginRight:"20px"}}
-                onClick={() => props.callback()}
+                    type='primary' 
+                    style={{float:"right",marginRight:"20px"}}
+                    onClick={() => props.callback()}
                 >
-                Add New BulletIn
+                    Add New BulletIn
+                </Button>
+                <Button 
+                    type='primary' 
+                    style={{float:"right",marginRight:"20px"}}
+                    onClick={() => showModal()}
+                >
+                    Invite Users
                 </Button>
             </div>
             <br />
@@ -128,12 +198,43 @@ const Upcoming = (props) => {
                     </Col>
                 </Row>
             </div>
+            <Modal title="Invite Users to your bulletin" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                <Table dataSource={tabledata}>
+                    <Column title="Full Name" dataIndex="fullName" key="fullName" />
+                    <Column title="Email" dataIndex="email" key="email" />
+                    <Column title="Phone Number" dataIndex="phone_number" key="phone_number" />
+                    <Column
+                        title="Action"
+                        key="action"
+                        render={(_, record) => (
+                            <Space size="middle">
+                                <Button 
+                                    type = "primary"
+                                    disabled = {checkInvited(record.invite)}
+                                    onClick={() => {
+                                        props.sendInvitation(record.phone_number, church_name, record.id, userId);
+                                        let tempArr = [...pending, record.key]
+                                        setPending(tempArr);
+                                    }}
+                                >
+                                    {
+                                        renderInvitation(record.invite, record.key)
+                                        
+                                    }
+                                </Button>
+                            </Space>
+                        )}
+                    />
+                </Table>
+            </Modal>
         </div>
     )
 }
 
 const mapStateToProps = (state) => ({
-    data: state.retrieve
+    data: state.retrieve,
+    appuser: state.builletins.appuser,
+    user: state.auth.user,
 })
 
-export default connect(mapStateToProps)(Upcoming);
+export default connect(mapStateToProps, {setDataSource, sendInvitation})(Upcoming);

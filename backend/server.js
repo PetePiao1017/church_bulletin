@@ -1,9 +1,17 @@
 const express = require('express');
+const http = require('http');
+const socketIO = require('socket.io');
 const connectDB = require('./config/db');
 const cors = require('cors');
-const path = require('path');
 
 const app = express();
+const server = http.createServer(app);
+const io = socketIO(server, {
+  cors: {
+    origin: '*', // Set appropriate origin if '*' doesn't work for you
+  },
+});
+
 // Connect Database
 connectDB();
 
@@ -33,6 +41,24 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
+// Socket.io connection
+io.on('connection', (socket) => {
+  console.log('A user connected');
+
+  // Example: Handle a chat message event
+  socket.on('chat message', (msg) => {
+    console.log('Message from client:', msg);
+
+    // Broadcast the message to all connected clients
+    io.emit('chat message', msg);
+  });
+
+  // Handle disconnect event
+  socket.on('disconnect', () => {
+    console.log('User disconnected');
+  });
+});
+
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+server.listen(PORT, () => console.log(`Server started on port ${PORT}`));

@@ -15,6 +15,10 @@ const BulletinSchema = new mongoose.Schema({
   header_imageurl: {
     type: String,
   },
+  access: {
+    type: String,
+  },
+  number: [{}],
   todoList: [{}]
 });
 

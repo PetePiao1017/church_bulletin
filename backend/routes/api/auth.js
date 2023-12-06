@@ -7,6 +7,7 @@ const config = require('config');
 const { check, validationResult } = require('express-validator');
 
 const User = require('../../models/User');
+const AppUser = require('../../models/Appuser');
 
 // @route    GET api/auth
 // @desc     Get user by token
@@ -73,5 +74,16 @@ router.post(
     }
   }
 );
+
+router.get('/app', async (req, res) => {
+  try {
+    const data = await AppUser.find().select('-password -date');
+
+    res.status(200).send({data});
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
+});
 
 module.exports = router;

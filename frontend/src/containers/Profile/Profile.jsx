@@ -16,7 +16,6 @@ const Profile = (props) => {
         email: '',
         password: '',
         confirm_password: '',
-        public: true,
     });
 
     const [value, setValue] = useState(1);
@@ -31,7 +30,6 @@ const Profile = (props) => {
                 email: props.user.email,
                 password: '',
                 confirm_password: '',
-                public: props.user.public,
             })
         }
     },[props.user])
@@ -56,7 +54,6 @@ const Profile = (props) => {
         if(e.target.value === 2){
             setFormData({
                 ...formData,
-                public: false,
             })
         }
     }
@@ -174,14 +171,6 @@ const Profile = (props) => {
                             value = {confirm_password}
                             onChange={onChange}
                         />
-                    </Form.Item>
-                    <Form.Item 
-                        label="Which one do you want"
-                    >
-                        <Radio.Group onChange={onRadioChange} value={value}>
-                            <Radio value={1}>Make Public to Everyone</Radio>
-                            <Radio value={2}>Make Private to specific users</Radio>
-                        </Radio.Group>
                     </Form.Item>
                     <Button 
                         type = "primary" 

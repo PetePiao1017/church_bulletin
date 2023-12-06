@@ -3,7 +3,7 @@ import {
     HEADER_DATE,
     HEADER_DELETE_IMAGE_URL,
     CLEAR_REDUX_STORE,
-
+    SET_PHONE_NUMBER,
     HEADER_TITLE,
     SET_TODO_LIST,
     SET_DETAILED_TODO_LIST,
@@ -13,6 +13,7 @@ import {
     SAVE_BULLETIN_SUCCESS,
     SET_CURRENT_TODOLIST,
     SET_DELTE_AFTER_TODOLIST,
+    SET_DATA_SOURCE,
   } from "../actions/types";
 
 const initialState = {
@@ -21,7 +22,7 @@ const initialState = {
     header_title: '',
     header_imageurl: '',
     bulletein_id: '',
-
+    appuser: [],
     todoList: [],
 
     save_success: false,
@@ -219,7 +220,11 @@ function bulletinsReducer (state = initialState, action) {
             ...state,
             todoList: updatedSectionTodoList
           }
-
+        case SET_DATA_SOURCE:
+          return {
+            ...state,
+            appuser: payload,
+          }
         default:
           return state;
       }

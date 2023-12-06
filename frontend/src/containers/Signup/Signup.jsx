@@ -39,7 +39,6 @@ const Signup = (props) => {
         email: '',
         password: '',
         confirm_password: '',
-        public: true,
     });
 
     const [value, setValue] = useState(1);
@@ -65,7 +64,6 @@ const Signup = (props) => {
         if(e.target.value === 2){
             setFormData({
                 ...formData,
-                public: false,
             })
         }
     }
@@ -198,14 +196,6 @@ const Signup = (props) => {
                         sign in 
                         </span>
                     </p>
-                    <Form.Item 
-                        label="Which one do you want"
-                    >
-                        <Radio.Group onChange={onRadioChange} value={value}>
-                            <Radio value={1}>Make Public to Everyone</Radio>
-                            <Radio value={2}>Make Private to specific users</Radio>
-                        </Radio.Group>
-                    </Form.Item>
                     <Button 
                         type = "primary" 
                         htmlType='submit'
