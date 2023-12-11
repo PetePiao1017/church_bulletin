@@ -28,14 +28,23 @@ const Announcepreview = (props) => {
     },[props.todoList]);
 
     return (
-            <div className='announcement'>
+            <div className='announcement' style={{marginTop: "50px"}}>
                 <h3 className='app-header'>
                     {title === "" ? "Announcement" : title}
                 </h3>
-                <div className='app-image'>
+                <div 
+                    style={{
+                        width:"100%", 
+                        height:"200px", 
+                        background:"rgb(226, 232, 240)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center"
+                    }}
+                >
                     {
                         imageUrl === ""
-                            ? <img src = "./gallery.png"  alt = "Gallery Image" />
+                            ? <img src = "./gallery.png"  alt = "Gallery Image" style = {{width : "50px", height:"50px"}} />
                             : <img src = {imageUrl} alt = "preview" style = {{width : "100%", height:"100%"}} />
                     }
                 </div>

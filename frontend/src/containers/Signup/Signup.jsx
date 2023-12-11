@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Form, Input, Button, notification, Radio} from 'antd';
+import {Form, Input, Button, notification} from 'antd';
 import { useNavigate } from "react-router-dom";
 import {connect} from 'react-redux';
 import { register } from '../../actions/auth';
@@ -28,26 +28,19 @@ const Signup = (props) => {
     const navigate = useNavigate();
 
     const signin = () => {
-        navigate('/signin', {replace:true});
+        navigate('/', {replace:true});
     }
 
     const [formData, setFormData] = useState({
-        church_name: '',
-        church_url: '',
-        firstname: '',
-        lastname: '',
+        name: '',
         email: '',
         password: '',
         confirm_password: '',
     });
 
-    const [value, setValue] = useState(1);
 
     const { 
-        church_name, 
-        church_url,
-        firstname,
-        lastname,
+        name,
         email,
         password,
         confirm_password,
@@ -56,23 +49,19 @@ const Signup = (props) => {
     const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
     
     const onFinish = (e) => {
-        props.register(formData);
+        props.register(formData)
+            .then(data => {
+                if(data === "Pending"){
+                    navigate('/pending', {replace: true})
+                }
+            })
     };
     
-    const onRadioChange = (e) => {
-        setValue(e.target.value);
-        if(e.target.value === 2){
-            setFormData({
-                ...formData,
-            })
-        }
-    }
-
     return(
         <div className='signup-container'>
             {contextHolder}
             <div className='signup'>
-                <h3 className='title'>Let's get Started</h3>
+                <h3 className='title'>Please Register At St.Paul</h3>
                 <Form
                     name = "basic"
                     layout="vertical"
@@ -80,65 +69,17 @@ const Signup = (props) => {
                     autoComplete='off'
                 >
                     <Form.Item 
-                        label="Church Name"
+                        label="Full Name"
                         rules = {[
                             {   required: true, 
-                                message: 'Please input your Church name!'
+                                message: 'Please input your full name!'
                             }
                         ]}
                     >
                         <Input 
                             type = "text"
-                            name = "church_name"
-                            value = {church_name}
-                            onChange={onChange}
-                        />
-                    </Form.Item>
-                    <Form.Item 
-                        label="Choose the website for your bulletins"
-                        name = "bulletins"
-                        rules = {[
-                            {   required: true, 
-                                message: 'Please input your bulletins!'
-                            }
-                        ]}    
-                    >
-                        <Input 
-                            type = "text"
-                            name = "church_url"
-                            value = {church_url}
-                            onChange={onChange}
-                        />
-                    </Form.Item>
-                    <Form.Item 
-                        label="First Name"
-                        name = "firstname"
-                        rules = {[
-                            {   required: true, 
-                                message: 'Please input your first name'
-                            }
-                        ]}    
-                    >
-                        <Input 
-                            type = "text"
-                            name = "firstname"
-                            value = {firstname}
-                            onChange={onChange}
-                        />
-                    </Form.Item>
-                    <Form.Item 
-                        label="Last Name"
-                        name = "lastname"
-                        rules = {[
-                            {   required: true, 
-                                message: 'Please input your last name!'
-                            }
-                        ]}    
-                    >
-                        <Input 
-                            type = "text"
-                            name = "lastname"
-                            value = {lastname}
+                            name = "name"
+                            value = {name}
                             onChange={onChange}
                         />
                     </Form.Item>
@@ -190,7 +131,8 @@ const Signup = (props) => {
                             onChange={onChange}
                         />
                     </Form.Item>
-                    <p className='signin-link'>Already have an account?     <span
+                    <p className='signin-link'>Already have an account?     
+                    <span
                         onClick={() => signin()}
                         >
                         sign in 
@@ -200,7 +142,7 @@ const Signup = (props) => {
                         type = "primary" 
                         htmlType='submit'
                     >
-                        Create First BulletIn
+                        Register
                     </Button>
                 </Form>
             </div>
@@ -215,4 +157,4 @@ const mapStateToProps = (state) => ({
 });
   
 
-export default connect(mapStateToProps, {register} )(Signup)
+export default connect(mapStateToProps, {register})(Signup)

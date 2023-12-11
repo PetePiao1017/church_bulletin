@@ -1,8 +1,8 @@
 import api from '../utils/api';
 import _ from 'lodash';
 import {
-  REGISTER_SUCCESS,
   REGISTER_FAIL,
+  REGISTER_SUCCESS,
   USER_LOADED,
   AUTH_ERROR,
   LOGIN_SUCCESS,
@@ -25,7 +25,6 @@ import {
 export const loadUser = () => async (dispatch) => {
   try {
     const res = await api.get('/auth');
-
     dispatch({
       type: USER_LOADED,
       payload: res.data
@@ -42,12 +41,8 @@ export const register = (formData) => async (dispatch) => {
     const res = await api.post('/users', formData);
     if(_.hasIn(res.data, 'token')){
       
-      dispatch({
-        type: REGISTER_SUCCESS,
-        payload:res.data
-      });
+      return "Pending";
 
-      dispatch(loadUser());
     }
     else{
       dispatch({
@@ -74,11 +69,18 @@ export const login = (email, password) => async (dispatch) => {
     }
     else
     {
-      dispatch({
-        type: LOGIN_SUCCESS,
-        payload: res.data
-      });
-      dispatch(loadUser());
+      switch(res.data.user.status){
+        case "Pending":
+          return "Pending";
+        case "Block":
+          return "Block";
+        case "Active":
+          dispatch({
+            type: LOGIN_SUCCESS,
+            payload: res.data
+          });
+          return "Active";
+      }  
     }
     
   } catch (err) {
@@ -112,4 +114,21 @@ export const updateProfile = (formData) => async (dispatch) => {
     type: UPDATE_PROFILE,
     payload: formData
   })
+}
+
+export const getAllUser = () => async () => {
+  const res = await api.get('/auth/all');
+  let userData = res.data;
+  return userData;
+}
+
+export const updateStatus = (status, email) => async() => {
+  const res = await api.post('/auth/status', {status, email});
+
+  if(res.data.success === "OK"){
+    return "success";
+  }
+  else {
+    return "fail";
+  }
 }

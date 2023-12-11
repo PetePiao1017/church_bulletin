@@ -15,6 +15,8 @@ import Survey from "./Survey/Survey";
 import Quote from "./Quote/Quote";
 import Text from "./Text/Text";
 import AddSectionList from "./AddSectionList/AddSectionList";
+import UserTable from "./UserTable/UserTable";
+import ColorCustomize from "./ColorCustomize/ColorCustomize";
 
 export {
     Addsection,
@@ -34,4 +36,6 @@ export {
     Survey,
     Quote,
     Text,
+    UserTable,
+    ColorCustomize,
 }

@@ -165,23 +165,23 @@ const Addsection = (props) => {
             <Col span = {1} />
             <Col span={11}>
                 <ReactCardFlip 
-                    isFlipped={flip === "Prayer Request"} 
+                    isFlipped={flip === "Video"} 
                     flipDirection="vertical"
                 >
                     <Card 
                         className='draggable' 
                         draggable 
                         onClick={(e) => {
-                            onclick(e, "Prayer Request")
+                            onclick(e, "Video")
                             setTimeout(() => {
                                 setFlip('')
                             }, 1000)
                         }} 
-                        onDragStart={(e) => onDragStart(e, "Prayer Request")} 
+                        onDragStart={(e) => onDragStart(e, "Video")} 
                         size={"small"}
                     >
-                        <PrayerRequest />
-                        <p className='category'>Prayer Request</p>
+                        <Video />
+                        <p className='category'>Video</p>
                     </Card>
                     <Card>
                         <img src = "./check_icon.png" style={{width:"40px"}} />
@@ -218,7 +218,7 @@ const Addsection = (props) => {
             <Col span = {1} />
         </Row>
         <br />
-        <Row gutter={16}>
+        {/* <Row gutter={16}>
             <Col span = {1} />
             <Col span={11}>
                 <ReactCardFlip 
@@ -273,8 +273,7 @@ const Addsection = (props) => {
                 </ReactCardFlip>
             </Col>
             <Col span = {1} />
-        </Row>
-        <br />
+        </Row> */}
     </Col>
     )
 }

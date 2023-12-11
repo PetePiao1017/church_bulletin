@@ -4,8 +4,6 @@ import {connect} from 'react-redux';
 import { isEmpty} from "lodash";
 import { v4 as uuidv6 } from 'uuid';
 import { Toolbar } from '../../components';
-
-
 import { DeleteFilled } from "@ant-design/icons";
 import * as S from "./Styles";
 import "./Bulletins.css"
@@ -35,7 +33,6 @@ const BulletIns = (props) => {
 
     const handleOnDragEnd = (result) => {
         const { source, destination } = result;
-        console.log(result)
         if (!destination) return;
     
         if (source.droppableId === destination.droppableId) {
@@ -62,7 +59,6 @@ const BulletIns = (props) => {
         droppableSource,
         droppableDestination
       ) => {
-        console.log("abcdefg")
         const sourceListDetails = handleGetListWithSetter(sourceId);
         const destListDetails = handleGetListWithSetter(destId);
         const sourceClone = Array.from(sourceListDetails.list);
@@ -91,7 +87,7 @@ const BulletIns = (props) => {
 
     const getListStyle = (isDraggingOver) => ({
         background: "transparent",
-        width: "98%",
+        width: "100%",
     });
 
 
@@ -221,7 +217,7 @@ const BulletIns = (props) => {
                           backgroundColor: "rgb(247, 250, 252)",
                         }}
                     >
-                        <p>{
+                        <p className="bulletin-title">{
                           showTitle(item.type, item.id)
                         }</p>
                         <DeleteFilled 

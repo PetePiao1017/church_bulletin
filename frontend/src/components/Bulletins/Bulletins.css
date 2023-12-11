@@ -1,8 +1,10 @@
 .list{
     background-color: rgb(226, 232, 240);
-    padding: 1.4em;
+    height: 50px;
     text-align: center;
     width: 100%;
+    display: flex;
+    align-items: center;
 }
 .jGcyNd{
     width: 100%;
@@ -42,4 +44,7 @@
     cursor: pointer;
     color: rgb(223, 150, 150);
     font-size: 20px;
+}
+.bulletin-title{
+    margin-left: 10px;
 }

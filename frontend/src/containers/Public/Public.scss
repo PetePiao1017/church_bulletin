@@ -55,7 +55,10 @@
                 }
             }
             .menu{
-                background-color: rgb(250, 255, 253);
+                background-color: rgb(163, 167, 165);
+                display: flex;
+                align-items: center;
+                flex-direction: column;
             }
             .add-section{
                 overflow-y: scroll;

@@ -57,28 +57,29 @@ const Eventpreview = (props) => {
                 }
                 </div>
                 <br />
-                <Row className="date">
-                        <Col>
-                            <CalendarFilled /> 
-                        </Col>
-                        <Col>
-                            <div style={{fontSize:"8px"}}>
-                                {date}
-                            </div>
-                            <div style={{fontSize:"8px"}}>
-                                {timeStart} - 
-                                {timeEnd}
-                            </div>
-                        </Col>
-                </Row>
-                <Row className="location" gutter={16}>
-                        <Col>
-                            <EnvironmentOutlined /> 
-                        </Col>
-                        <Col>
-                            <div style={{fontSize:"8px"}}>{location}</div>
-                            <div style={{display: "none"}}>12:00 pm - 1:00 pm</div>
-                        </Col>
+                <Row className="dateContainer">
+                    <Row className="date">
+                            <Col className="date-icon">
+                                <CalendarFilled /> 
+                            </Col>
+                            <Col className="date-content">
+                                <div style={{fontSize:"8px"}}>
+                                    {date}
+                                </div>
+                                <div style={{fontSize:"8px"}}>
+                                    {timeStart} - 
+                                    {timeEnd}
+                                </div>
+                            </Col>
+                    </Row>
+                    <Row className="location">
+                            <Col className="location-icon">
+                                <EnvironmentOutlined /> 
+                            </Col>
+                            <Col className="location-content">
+                                <div style={{fontSize:"8px"}}>{location}</div>
+                            </Col>
+                    </Row>
                 </Row>
                 <div className="body-text">
                     {bodyText=== "" ? "Type into the BODY TEXT field on the left for your text to show up here. Customize your copy with bold, italicized, or underlined text. Tip: Leaving a field blank in Loop will exclude it from your bulletin." : bodyText}

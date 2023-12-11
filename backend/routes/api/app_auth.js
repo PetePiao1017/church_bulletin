@@ -55,40 +55,40 @@ router.post(
     }
 );
 
-router.post(
-    '/signup',
-    async (req, res) => {
-      const { name, email, phonenumber, password } = req.body;
-      try {
-        let user = await AppUser.findOne({ email });
+// router.post(
+//     '/signup',
+//     async (req, res) => {
+//       const { name, email, phonenumber, password } = req.body;
+//       try {
+//         let user = await AppUser.findOne({ email });
   
-        if (user) {
-          return res
-            .status(201)
-            .json({ errors: [{ msg: 'User has already exists' }] });
-        }
+//         if (user) {
+//           return res
+//             .status(201)
+//             .json({ errors: [{ msg: 'User has already exists' }] });
+//         }
         
-        user = new AppUser({
-          fullname: name,
-          email,
-          phonenumber,
-          password,
-        })
+//         user = new AppUser({
+//           fullname: name,
+//           email,
+//           phonenumber,
+//           password,
+//         })
 
-        const salt = await bcrypt.genSalt(10);
+//         const salt = await bcrypt.genSalt(10);
 
-        user.password = await bcrypt.hash(password, salt);
+//         user.password = await bcrypt.hash(password, salt);
 
-        await user.save();
+//         await user.save();
 
-        res.status(200).send({success: true});
+//         res.status(200).send({success: true});
         
-      } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server error');
-      }
-    }
-);
+//       } catch (err) {
+//         console.error(err.message);
+//         res.status(500).send('Server error');
+//       }
+//     }
+// );
 
 
 

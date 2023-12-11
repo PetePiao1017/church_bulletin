@@ -1,21 +1,9 @@
 const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
-  church_name: {
+  name: {
     type: String,
     required: true
-  },
-  church_url: {
-    type: String,
-    required: true,
-  },
-  firstname: {
-    type: String,
-    required: true
-  },
-  lastname: {
-    type: String,
-    required: true,
   },
   email:{
     type:String,
@@ -24,6 +12,10 @@ const UserSchema = new mongoose.Schema({
   password:{
     type:String,
     required:true,
+  },
+  status: {
+    type: String,
+    default: "Pending"
   },
   date: {
     type: Date,

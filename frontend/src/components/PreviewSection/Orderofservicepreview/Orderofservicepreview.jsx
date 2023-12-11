@@ -36,7 +36,7 @@ const Orderofservicepreview = (props) => {
                 <div className='app-image'>
                     
                 {
-                    imageUrl === 0
+                    imageUrl === ""
                     ? <img src = "./gallery.png"  alt = "Gallery Image" />
                     : <img src = {imageUrl} alt = "preview" style = {{width : "100%", height:"100%"}} />
                 }

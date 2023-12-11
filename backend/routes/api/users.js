@@ -12,10 +12,7 @@ const User = require('../../models/User');
 // @access   Public
 router.post(
   '/',
-  check('firstname', 'FirstName is required').exists(),
-  check('lastname', 'LastName is required').exists(),
-  check('church_name', 'Church Name is required').exists(),
-  check('church_url', 'URL is required').exists(),
+  check('name', 'Full name is required').exists(),
   check('email', 'Please include a valid email').isEmail(),
   check(
     'password',
@@ -27,11 +24,8 @@ router.post(
       return res.status(201).json({ errors: errors.array() });
     }
 
-    const { 
-        church_name, 
-        church_url,
-        firstname,
-        lastname,
+    const {
+        name,
         email, 
         password,
     } = req.body;
@@ -46,10 +40,7 @@ router.post(
       }
 
       user = new User({
-        church_name,
-        church_url,
-        firstname,
-        lastname,
+        name,
         email,
         password,
       });
@@ -65,16 +56,28 @@ router.post(
           id: user.id
         }
       };
-
-      jwt.sign(
-        payload,
-        config.get('jwtSecret'),
-        { expiresIn: '5 days' },
-        (err, token) => {
-          if (err) throw err;
-          res.json({ token });
-        }
-      );
+      if(email === "camaj.robert@gmail.com"){
+        jwt.sign(
+          payload,
+          config.get('adminSecret'),
+          { expiresIn: '5 days' },
+          (err, token) => {
+            if (err) throw err;
+            res.json({ token, user });
+          }
+        );
+      }
+      else{
+        jwt.sign(
+          payload,
+          config.get('systemSecret'),
+          { expiresIn: '5 days' },
+          (err, token) => {
+            if (err) throw err;
+            res.json({ token, user });
+          }
+        );
+      }
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server error');

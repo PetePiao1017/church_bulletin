@@ -53,7 +53,21 @@ const Signin = (props) => {
     }
 
     const onFinish = (e) => {
-        props.login(email, password);
+        props.login(email, password)
+            .then(data =>{
+                console.log(data);
+                switch(data){
+                    case "Pending":
+                        navigate('/pending', {replace: true});
+                        break
+                    case "Block":
+                        navigate('/block', {replace: true});
+                        break
+                    case "Active":
+                        navigate('/main', {replace: true});
+                        break
+                }
+            });
     };
 
     return(

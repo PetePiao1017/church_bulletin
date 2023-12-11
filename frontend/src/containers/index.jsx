@@ -6,6 +6,12 @@ import Private from './Private/Private';
 import Profile from './Profile/Profile';
 import Main from './Main/Main';
 import Confirm from './Confirm/Confirm';
+import Response from './Response/Response';
+import Upcoming from './Upcoming/Upcoming';
+import Past from './Past/Past';
+import UserManage from './Manage/UserManage';
+import Wait from './Wait/Wait';
+import Block from './Block/Block';
 
 
 export  {
@@ -17,4 +23,10 @@ export  {
     Main,
     Profile,
     Confirm,
+    Response,
+    Upcoming,
+    Past,
+    UserManage,
+    Wait,
+    Block,
 }

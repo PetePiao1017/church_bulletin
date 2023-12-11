@@ -21,6 +21,24 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
+
+// @route    GET api/auth/all
+// @desc     Get All usre data
+// @access   Private
+router.get('/all', auth, async (req, res) => {
+  try {
+    if(req.verified === "admin") {
+      await User.find({})
+        .then(data => {
+          let result = data.filter(item => item.email !== "camaj.robert@gmail.com")
+          res.status(200).send(result);
+        })
+    }
+  } catch (err) {
+    res.status(500).send('Server Error');
+  }
+});
+
 // @route    POST api/auth
 // @desc     Authenticate user & get token
 // @access   Public
@@ -59,15 +77,28 @@ router.post(
         }
       };
 
-      jwt.sign(
-        payload,
-        config.get('jwtSecret'),
-        { expiresIn: '5 days' },
-        (err, token) => {
-          if (err) throw err;
-          res.json({ token });
-        }
-      );
+      if(email === "camaj.robert@gmail.com"){
+        jwt.sign(
+          payload,
+          config.get('adminSecret'),
+          { expiresIn: '5 days' },
+          (err, token) => {
+            if (err) throw err;
+            res.json({ token, user });
+          }
+        );
+      }
+      else{
+        jwt.sign(
+          payload,
+          config.get('systemSecret'),
+          { expiresIn: '5 days' },
+          (err, token) => {
+            if (err) throw err;
+            res.json({ token, user });
+          }
+        );
+      }
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server error');
@@ -85,5 +116,23 @@ router.get('/app', async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
+router.post('/status', async (req, res) => {
+  try{
+    const {status, email} = req.body;
+    const result = await User.updateOne(
+        {email},
+        {status}
+      )
+      .then(data => {
+        if(data.nModified == 1){
+          res.status(200).send({success: "OK"})
+        }
+      })
+  } catch(err) {
+
+  }
+})
+
 
 module.exports = router;

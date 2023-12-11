@@ -12,13 +12,6 @@ import {
   Row, 
   Col, 
   notification, 
-  Select,
-  Form,
-  Typography,
-  Popconfirm,
-  Table,
-  InputNumber,
-  Input,
 } from 'antd';
 import { useNavigate } from "react-router-dom";
 import {connect} from 'react-redux';
@@ -29,8 +22,14 @@ import {
   PreviewSecton, 
   BulletIns, 
   Headerpreview,
+  ColorCustomize,
 } from '../../components';
-import Upcoming from '../Upcoming/Upcoming';
+
+import {
+  Upcoming,
+  Response,
+  Past
+} from '../../containers';
 
 import {logout} from '../../actions/auth';
 import { 
@@ -39,17 +38,15 @@ import {
   getBulletins,
   clearReduxStore,
   setCurrentTodoList,
-  setPhoneNumber,
 } from '../../actions/bulletins';
-import {ExclamationCircleFilled} from "@ant-design/icons";
+import {ExclamationCircleFilled, PlusCircleFilled} from "@ant-design/icons";
 
 import "./Public.scss";
 
 const {TabPane} = Tabs;
 const { confirm } = Modal;
 
-const originData = [];
-
+// const originData = [];
 
 const Public = (props) => {
   const [api, contextHolder] = notification.useNotification();
@@ -93,7 +90,7 @@ const Public = (props) => {
     const token = localStorage.getItem("token");
     if(!token)
     {
-      navigate('/signin', {replace : true})
+      navigate('/', {replace : true})
     }
     else
     {
@@ -106,7 +103,7 @@ const Public = (props) => {
 
   useEffect(() => {
     if(props.isAuthenticated === false){
-      navigate('/signin', {replace: true})
+      navigate('/', {replace: true})
     }
   },[props.isAuthenticated])
 
@@ -116,6 +113,7 @@ const Public = (props) => {
   },[props.save_success])
 
   const [open, setOpen] = useState(false);
+  const [openlogout, setOpenLogOut] = useState(false);
   const [date, setDate] = useState("a");
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [newbulletin, setNewbulletin] = useState(false);
@@ -125,16 +123,16 @@ const Public = (props) => {
   const [content, setContent] = useState([]);
   const [toolbarvisible, setToolbarVisible] = useState(false);
   const [userid, setUserid] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [color, setColor] = useState(false);
 
-  const [form] = Form.useForm();
-  const [data, setData] = useState(originData);
-  const [editingKey, setEditingKey] = useState('');
-  const isEditing = (record) => record.key === editingKey;
+  // const [form] = Form.useForm();
+  // const [editingKey, setEditingKey] = useState('');
+  // const isEditing = (record) => record.key === editingKey;
   
 
   useEffect(() => {
     if(!newbulletin && userid !== "") props.getBulletins(userid);
+    if(newbulletin) setBulletinItem({});
   },[newbulletin])
 
   const showModal = () => {
@@ -152,9 +150,20 @@ const Public = (props) => {
     }, 2000);
   };
 
+  const handleOkLogout = () => {
+    props.logout();
+    setOpenLogOut(false);
+  }
   const handleCancel = () => {
     setOpen(false);
   };
+  const handleCancelLogOut = () => {
+    setOpenLogOut(false);
+  };
+
+  const showLogOutModal = () => {
+    setOpenLogOut(true);
+  }
 
   const onDrop = (ev, method) => {
     if(method == "add") {
@@ -214,18 +223,6 @@ const Public = (props) => {
       {
         key: '1',
         label: (
-          <Link to = {'./profile'} >My Account</Link>
-        ),
-      },
-      {
-        key: '2',
-        label: (
-          <Link>Help</Link>
-        ),
-      },
-      {
-        key: '3',
-        label: (
           <Link onClick={() => props.logout()}>Log out</Link>
         ),
       },
@@ -237,7 +234,22 @@ const Public = (props) => {
     props.setCurrentTodoList(props.retrived_data[index]);
   }
 
-
+  const renderLeftPart = (color) => {
+    if(color) {
+      return <ColorCustomize />
+    }
+    else {
+      if(editingPanel) {
+        return <Sectionediting
+              category = {editingPanel.type}
+              id = {editingPanel.id}
+            />
+      }
+      else{
+        return <Addsection getValueCallback = {getValueCallback} />
+      }
+    }
+  }
   return(
         <div className='main-container'>
           {contextHolder}
@@ -245,7 +257,7 @@ const Public = (props) => {
               <span className='logo'>
                   <ArrowLeftOutlined 
                     style={{marginRight: "10px"}}
-                    onClick={() => navigate('/main', {replace: true})}
+                    onClick={showLogOutModal}
                   />
                 Public
               </span>
@@ -297,18 +309,36 @@ const Public = (props) => {
                       </div>
                       <Row>
                           <Col span = {4} className='menu'>
-                              <div className='plus'>
-                              </div>
-                              <div className='customize' />
+                            <PlusCircleFilled 
+                              style={{
+                                fontSize: "50px",
+                                marginTop: "20px",
+                                width: "100%",
+                                height: "100px",
+                                backgroundColor : !color ? "#E2E8F0" : "white",
+                                justifyContent: "center"
+                              }}
+                              onClick={() => setColor(false)}
+                            />
+                            <br />
+                            <br />
+                            <div
+                              style={{
+                                backgroundColor: color ? "#E2E8F0" : "white",
+                                width:"100%",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center"
+                              }}
+                            >
+                              <img 
+                                src = "./color.png" 
+                                style={{width: "50px"}} 
+                                onClick={() => setColor(true)}
+                              />
+                            </div>
                           </Col>
-                          {
-                            !editingPanel 
-                              ? <Addsection getValueCallback = {getValueCallback} />
-                              : <Sectionediting 
-                                  category = {editingPanel.type}
-                                  id = {editingPanel.id}
-                                />
-                          }
+                          {renderLeftPart(color)}
                       </Row>
                     </Col>
                     <Col 
@@ -382,7 +412,6 @@ const Public = (props) => {
                                 </div>
                               }
                             </div>
-                              
                             </div>
                           </div>
                         </div>
@@ -399,6 +428,18 @@ const Public = (props) => {
                 >
                   <TabPane tab="UPCOMING" key="1">
                     <Upcoming 
+                      callback = {showModal}
+                      editpageCallback = {(id) => changeToEditSection(id)}
+                    />
+                  </TabPane>
+                  <TabPane tab="Past" key="2">
+                    <Past 
+                      callback = {showModal}
+                      editpageCallback = {(id) => changeToEditSection(id)}
+                    />
+                  </TabPane>
+                  <TabPane tab="Response" key="3">
+                    <Past 
                       callback = {showModal}
                       editpageCallback = {(id) => changeToEditSection(id)}
                     />
@@ -422,6 +463,14 @@ const Public = (props) => {
                     disabledDate={(date) => date && date.valueOf() < Date.now()}
                     />
             </Modal>
+            <Modal
+                  title="Go to Login Page"
+                  open={openlogout}
+                  onOk={handleOkLogout}
+                  onCancel={handleCancelLogOut}
+                >
+                  Do you wanna log out?
+            </Modal>
         </div>
     )
 }
@@ -443,5 +492,4 @@ export default connect(mapStateToProps, {
   getBulletins,
   clearReduxStore,
   setCurrentTodoList,
-  setPhoneNumber,
 })(Public)

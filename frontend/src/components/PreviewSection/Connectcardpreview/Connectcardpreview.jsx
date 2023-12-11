@@ -52,14 +52,14 @@ const Connectcardpreview = (props) => {
                 <div style={{
                     width:"100%", 
                     height:"30%", 
-                    background:"rgb(226, 232, 240)", 
+                    background:"rgb(226, 232, 240)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center"
                     }}>
                     {
                         imageUrl === ""
-                        ? <img src = "./gallery.png"   alt = "Gallery Image" />
+                        ? <img src = "./gallery.png"   alt = "Gallery Image" style = {{width : "50px", height:"50px"}} />
                         : <img src = {imageUrl} alt = "preview" style = {{width : "100%", height:"100%"}} />
                     }
                 </div>

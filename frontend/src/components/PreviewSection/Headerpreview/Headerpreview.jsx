@@ -11,7 +11,7 @@ const Headerpreview = (props) => {
             <h3 className='app-date'></h3>
             <p style={{marginTop:"2px", fontSize:"10px"}}>{convertDate(props._date_)}</p>
             <div 
-                className='app-image' style={{height:"20vh"}}
+                className='app-image' style={{height:"20vh", width:"98%"}}
                 >
             {
                     !props.imageurl

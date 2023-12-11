@@ -7,7 +7,6 @@ import {
     LOGIN_FAIL,
     REGISTER_FAIL,
     CLEAN_ERROR,
-    UPDATE_PROFILE,
   } from '../actions/types';
   
   const initialState = {
@@ -66,19 +65,6 @@ import {
         return{
           ...state,
           errors: []
-        }
-      case UPDATE_PROFILE:
-        return {
-          ...state,
-          user: {
-            ...state.user,
-            church_name: payload.church_name,
-            church_url : payload.church_url,
-            firstname: payload.firstname,
-            lastname: payload.lastname,
-            email: payload.email,
-          }
-
         }
       default:
         return state;

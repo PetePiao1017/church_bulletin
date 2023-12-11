@@ -1,33 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import {connect} from 'react-redux';
-import {Button, Divider, Row, Col, Modal, Table, Space} from 'antd';
+import {Button, Divider, Row, Col,} from 'antd';
+import { useNavigate } from "react-router-dom";
 import { Device } from '../../components';
 import { setDataSource, sendInvitation } from '../../actions/bulletins';
 
-const { Column } = Table;
-
-
+// const { Column } = Table;
 
 const Upcoming = (props) => {
     
     const [upcoming, setUpcoming] = useState([]);
 
     const[active, setActive] = useState([]);
-
-    const [tabledata, setTableData] = useState([]);
+    const navigate = useNavigate();
+    // const [tabledata, setTableData] = useState([]);
     const [userId, setUserId] = useState("");
-    const [church_name, setChurchName] = useState("");
-    const [pending, setPending] = useState([]);
+    const [mail, setMail] = useState("");
+    // // const [church_name, setChurchName] = useState("");
+    // const [pending, setPending] = useState([]);
 
-    const renderInvitation = (str, key) => {
-        let index = pending.indexOf(key);
-        if(index === -1){
-            return checkInvited(str) ? "Invited" : "Invite"
-        }
-        else{
-            return "Pending..."
-        }
-    }
+    // const renderInvitation = (str, key) => {
+    //     let index = pending.indexOf(key);
+    //     if(index === -1){
+    //         return checkInvited(str) ? "Invited" : "Invite"
+    //     }
+    //     else{
+    //         return "Pending..."
+    //     }
+    // }
     const convertDate = () => {
         var x = new Date();
         var y = x.getFullYear().toString();
@@ -63,22 +63,21 @@ const Upcoming = (props) => {
         return 0;
     }
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    // const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const showModal = () => {
-        setIsModalOpen(true);
-    };
-    const handleOk = () => {
-        setIsModalOpen(false);
-    };
-    const handleCancel = () => {
-        setIsModalOpen(false);
-    };
+    // const showModal = () => {
+    //     setIsModalOpen(true);
+    // };
+    // const handleOk = () => {
+    //     setIsModalOpen(false);
+    // };
+    // const handleCancel = () => {
+    //     setIsModalOpen(false);
+    // };
 
     useEffect(() => {
         if(props.data.retrived_data.length !== 0){
             const today = new Date().toISOString().split('T')[0];
-
 
             let index = -1;
             let temp = 1000;
@@ -107,37 +106,37 @@ const Upcoming = (props) => {
         props.setDataSource();
     },[])
 
-    useEffect(() => {
-        if(props.appuser){
-            let tempArr = [];
-            props.appuser.forEach((item, index) =>  {
-                let tempObj = {
-                    key: index.toString(),
-                    id: item._id,
-                    fullName: item.fullname,
-                    email: item.email,
-                    phone_number: item.phonenumber,
-                    invite: item.invited
-                }
+    // useEffect(() => {
+    //     if(props.appuser){
+    //         let tempArr = [];
+    //         props.appuser.forEach((item, index) =>  {
+    //             let tempObj = {
+    //                 key: index.toString(),
+    //                 id: item._id,
+    //                 fullName: item.fullname,
+    //                 email: item.email,
+    //                 phone_number: item.phonenumber,
+    //                 invite: item.invited
+    //             }
 
-                tempArr.push(tempObj);
-            })
-            setTableData(tempArr);
-        }
-    },[props.appuser])
+    //             tempArr.push(tempObj);
+    //         })
+    //         setTableData(tempArr);
+    //     }
+    // },[props.appuser])
 
-    const checkInvited = (invite_arr) => {
-        let index = invite_arr.indexOf(userId);
-        if(index === -1) {
-            return false
-        }
-        else return true;
-    }
+    // const checkInvited = (invite_arr) => {
+    //     let index = invite_arr.indexOf(userId);
+    //     if(index === -1) {
+    //         return false
+    //     }
+    //     else return true;
+    // }
 
     useEffect(() => {
         if(props.user){
             setUserId(props.user._id);
-            setChurchName(props.user.church_name);
+            setMail(props.user.email);
         }
     },[props.user])
 
@@ -151,13 +150,25 @@ const Upcoming = (props) => {
                 >
                     Add New BulletIn
                 </Button>
-                <Button 
+                {
+                    mail === "camaj.robert@gmail.com"
+                    ? 
+                    <Button 
+                        type='primary' 
+                        style={{float:"right",marginRight:"20px"}}
+                        onClick={() => navigate('/manage', {replace: true})}
+                    >
+                        User Management
+                    </Button>
+                    : ""
+                }
+                {/* <Button 
                     type='primary' 
                     style={{float:"right",marginRight:"20px"}}
                     onClick={() => showModal()}
                 >
                     Invite Users
-                </Button>
+                </Button> */}
             </div>
             <br />
             <Divider />
@@ -198,7 +209,10 @@ const Upcoming = (props) => {
                     </Col>
                 </Row>
             </div>
-            <Modal title="Invite Users to your bulletin" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+
+
+            {/* Modal for invite users with phone number */}
+            {/* <Modal title="Invite Users to your bulletin" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
                 <Table dataSource={tabledata}>
                     <Column title="Full Name" dataIndex="fullName" key="fullName" />
                     <Column title="Email" dataIndex="email" key="email" />
@@ -226,7 +240,9 @@ const Upcoming = (props) => {
                         )}
                     />
                 </Table>
-            </Modal>
+            </Modal> */}
+
+
         </div>
     )
 }

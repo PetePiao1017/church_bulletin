@@ -25,9 +25,7 @@ const Videopreview = (props) => {
         }
     },[props.todoList]);
     return (
-        <div className='scroll-bar' style={{margin:"0"}} >
-            <br />
-            <br />
+        <div className='scroll-bar-video' style={{margin:"0", overflowX: "hidden"}} >
             <br />
             <br />
             <h3 className='app-header'>
@@ -36,7 +34,7 @@ const Videopreview = (props) => {
             <div className="body-text">
                 <p>{bodyText === "" ? "Type into the BODY TEXT field on the left for your text to show up here. Customize your copy with bold, italicized, or underlined text. Tip: Leaving a field blank in Loop will exclude it from your bulletin." : bodyText}</p>
             </div>
-            <div className = "video-container" >
+            <div className = "video-container-section" >
                 <Video />
             </div>
         </div>
