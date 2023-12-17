@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Select, Table, Modal, notification } from 'antd';
+import { Select, Table, Modal, notification, Checkbox } from 'antd';
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import {connect} from 'react-redux';
-import {getAllUser, updateStatus} from '../../actions/auth';
+import {getAllUser, updateStatus, setFullPermission} from '../../actions/auth';
 import './UserTable.scss';
 
 const { confirm } = Modal;
@@ -14,6 +14,13 @@ const UserTable = (props) => {
       message: 'Success',
       description:
         'You have succesfully changed the status',
+    });
+  };
+  const permissionAdded = (type) => {
+    api[type]({
+      message: 'Success',
+      description:
+        'This user has full permission to edit sections',
     });
   };
   const [data, setData] = useState([]);
@@ -44,6 +51,15 @@ const UserTable = (props) => {
     });
   };
 
+  const onChange = (e, email) => {
+    props.setFullPermission(e.target.checked, email)
+      .then(data => {
+        console.log(data);
+        if(data === "success"){
+          permissionAdded('success');
+        }
+      })
+  }
   const columns = [
       {
         title: 'Full Name',
@@ -82,6 +98,13 @@ const UserTable = (props) => {
           />
         ),
       },
+      {
+        title:"Gave User Full Permission",
+        dataIndex: "permission",
+        render: (_, record) => (
+          <Checkbox defaultChecked = {record.admin} onChange={(e) => onChange(e, record.email)} />
+        )
+      }
     ];
 
     useEffect(() => {
@@ -94,7 +117,8 @@ const UserTable = (props) => {
                 key: index.toString(),
                 name: item.name,
                 email: item.email,
-                status: item.status
+                status: item.status,
+                admin: item.admin,
               }
               tempArr = [...tempArr, tempObj];
           })
@@ -116,4 +140,4 @@ const UserTable = (props) => {
 
 
 
-export default connect(null, {getAllUser, updateStatus})(UserTable)
+export default connect(null, {getAllUser, updateStatus, setFullPermission})(UserTable)

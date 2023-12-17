@@ -15,8 +15,10 @@ const BulletinSchema = new mongoose.Schema({
   header_imageurl: {
     type: String,
   },
-  number: [{}],
-  todoList: [{}]
+  todoList: [{}],
+  color: {
+    type: String,
+  }
 });
 
 module.exports = mongoose.model('bulletin', BulletinSchema);

@@ -5,13 +5,17 @@ import { convertDate } from "../../../utils/convertDate";
 const Headerpreview = (props) => {
     return (
         <div className="scroll-bar" style={{margin : "0"}}>
-            <h3 className='app-header' style={{marginTop:"0", marginBottom:"0"}}>
+            <h2 className='app-header' style={{
+                marginTop:"0", 
+                marginBottom:"0",
+                color: props.bulletins.heading_text
+            }}>
                 {!props.title ? "   " + " Bulletin" : props.title}
-            </h3>
+            </h2>
             <h3 className='app-date'></h3>
-            <p style={{marginTop:"2px", fontSize:"10px"}}>{convertDate(props._date_)}</p>
+            <p style={{marginTop:"2px", fontSize:"15px"}}>{convertDate(props._date_)}</p>
             <div 
-                className='app-image' style={{height:"20vh", width:"98%"}}
+                className='app-image' style={{height:"20vh", width:"100%"}}
                 >
             {
                     !props.imageurl
@@ -28,7 +32,8 @@ const mapStateToProps = (state) => ({
     user: state.auth.user,
     title: state.builletins.header_title,
     _date_: state.builletins.header_date,
-    imageurl : state.builletins.header_imageurl
+    imageurl : state.builletins.header_imageurl,
+    bulletins: state.builletins,
 }) 
 
 export default connect(mapStateToProps)(Headerpreview)

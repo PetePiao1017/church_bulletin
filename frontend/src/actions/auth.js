@@ -2,7 +2,6 @@ import api from '../utils/api';
 import _ from 'lodash';
 import {
   REGISTER_FAIL,
-  REGISTER_SUCCESS,
   USER_LOADED,
   AUTH_ERROR,
   LOGIN_SUCCESS,
@@ -10,6 +9,7 @@ import {
   CLEAN_ERROR,
   LOGOUT,
   UPDATE_PROFILE,
+  FETCH_USER_ALL,
 } from './types';
 
 
@@ -130,5 +130,45 @@ export const updateStatus = (status, email) => async() => {
   }
   else {
     return "fail";
+  }
+}
+
+
+export const fetchUserData = () => async (dispatch) => {
+  try{
+    const res = await api.get('/users/all');
+
+    dispatch({
+      type: FETCH_USER_ALL,
+      payload: res.data.data
+    })
+  }
+  catch(err) {
+    console.log(err)
+  }
+}
+
+export const setFullPermission = (permission, email) => async (dispatch) => {
+  try{
+    const res = await api.post('/users/permission', {permission, email});
+
+    if(res.data.data === "success"){
+      return "success"
+    }
+  }
+  catch(err) {
+    console.log(err)
+  }
+}
+
+export const givePermission = (checked, userid, sectionid) => async (dispatch) => {
+  try{
+    const res = await api.post('/users/sectionpermission', {checked, userid, sectionid});
+    if(res.data.data === "success"){
+      return "success"
+    }
+  }
+  catch(err){
+    console.log(err)
   }
 }

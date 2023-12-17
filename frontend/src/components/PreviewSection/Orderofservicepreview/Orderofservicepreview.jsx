@@ -30,7 +30,7 @@ const Orderofservicepreview = (props) => {
                 <br />
                 <br />
                 <br />
-                <h3 className='app-header'>
+                <h3 style={{color: props.bulletins.heading_text}}>
                     {title === "" ? "Order Of Service" : title}
                 </h3>
                 <div className='app-image'>
@@ -103,7 +103,8 @@ const Orderofservicepreview = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-    todoList: state.builletins.todoList
+    todoList: state.builletins.todoList,
+    bulletins: state.builletins,
 })
 
 export default connect(mapStateToProps)(Orderofservicepreview)

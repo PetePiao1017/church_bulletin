@@ -10,20 +10,6 @@ import {deleteBulletin, sendSMS} from '../../actions/bulletins'
 
 
 const Device = (props) => {
-    const [number, setNumber] = useState([]);
-    const [user_id, setUserid] = useState("");
-    useEffect(() => {
-        if(props.data){
-            setNumber(props.data.number);
-        }
-    },[props.data])
-
-
-    useEffect(() => {
-        if(props.auth.user) {
-            setUserid(props.auth.user._id);
-        }
-    },[props.auth])
 
     return(
        <>
@@ -46,9 +32,9 @@ const Device = (props) => {
                     <div className='tool-up' />
                     <div className='tool-down' />
                     <div className='border-screen'>
-                        <div className='device__screen'>
+                        <div className='device__screen' style={{background: props.bulletins.background}}>
                             <div className="scroll-bar">
-                                <h4 className="title">{props.data.header_title}</h4>
+                                <h4 className="title" style={{color: props.bulletins.heading_text}}>{props.data.header_title}</h4>
                                 <p className="date">{convertDate(props.data.header_date)}</p>
                                 {
                                     props.data.header_imageurl ? 
@@ -62,13 +48,20 @@ const Device = (props) => {
                                         if(item.type !== "Add Section"){
                                             let index = item.data.findIndex(element => element.dataType === "title");
                                             if(index === -1){
-                                                return (<div className="category" key = {index}>
-                                                    <p className="title">{item.type}</p>
+                                                return (
+                                                <div 
+                                                    key = {index} 
+                                                    className="category"
+                                                    style={{
+                                                        backgroundColor: props.bulletins.section_backgorund
+                                                    }}
+                                                >
+                                                    <p className="title" style={{color: props.bulletins.title_text}}>{item.type}</p>
                                                     <RightOutlined  style={{width:"8px"}}/>
                                                 </div>)
                                             }
                                             else return(
-                                                <div className="category" key = {index}>
+                                                <div className="category" key = {index} style={{background: props.bulletins.section_background}}>
                                                     <p className="title">{item.data[index].value}</p>
                                                     <RightOutlined  style={{width:"8px"}}/>
                                                 </div>
@@ -205,6 +198,7 @@ const Device = (props) => {
 
 const mapStateToProps = (state) => ({
     auth: state.auth,
+    bulletins: state.builletins
 })
 
 export default connect(mapStateToProps, {deleteBulletin, sendSMS})(Device);

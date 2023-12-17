@@ -5,6 +5,8 @@ import {
     CLEAR_REDUX_STORE,
     RETRIEVE_DATA,
     HEADER_IMAGE_URL,
+    ICON_UPLOAD,
+    DELETE_ICON_URL,
 
     SAVE_BULLETIN_SUCCESS,
     SEND_SMS,
@@ -17,6 +19,10 @@ import {
     SET_DELTE_AFTER_TODOLIST,
     SET_PHONE_NUMBER,
     SET_DATA_SOURCE,
+    SET_HEADTEXT_COLOR,
+    SET_BACKGROUND_COLOR,
+    SET_SECTION_BACKGROUND_COLOR,
+    SET_SECTION_TITLE_COLOR,
 } from './types';
 
 import axios from 'axios';
@@ -46,8 +52,8 @@ export const setDetailedTodoList = (id,data) => async (dispatch) => {
 }
 
 // GET BULLETIN
-export const getBulletins = (userid, access) =>  async (dispatch) => {
-    let res = await api.post('/bulletins/retrieve', {userid, access});
+export const getBulletins = () =>  async (dispatch) => {
+    let res = await api.get('/bulletins/retrieve');
     dispatch({
         type: RETRIEVE_DATA,
         payload: res.data
@@ -153,6 +159,8 @@ export const setImageUrl = (file, id, category, dataType) => async (dispatch) =>
         type: SET_SMALL_SECTION_DATA,
         payload: tempObj
     })
+
+    return imageUrl;
 }
 
 export const setDeleteImageUrl = (id, category, dataType, imageUrl) => async (dispatch) => {
@@ -226,4 +234,70 @@ export const rejectInvite = (appuser_id, user_id) => async (dispatch) => {
     // const result = api.post('./bulletins/invite', {appuser_id, user_id});
 }
 
+export const setHeadingTextColor = (value, color) => async (dispatch) => {
+    dispatch({
+        type: SET_HEADTEXT_COLOR,
+        payload: color,
+    })
+}
+export const setBackgroundColor = (value, color) => async (dispatch) => {
+    dispatch({
+        type: SET_BACKGROUND_COLOR,
+        payload: color,
+    })
+}
+export const setSectionBackgroundColor = (value, color) => async (dispatch) => {
+    dispatch({
+        type: SET_SECTION_BACKGROUND_COLOR,
+        payload: color,
+    })
+}
+export const setSectionTitleColor = (value, color) => async (dispatch) => {
+    dispatch({
+        type: SET_SECTION_TITLE_COLOR,
+        payload: color,
+    })
+}
 
+
+export const getColorTheme = () =>  async (dispatch) => {
+    const res = await api.get('/bulletins/color');
+
+    if(res.data){
+        return res.data.data;
+    }
+}
+
+export const saveColorThemeFormData = (formData) => async (dispatch) => {
+    const res = await uploadApi.post('/bulletins/color', formData);
+
+    return res.data.data;
+}
+
+export const deleteColor = (name) => async (dispatch) => {
+    api.post('/bulletins/color/del', {name}); 
+}
+
+export const iconUpload = (file,todoList_id) => async (dispatch) => {
+    let formData = new FormData();
+    formData.append("file", file);
+    
+    let imageUrl = (await uploadApi.post('/upload', formData)).data;
+
+    dispatch({
+        type: ICON_UPLOAD,
+        payload: {todoList_id, imageUrl}
+    })
+
+    return imageUrl;
+}
+
+export const deleteIcon = (todoList_id, iconUrl) =>  async (dispatch) => {
+    const res = await api.post('/upload/del', {imageUrl: iconUrl});
+    if(res.data.data ==="success") {
+        dispatch({
+            type: DELETE_ICON_URL,
+            payload: {id: todoList_id}
+        })
+    }
+}

@@ -85,4 +85,79 @@ router.post(
   }
 );
 
+router.get('/all', async(req, res) => {
+  User.find({})
+    .then(data => {
+      let tempArr = [];
+      data.filter(item => item.email !== "camaj.robert@gmail.com")
+        .forEach(item => {
+          let tempObj = {
+            id: item._id,
+            editable: item.editableSections,
+            name: item.name,
+          }
+          tempArr.push(tempObj);
+        })
+      res.status(200).send({data: tempArr});
+    })
+    .catch(err => res.status(201).send({msg: err}))
+})
+
+
+router.post('/permission', async(req, res) => {
+
+  const {permission, email} = req.body;
+
+  const result = await User.updateOne(
+    {email},
+    {
+      admin: permission
+    }
+  );
+
+  if(result.nModified == 1) {
+    res.status(200).send({
+      data: "success"
+    })
+  }
+})
+
+router.post('/sectionpermission', async(req, res) => {
+
+  const {checked, userid, sectionid} = req.body;
+
+  User.findOne({_id: userid})
+    .then(user => {
+      if(!user) {
+        // User not found
+        return res.status(404).send({msg: "User not found"})
+      }
+
+      else {
+        const sectionIndex = user.editableSections.findIndex(section => section === sectionid);
+
+        if(sectionIndex !== -1){
+          user.editableSections[sectionIndex] = sectionid
+        }
+        else{
+          user.editableSections.push(sectionid);
+        }
+
+        // Save the updated user document
+        user.save((err, updatedUser) => {
+          if (err) {
+            console.error('Error updating user:', err);
+            // Handle the error
+            return res.status(500).send('Internal Server Error');
+          }
+          
+          return res.status(200).send({data: "success"})
+        });
+      }
+    })
+  
+})
+
+
+
 module.exports = router;

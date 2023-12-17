@@ -11,7 +11,7 @@ import {
   DatePicker, 
   Row, 
   Col, 
-  notification, 
+  notification,
 } from 'antd';
 import { useNavigate } from "react-router-dom";
 import {connect} from 'react-redux';
@@ -20,9 +20,11 @@ import {
   Addsection, 
   Sectionediting, 
   PreviewSecton, 
-  BulletIns, 
+  BulletIns,
+  PreviewBulletins,
   Headerpreview,
   ColorCustomize,
+  EditDesign,
 } from '../../components';
 
 import {
@@ -39,6 +41,7 @@ import {
   clearReduxStore,
   setCurrentTodoList,
 } from '../../actions/bulletins';
+
 import {ExclamationCircleFilled, PlusCircleFilled} from "@ant-design/icons";
 
 import "./Public.scss";
@@ -50,6 +53,7 @@ const { confirm } = Modal;
 
 const Public = (props) => {
   const [api, contextHolder] = notification.useNotification();
+
   const openNotificationWithIcon = (type) => {
     api[type]({
       message: 'Success',
@@ -78,7 +82,7 @@ const Public = (props) => {
       icon: <ExclamationCircleFilled />,
       content: 'Some descriptions',
       onOk() {
-        props.createNewBulletin(props.bulletins, props.auth.user._id, "Public");
+        props.createNewBulletin(props.bulletins, props.auth.user._id, "Public", );
       },
       onCancel() {
         console.log('Cancel');
@@ -96,7 +100,7 @@ const Public = (props) => {
     {
       const decoded = jwtDecode(token);
       let user_id = decoded.user.id;
-      props.getBulletins(user_id, "Public");
+      props.getBulletins();
       setUserid(user_id);
     }
   },[])
@@ -112,6 +116,7 @@ const Public = (props) => {
     if(props.save_success) openNotificationWithIcon('success')
   },[props.save_success])
 
+
   const [open, setOpen] = useState(false);
   const [openlogout, setOpenLogOut] = useState(false);
   const [date, setDate] = useState("a");
@@ -123,11 +128,8 @@ const Public = (props) => {
   const [content, setContent] = useState([]);
   const [toolbarvisible, setToolbarVisible] = useState(false);
   const [userid, setUserid] = useState("");
-  const [color, setColor] = useState(false);
+  const [color, setColor] = useState("new");
 
-  // const [form] = Form.useForm();
-  // const [editingKey, setEditingKey] = useState('');
-  // const isEditing = (record) => record.key === editingKey;
   
 
   useEffect(() => {
@@ -171,7 +173,10 @@ const Public = (props) => {
       let type = ev.dataTransfer.getData("id");
       let id = uuidv6();
       let temp = {
-        id, type, data: []
+        id, 
+        type,
+        icon: "",
+        data: []
       }
       setBulletinItem(temp)
     }
@@ -185,6 +190,7 @@ const Public = (props) => {
       let identifier = uuidv6();
       let temp = {
         id: identifier,
+        icon: "",
         type: id,
         data: []
       }
@@ -235,21 +241,23 @@ const Public = (props) => {
   }
 
   const renderLeftPart = (color) => {
-    if(color) {
+    if(color === "theme") {
       return <ColorCustomize />
     }
-    else {
+    if(color === "new") {
       if(editingPanel) {
         return <Sectionediting
-              category = {editingPanel.type}
-              id = {editingPanel.id}
-            />
+                  category = {editingPanel.type}
+                  id = {editingPanel.id}
+                />
       }
       else{
         return <Addsection getValueCallback = {getValueCallback} />
       }
     }
+    if(color === "section") return <EditDesign />
   }
+  
   return(
         <div className='main-container'>
           {contextHolder}
@@ -314,17 +322,14 @@ const Public = (props) => {
                                 fontSize: "50px",
                                 marginTop: "20px",
                                 width: "100%",
-                                height: "100px",
-                                backgroundColor : !color ? "#E2E8F0" : "white",
+                                backgroundColor : color === "new" ? "#4989DD" : "white",
                                 justifyContent: "center"
                               }}
-                              onClick={() => setColor(false)}
+                              onClick={() => setColor("new")}
                             />
-                            <br />
-                            <br />
                             <div
                               style={{
-                                backgroundColor: color ? "#E2E8F0" : "white",
+                                backgroundColor: color === "theme" ? "#4989DD" : "white",
                                 width:"100%",
                                 display: "flex",
                                 alignItems: "center",
@@ -334,14 +339,31 @@ const Public = (props) => {
                               <img 
                                 src = "./color.png" 
                                 style={{width: "50px"}} 
-                                onClick={() => setColor(true)}
+                                onClick={() => setColor("theme")}
+                              />
+                            </div>
+                            <div
+                              style={{
+                                backgroundColor: color ==="section" ? "#4989DD" : "white",
+                                width:"100%",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center"
+                              }}
+                            >
+                              <img 
+                                src = "./edit.png" 
+                                style={{width: "50px"}} 
+                                onClick={() => setColor("section")}
                               />
                             </div>
                           </Col>
-                          {renderLeftPart(color)}
+                          <Col span = {20}>
+                            {renderLeftPart(color)}
+                          </Col>
                       </Row>
                     </Col>
-                    <Col 
+                    <Col
                       span = {16}
                       className='show-panel'
                     >
@@ -355,6 +377,7 @@ const Public = (props) => {
                         >
                           Save
                         </Button>
+                        <Button type = "default"> Preview </Button>
                       </div>
                       <div
                         className='device-preview'
@@ -369,10 +392,22 @@ const Public = (props) => {
                               onMouseLeave={() => setToolbarVisible(false)}
                             >
                               { 
-                                  !editingPanel || editingPanel === "Headerediting" 
+                                  (!editingPanel || editingPanel === "Headerediting") && (color === "theme" || color === "new")
                                   
                                   ?
-                                    <div className='scroll-bar'>
+                                    <div className='scroll-bar' 
+                                          style = {
+                                            props.bulletins.background.includes("#") 
+                                            ? { 
+                                                background : props.bulletins.background,
+                                                overflow : 'hidden'
+                                            } 
+                                            : { 
+                                                backgroundImage : 'url(' + props.bulletins.background + ')', 
+                                                overflow: "hidden"
+                                            }
+                                          }
+                                    >
                                       <div onClick={() => setEditingPanel(
                                         {
                                           type: "Headerediting",
@@ -383,14 +418,12 @@ const Public = (props) => {
                                         <Headerpreview />
                                       </div>
                                       <div className='bulletins'>
-                                        {
-                                            <BulletIns
-                                              bulletInOneItem = {bulletinItem}
-                                              setEditingpanelCallback = {setEditingpanelCallback}
-                                              handleEditorChangeCallback = {handleEditorChange}
-                                              toolbarvisible = {toolbarvisible}
-                                            />
-                                        }
+                                        <BulletIns
+                                          bulletInOneItem = {bulletinItem}
+                                          setEditingpanelCallback = {setEditingpanelCallback}
+                                          handleEditorChangeCallback = {handleEditorChange}
+                                          toolbarvisible = {toolbarvisible}
+                                        />
                                       </div>
                                     </div>
                                   : 
@@ -399,17 +432,47 @@ const Public = (props) => {
                                         <div className='tool-right' />
                                         <div className='tool-up' />
                                         <div className='tool-down' />
-                                        <div className='border-screen'>
-                                          <div className='device__screen'>
-                                            <PreviewSecton
+                                        <div className='border-screen' style={{overflow: "hidden"}}>
+                                          <div className='device__screen'
+                                                style = {
+                                                  props.bulletins.background.includes("#") 
+                                                  ? { background : props.bulletins.background } 
+                                                  : { backgroundImage : 'url(' + props.bulletins.background + ')' }
+                                                }
+                                          >
+                                            {
+                                              color !== "section"
+                                              ?
+                                              <PreviewSecton
                                                 category = {editingPanel.type} 
                                                 id = {editingPanel.id} 
-                                            />
+                                              />
+                                              : 
+                                              <div className='scroll-bar'>
+                                                <div onClick={() => setEditingPanel(
+                                                  {
+                                                    type: "Headerediting",
+                                                    title: "Headerediting",
+                                                    id:'1'
+                                                  }
+                                                  )}>
+                                                  <Headerpreview />
+                                                </div>
+                                                <div className='bulletins'>
+                                                  <PreviewBulletins
+                                                    bulletInOneItem = {bulletinItem}
+                                                    setEditingpanelCallback = {setEditingpanelCallback}
+                                                    handleEditorChangeCallback = {handleEditorChange}
+                                                    toolbarvisible = {toolbarvisible}
+                                                  />
+                                                </div>
+                                              </div>
+                                            }
+                                            
                                           </div>
                                         </div>
                                     </div>
-                                    
-                                </div>
+                                  </div>
                               }
                             </div>
                             </div>
@@ -483,6 +546,7 @@ const mapStateToProps = (state) => ({
   bulletins: state.builletins,
   save_success: state.builletins.save_success,
   retrived_data: state.retrieve.retrived_data,
+  admins: state.builletins.admins,
 })
 
 export default connect(mapStateToProps, {

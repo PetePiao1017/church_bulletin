@@ -28,6 +28,20 @@ router.post('/', upload.single('file'), (req, res) => {
     res.status(200).send(fileName);
 })
 
+router.post('/icon', upload.single('file'), (req, res) => {
+    if (!req.file) {
+        // Handle the case where no file was uploaded
+        return res.status(400).send('No file uploaded.');
+    }
+    
+    const fileName = req.file.filename;
+    console.log('Uploaded file details:', fileName);
+
+    // You can save the file details or perform further processing here
+
+    res.status(200).send(fileName);
+})
+
 
 router.post('/del', (req, res) => {
   console.log(req.body)
@@ -39,7 +53,7 @@ router.post('/del', (req, res) => {
       res.status(500).send("Error deleting the file");
     } 
     else {
-      res.status(200).send("File deleted successfully");
+      res.status(200).send({data: "success"});
     }
   });
 })

@@ -65,7 +65,7 @@
                 border-radius: 10%/5%;
                 .scroll-bar{
                     height: 55vh;
-                    overflow: auto;
+                    overflow-x: hidden;
                     width: 97%;
                     padding: 3px;
                     .title{
@@ -85,9 +85,8 @@
                         }
                     }
                     .category{
-                        width: 93%;
+                        width: 98%;
                         height: 30px;
-                        background-color: #f3f5f7;
                         display: flex;
                         justify-content: space-between;
                         padding: 5px;

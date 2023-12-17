@@ -29,7 +29,7 @@ const Announcepreview = (props) => {
 
     return (
             <div className='announcement' style={{marginTop: "50px"}}>
-                <h3 className='app-header'>
+                <h3 style={{color: props.bulletins.heading_text}}>
                     {title === "" ? "Announcement" : title}
                 </h3>
                 <div 
@@ -72,6 +72,7 @@ const Announcepreview = (props) => {
 
 const mapStateToProps = (state) => ({
     todoList: state.builletins.todoList,
+    bulletins: state.builletins,
 })
 
 export default connect(mapStateToProps)(Announcepreview)

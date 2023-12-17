@@ -22,6 +22,7 @@
     "react-beautiful-dnd": "^13.1.1",
     "react-calendar": "^4.6.1",
     "react-card-flip": "^1.2.2",
+    "react-color": "^2.19.3",
     "react-dom": "^18.2.0",
     "react-pdf": "^7.5.1",
     "react-quill": "^2.0.0",

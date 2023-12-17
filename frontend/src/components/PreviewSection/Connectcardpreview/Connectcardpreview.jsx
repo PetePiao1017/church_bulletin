@@ -45,7 +45,7 @@ const Connectcardpreview = (props) => {
             <br />
             <br />
             <br />
-            <h3 className='app-header'>
+            <h3 style={{color: props.bulletins.heading_text}}>
                 {title === "" ? "Connect Card" : title}
             </h3>
             {
@@ -165,7 +165,8 @@ const Connectcardpreview = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-    todoList: state.builletins.todoList
+    todoList: state.builletins.todoList,
+    bulletins: state.builletins,
 })
 
 export default connect(mapStateToProps)(Connectcardpreview)

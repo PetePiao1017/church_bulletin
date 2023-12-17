@@ -4,6 +4,7 @@ export const ListWrapper = styled.div`
   display: flex;
   width: 50%;
   gap: .1rem;
+  padding: .1rem;
 `;
 
 export const DroppableStyle = styled.div`

@@ -28,7 +28,7 @@ const Videopreview = (props) => {
         <div className='scroll-bar-video' style={{margin:"0", overflowX: "hidden"}} >
             <br />
             <br />
-            <h3 className='app-header'>
+            <h3 style={{color: props.bulletins.heading_text}}>
                 {title === "" ? "Video" : title}
             </h3>
             <div className="body-text">
@@ -42,7 +42,8 @@ const Videopreview = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-    todoList: state.builletins.todoList
+    todoList: state.builletins.todoList,
+    bulletins: state.builletins,
 })
 
 export default connect(mapStateToProps)(Videopreview)

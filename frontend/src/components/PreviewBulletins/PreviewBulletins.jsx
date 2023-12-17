@@ -2,43 +2,20 @@ import React, { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import {connect} from 'react-redux';
 import { isEmpty} from "lodash";
-import { v4 as uuidv6 } from 'uuid';
 import { Toolbar } from '../../components';
-import { Dropdown,Checkbox,notification} from "antd";
-import { DeleteFilled } from "@ant-design/icons";
 import * as S from "./Styles";
-import "./Bulletins.css"
+import "./PreviewBulletins.css"
 import AddSectionList from "../AddSectionList/AddSectionList";
 
 import { setTodoList } from "../../actions/bulletins";
 import { fetchUserData, givePermission } from "../../actions/auth";
+import { RightOutlined } from "@ant-design/icons";
 
 
-const BulletIns = (props) => {
+const PreviewBulletins = (props) => {
 
     const [clicked, setClicked] = useState("");
-    const [admin, setAdmin] = useState(false);
-    const [editable, setEditable] = useState([]);
-
-    const [api, contextHolder] = notification.useNotification();
-    const openNotificationWithIcon = (type) => {
-      api[type]({
-        message: 'Success',
-        description:
-          'You have succesfully gave permission.',
-      });
-    };
-    // Functions for popup
-    const [items, setItems] = useState([]);
-
-    const onCheckboxChange = (e, userid, sectionId) => {
-      props.givePermission(e.target.checked, userid, sectionId)
-        .then(data => {
-          if(data === "success"){
-            openNotificationWithIcon("success");
-          }
-        })
-    }
+    // const [customlist, setCustomList] = useState([]);
     // 
     useEffect(() => {
       let index = props.todoList.findIndex(item => item.id === props.bulletInOneItem.id);
@@ -48,21 +25,7 @@ const BulletIns = (props) => {
 
     useEffect(() => {
       props.fetchUserData();
-      setItems([]);
     },[]);
-
-    useEffect(() => {
-      if(props.auth){
-        setAdmin(props.auth.admin);
-        setEditable(props.auth.editableSections);
-      }
-    },[props.auth])
-
-    useEffect(() => {
-      if(props.admins.length !== 0) {
-        setItems(props.admins);
-      }
-    },[props.admins])
 
     const handleGetListWithSetter = (listName) => {
         switch (listName) {
@@ -131,12 +94,6 @@ const BulletIns = (props) => {
         width: "100%",
     });
 
-    const checkExistence = (editable, id) => {
-      let index = editable.indexOf(id);
-      if(index !== -1) return true;
-      else return false;
-    }
-
 
     const createDroppable = (listName, list) => {
         return (
@@ -170,26 +127,6 @@ const BulletIns = (props) => {
       }
       return type;
       
-    }
-
-    const setSectionData = (id, type) => {
-      let index = props.todoList.findIndex(item => item.id === id);
-      let updatedValue = {
-        id: uuidv6(),
-        type,
-        value: null,
-      }
-      const tempData = {
-        id,
-        type: "Add Section",
-        data: [...props.todoList[index].data, updatedValue]
-      }
-
-      props.setTodoList([
-        ...props.todoList.slice(0, index),
-        tempData,
-        ...props.todoList.slice(index + 1)]
-      )
     }
     
     const createDraggable = (list) => {
@@ -225,7 +162,7 @@ const BulletIns = (props) => {
                           ? 
                           <Toolbar
                             id = {item.id}
-                            setContentValueToolbarCallback = {setSectionData}
+                            // setContentValueToolbarCallback = {setSectionData}
                           /> 
                           : ""
                       }
@@ -255,11 +192,6 @@ const BulletIns = (props) => {
                         }
                     >
                     <div className="list"
-                        onClick={() => {
-                          if( admin || checkExistence(editable, item.id)){
-                            props.setEditingpanelCallback(item)
-                          }
-                        }}
                         style = {
                           props.bulletins.section_backgorund.includes("#") 
                           ? { 
@@ -277,68 +209,16 @@ const BulletIns = (props) => {
                               justifyContent:"space-between",
                             }
                         }
-                    >
+                    >   
+                      <div style = {{display: "flex", alignItems: "center", justifyContent: "center"}}>
+                        {item.icon === "" ? "" : <img src = {item.icon} style={{width : "40px"}}/>}
                         <p className="bulletin-title" style={{color: props.bulletins.title_text}}>
                           {
                             showTitle(item.type, item.id)
                           }
                         </p>
-                        {
-                          checkExistence(editable, item.id) || admin
-                          ?
-                            <div className="icon-group">
-                              <Dropdown
-                                dropdownRender={() => (
-                                  <div>
-                                    {items.map(item1 => 
-                                      <div style={{backgroundColor: "white", padding: '10px'}}>
-                                        <div 
-                                          style={{
-                                            display: "flex", 
-                                            justifyContent: "space-between",
-                                            borderColor: "red"
-                                          }}
-                                          onClick={(e) => e.stopPropagation()}
-                                        >
-                                          <p>
-                                            {item1.name}
-                                          </p>
-                                          <Checkbox
-                                            defaultChecked = {checkExistence(item1.editable, item.id)}
-                                            onChange={(e) =>onCheckboxChange(e, item1.id, item.id)} 
-                                            style={{marginLeft: "10px"}} 
-                                          />
-                                        </div>
-                                      </div>  
-                                    )}
-                                  </div>
-                                )}
-                                trigger={['click']}
-                              >
-                                  <img 
-                                    src="/invite.png" 
-                                    className="invite_icon"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                    }}
-                                  />
-                              </Dropdown>
-                            <DeleteFilled 
-                              className="delete-icon" 
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                let temp = props.todoList.filter(element => element.id !== item.id);
-                                props.setTodoList(temp)
-                              }}
-                            />
-                          </div>
-                          :
-                          <>
-                            <img src = "./lock.png" style={{width: "20px"}}/>
-                          </>
-
-                        }
-                        
+                      </div>
+                        <RightOutlined />
                     </div>
                 </div>
                 )}
@@ -350,7 +230,6 @@ const BulletIns = (props) => {
 
     return (
         <S.ListWrapper>
-          {contextHolder}
           <DragDropContext
             onDragEnd={handleOnDragEnd}
           > 
@@ -363,7 +242,6 @@ const BulletIns = (props) => {
 
 const mapStateToProps = (state) => ({
   todoList: state.builletins.todoList,
-  admins: state.builletins.admins,
   auth: state.auth.user,
   bulletins: state.builletins
 })
@@ -371,7 +249,7 @@ const mapStateToProps = (state) => ({
 export default connect(
   mapStateToProps, 
   {
-    setTodoList, 
+    setTodoList,
     fetchUserData, 
     givePermission
-  })(BulletIns)
+  })(PreviewBulletins)

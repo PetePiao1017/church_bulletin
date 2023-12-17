@@ -17,6 +17,8 @@ import Text from "./Text/Text";
 import AddSectionList from "./AddSectionList/AddSectionList";
 import UserTable from "./UserTable/UserTable";
 import ColorCustomize from "./ColorCustomize/ColorCustomize";
+import EditDesign from "./EditDesign/EditDesign";
+import PreviewBulletins from "./PreviewBulletins/PreviewBulletins";
 
 export {
     Addsection,
@@ -38,4 +40,6 @@ export {
     Text,
     UserTable,
     ColorCustomize,
+    EditDesign,
+    PreviewBulletins,
 }

@@ -1,5 +1,7 @@
 const express = require('express');
 const http = require('http');
+const multer = require('multer');
+
 // const socketIO = require('socket.io');
 const connectDB = require('./config/db');
 const cors = require('cors');
@@ -20,7 +22,6 @@ connectDB();
 app.use(express.json());
 app.use(cors());
 app.use(express.static("img_uploads"));
-
 
 // Define Routes
 app.use('/api/users', require('./routes/api/users'));

@@ -13,21 +13,11 @@ const Upcoming = (props) => {
 
     const[active, setActive] = useState([]);
     const navigate = useNavigate();
-    // const [tabledata, setTableData] = useState([]);
     const [userId, setUserId] = useState("");
     const [mail, setMail] = useState("");
-    // // const [church_name, setChurchName] = useState("");
-    // const [pending, setPending] = useState([]);
+    const [admin, setAdmin] = useState(false);
 
-    // const renderInvitation = (str, key) => {
-    //     let index = pending.indexOf(key);
-    //     if(index === -1){
-    //         return checkInvited(str) ? "Invited" : "Invite"
-    //     }
-    //     else{
-    //         return "Pending..."
-    //     }
-    // }
+
     const convertDate = () => {
         var x = new Date();
         var y = x.getFullYear().toString();
@@ -63,18 +53,6 @@ const Upcoming = (props) => {
         return 0;
     }
 
-    // const [isModalOpen, setIsModalOpen] = useState(false);
-
-    // const showModal = () => {
-    //     setIsModalOpen(true);
-    // };
-    // const handleOk = () => {
-    //     setIsModalOpen(false);
-    // };
-    // const handleCancel = () => {
-    //     setIsModalOpen(false);
-    // };
-
     useEffect(() => {
         if(props.data.retrived_data.length !== 0){
             const today = new Date().toISOString().split('T')[0];
@@ -106,50 +84,28 @@ const Upcoming = (props) => {
         props.setDataSource();
     },[])
 
-    // useEffect(() => {
-    //     if(props.appuser){
-    //         let tempArr = [];
-    //         props.appuser.forEach((item, index) =>  {
-    //             let tempObj = {
-    //                 key: index.toString(),
-    //                 id: item._id,
-    //                 fullName: item.fullname,
-    //                 email: item.email,
-    //                 phone_number: item.phonenumber,
-    //                 invite: item.invited
-    //             }
-
-    //             tempArr.push(tempObj);
-    //         })
-    //         setTableData(tempArr);
-    //     }
-    // },[props.appuser])
-
-    // const checkInvited = (invite_arr) => {
-    //     let index = invite_arr.indexOf(userId);
-    //     if(index === -1) {
-    //         return false
-    //     }
-    //     else return true;
-    // }
-
     useEffect(() => {
         if(props.user){
             setUserId(props.user._id);
             setMail(props.user.email);
+            setAdmin(props.user.admin);
         }
     },[props.user])
 
     return(
         <div className='upcoming-container'>
             <div className='new-bulletin-btn'>
-                <Button 
-                    type='primary' 
-                    style={{float:"right",marginRight:"20px"}}
-                    onClick={() => props.callback()}
-                >
-                    Add New BulletIn
-                </Button>
+                {
+                    admin ? 
+                    <Button 
+                        type='primary' 
+                        style={{float:"right",marginRight:"20px"}}
+                        onClick={() => props.callback()}
+                    >
+                        Add New BulletIn
+                    </Button>
+                    : ""
+                }
                 {
                     mail === "camaj.robert@gmail.com"
                     ? 
@@ -162,13 +118,6 @@ const Upcoming = (props) => {
                     </Button>
                     : ""
                 }
-                {/* <Button 
-                    type='primary' 
-                    style={{float:"right",marginRight:"20px"}}
-                    onClick={() => showModal()}
-                >
-                    Invite Users
-                </Button> */}
             </div>
             <br />
             <Divider />

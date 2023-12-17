@@ -5,6 +5,19 @@
     height: 200px;
     cursor: pointer;
 }
+.section-upload {
+    border: 1px dashed #ccc;
+    display: flex;
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+}
+.change-button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
 input[type="file"] {
     display: none;
 }

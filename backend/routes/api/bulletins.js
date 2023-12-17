@@ -1,44 +1,28 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
 
 const Bulletin = require('../../models/Bulletin');
-// const Invitation = require('../../models/Invitation');
-// const User = require('../../models/User');
-// const AppUser = require('../../models/Appuser');
+const Color = require('../../models/Color');
 
-// function getRandomArbitrary(min, max) {
-//     return Math.floor(Math.random() * (max - min) + min);
-// }
 
-// const iterateSms = async (client, item, user_id) => {
-//     let church_name = "";
-//     await User.findOne({_id: user_id})
-//         .then(data => church_name = data.church_name);
-//     let tonumber = item.phone_number.trim();
-//     let invitation_code = getRandomArbitrary(10000, 99999).toString();
-//     console.log(tonumber);
-//     let invitation = new Invitation({
-//         code: invitation_code,
-//         number: tonumber,
-//         user_id,
-//     })
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, 'img_uploads/'); // The directory where uploaded files will be stored
+    },
+    filename: (req, file, cb) => {
+      cb(null, Date.now() + '-' + file.originalname); // Set a unique file name
+    },
+  });
 
-//     await invitation.save();
-//     client.messages
-//     .create({
-//         body: `You're invited to St. Paul! To register for our bulletin, Please register with this: /register/${invitation_code}`,
-//         from: '+18886807267',
-//         to: tonumber
-        
-//     })
-//     .then(message => console.log(message)); 
-// }
+const upload = multer({ storage: storage })
+
 
 // @route    PUT api/bulletins
 // @desc     Put New data to the Bulletin
 // @access   Private
 router.post('/new', async (req, res) => {
-    const { bulletins, userId, access } = req.body;
+    const { bulletins, userId } = req.body;
     try {
         let flag = false;
         if(bulletins.bulletein_id){
@@ -49,7 +33,6 @@ router.post('/new', async (req, res) => {
                     header_imageurl: bulletins.header_imageurl,
                     header_title: bulletins.header_title,
                     todoList: bulletins.todoList,
-                    number: bulletins.number,
                 }
             );
             if (result.nModified === 1) {
@@ -64,7 +47,6 @@ router.post('/new', async (req, res) => {
                 header_imageurl: bulletins.header_imageurl,
                 header_title: bulletins.header_title,
                 todoList: bulletins.todoList,
-                number: bulletins.number,
             });
 
             const saveResult = await bulletin.save();
@@ -99,10 +81,9 @@ router.post('/del', async (req, res) => {
 // @route    POST api/bulletins/retrieve
 // @desc     Get All available bulletins
 // @access   Private 
-router.post('/retrieve', async (req, res) => {
+router.get('/retrieve', async (req, res) => {
     try {
-        const { userid, access } = req.body;
-        const bulletin = await Bulletin.find({ user_id: userid});
+        const bulletin = await Bulletin.find({});
 
         if (bulletin) {
             res.status(200).send(bulletin);
@@ -113,47 +94,91 @@ router.post('/retrieve', async (req, res) => {
     }
 });
 
-// router.post('/sms', async (req, res) => {
-//     console.log(req.body);
-//     const {number, user_id} = req.body.number;
-//     const config = require('config');
-//     const accountSid = config.get('TWILIO_ACCOUNT_SID');
-//     const authToken = config.get('TWILIO_AUTH_TOKEN');
-//     const client = require('twilio')(accountSid, authToken);
-//     number.forEach(item => {
-//         iterateSms(client, item, user_id);
-//     });
-//     res.status(200).send({success: true});
-// });
 
-// router.post('/invitation', async (req, res) => {
-//     const {number, church_name, id, userId} = req.body;
-//     const config = require('config');
-//     const accountSid = config.get('TWILIO_ACCOUNT_SID');
-//     const authToken = config.get('TWILIO_AUTH_TOKEN');
-//     const client = require('twilio')(accountSid, authToken);
-//     // client.messages
-//     // .create({
-//     //     body: `You're invited to ${church_name}! To register for our bulletin, Please register with this: /confirm/${userId}^id`,
-//     //     from: '+18886807267',
-//     //     to: number
+router.post('/color/del', async (req, res) => {
+    try{
+        const { name } = req.body;
+
+        console.log(name);
+        Color.findOneAndDelete({name: name})
+            .then(data => res.status(200).send({data: "success"}))
+    
+    }
+    catch(err){
+        res.status(500).send({msg: err})
+    }
+
+})
+
+
+router.get('/color', async (req, res) => {
+    try{
+        await Color.find({})
+            .then(data => res.status(200).send({data}))
+            .catch(err => res.status(500).send({msg: err}))
+    }
+    catch(err){
+        res.status(500).send({msg: err})
+    }
+})
+
+
+router.post('/color', 
+    upload.fields([
+        {name: 'themename'}, 
+        {name: 'title'}, 
+        {name: 'section_title'}, 
+        {name: 'background'}, 
+        {name: 'sectionbackground'}
+    ]), 
+    async (req, res) => {
+        try {
+            const { themename, title, section_title } = req.body;
+                
+            let backgroundFileName;
+            let sectionbackgroundFileName;
+            let background;
+            let sectionbackground;
         
-//     // })
-//     // .then(message => console.log(message));
-//     res.status(200).send({success: true});
-// });
+            const backgronudFileArray = req.files['background'];
+            const sectionbackgroundFileArray = req.files['sectionbackground'];
+        
+            if (backgronudFileArray) {
+                console.log(backgronudFileArray[0]);
+                backgroundFileName = backgronudFileArray[0].filename;
+            } else {
+                background = req.body.background;
+            }
+        
+            if (sectionbackgroundFileArray) {
+                sectionbackgroundFileName = sectionbackgroundFileArray[0].filename;
+            } else {
+                sectionbackground = req.body.sectionbackground;
+            }
 
-// router.post('/invite_accept', async (req, res) => {
-//     const {appuser_id, user_id} = req.body;
+            let color = new Color({
+                name: themename ,
+                title,
+                section_title,
+                background: backgroundFileName ? backgroundFileName : background,
+                section_background: sectionbackgroundFileName ? sectionbackgroundFileName : sectionbackground
+            })
 
-//     console.log(appuser_id, user_id);
-//     const result = await AppUser.updateOne(
-//         {_id : appuser_id},
-//         {$push: {invited: user_id}}
-//     )
-//     .then(data => console.log(data));
+            await color.save();
 
-//     res.status(200).send({success: true})
-// });
+            // Fetch data after saving the color
+            const savedData = await Color.find({});
+
+            res.status(200).send({ data: savedData });
+        
+        } catch (error) {
+            console.error('Error:', error.message);
+            res.status(400).send(error.message);
+        }
+        
+    });
+
+
+
 
 module.exports = router;

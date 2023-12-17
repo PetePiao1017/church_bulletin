@@ -46,7 +46,7 @@ const Eventpreview = (props) => {
                 <br />
                 <br />
                 <br />
-                <h3 className='app-header'>
+                <h3 style={{color: props.bulletins.heading_text}}>
                     {title === "" ? "Event" : title}
                 </h3>
                 <div className='app-image'>
@@ -104,7 +104,8 @@ const Eventpreview = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-    todoList: state.builletins.todoList
+    todoList: state.builletins.todoList,
+    bulletins: state.builletins,
 })
 
 export default connect(mapStateToProps)(Eventpreview)

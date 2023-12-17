@@ -3,7 +3,6 @@ import {
     HEADER_DATE,
     HEADER_DELETE_IMAGE_URL,
     CLEAR_REDUX_STORE,
-    SET_PHONE_NUMBER,
     HEADER_TITLE,
     SET_TODO_LIST,
     SET_DETAILED_TODO_LIST,
@@ -13,7 +12,13 @@ import {
     SAVE_BULLETIN_SUCCESS,
     SET_CURRENT_TODOLIST,
     SET_DELTE_AFTER_TODOLIST,
-    SET_DATA_SOURCE,
+    FETCH_USER_ALL,
+    SET_HEADTEXT_COLOR,
+    SET_BACKGROUND_COLOR,
+    SET_SECTION_BACKGROUND_COLOR,
+    SET_SECTION_TITLE_COLOR,
+    ICON_UPLOAD,
+    DELETE_ICON_URL,
   } from "../actions/types";
 
 const initialState = {
@@ -22,10 +27,13 @@ const initialState = {
     header_title: '',
     header_imageurl: '',
     bulletein_id: '',
-    appuser: [],
     todoList: [],
-
+    admins: [],
     save_success: false,
+    heading_text: "#0E0F0F",
+    background: "#EBF0F6",
+    section_backgorund: '#789DD1',
+    title_text: '#191A1B',
 
 };
 
@@ -220,11 +228,62 @@ function bulletinsReducer (state = initialState, action) {
             ...state,
             todoList: updatedSectionTodoList
           }
-        case SET_DATA_SOURCE:
+        case FETCH_USER_ALL:
+          return{
+            ...state,
+            admins: payload,
+          }
+
+        case SET_HEADTEXT_COLOR:
           return {
             ...state,
-            appuser: payload,
+            heading_text: payload,
           }
+        case SET_BACKGROUND_COLOR:
+          return {
+            ...state,
+            background: payload,
+          }
+        case SET_SECTION_BACKGROUND_COLOR:
+          return {
+            ...state,
+            section_backgorund: payload,
+          }
+        case SET_SECTION_TITLE_COLOR:
+          return {
+            ...state,
+            title_text: payload
+          }
+        case ICON_UPLOAD:
+          let {imageUrl, todoList_id} = payload;
+          let _index = state.todoList.findIndex(item => item.id === todoList_id);
+          let _updatedValue = {
+            id:todoList_id,
+            type: state.todoList[_index].type,
+            data: state.todoList[_index].data,
+            icon: imageUrl,
+          }
+          let _updatedArray = [...state.todoList.slice(0, _index), _updatedValue, ...state.todoList.slice(_index + 1)];
+          return {
+            ...state,
+            todoList: _updatedArray
+          }
+        
+        case DELETE_ICON_URL:
+            let _id = payload.id;
+            let _iconIndex = state.todoList.findIndex(item => item.id === _id);
+            let _iconUpdatedValue = {
+              id: _id,
+              type: state.todoList[_iconIndex].type,
+              data: state.todoList[_iconIndex].data,
+              icon: ""
+            }
+            let _iconUpdatedArray = [...state.todoList.slice(0, _iconIndex), _iconUpdatedValue, ...state.todoList.slice(_iconIndex + 1)];
+
+            return {
+              ...state,
+              todoList: _iconUpdatedArray
+            }
         default:
           return state;
       }

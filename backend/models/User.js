@@ -17,6 +17,15 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: "Pending"
   },
+  admin : {
+    type: Boolean,
+    default: false,
+  },
+  editableSections: [
+    {
+      type: String,
+    }
+  ],
   date: {
     type: Date,
     default: Date.now

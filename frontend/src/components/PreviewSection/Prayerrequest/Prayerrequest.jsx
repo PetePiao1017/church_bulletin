@@ -32,7 +32,7 @@ const Prayerrequest = (props) => {
             <br />
             <br />
             <br />
-            <h3 className='app-header'>
+            <h3 style={{color: props.bulletins.heading_text}}>
                 {title === "" ? "Prayer Request" : title}
             </h3>
             <div className="body-text">
