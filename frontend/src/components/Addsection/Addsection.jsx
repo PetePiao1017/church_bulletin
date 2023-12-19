@@ -30,7 +30,7 @@ const Addsection = (props) => {
             <>
                 <h3>Add a section</h3>
                 <p style={{fontSize:"12px", marginLeft:"10px"}}>Drag any section below into the phone on the right.</p>
-                <Row gutter={16}>
+                {/* <Row gutter={16}>
                     <Col span={1} />
                     <Col span = {22}>
                         <ReactCardFlip 
@@ -50,6 +50,36 @@ const Addsection = (props) => {
                                     size={"small"}
                                 >
                                     <p className='category'>Add Content Directly</p>
+                                </Card>
+                                <Card>
+                                    <img src = "./check_icon.png" style={{width:"40px", margin:"0 auto"}} />
+                                    <p style={{margin:"0 auto"}}>Added</p>
+                                </Card>
+                        </ReactCardFlip>
+                    </Col>
+                    <Col span={1} />
+                </Row> */}
+                <br />
+                <Row gutter={16}>
+                    <Col span={1} />
+                    <Col span = {22}>
+                        <ReactCardFlip 
+                                isFlipped={flip === "Add Section"} 
+                                flipDirection="vertical"
+                            >
+                                <Card 
+                                    className='draggable'
+                                    draggable 
+                                    onClick={(e) => {
+                                        onclick(e, "Add Section")
+                                        setTimeout(() => {
+                                            setFlip('')
+                                        }, 1000)
+                                    }} 
+                                    onDragStart={(e) => onDragStart(e, "add_group")} 
+                                    size={"small"}
+                                >
+                                    <p className='category'>Add New Group</p>
                                 </Card>
                                 <Card>
                                     <img src = "./check_icon.png" style={{width:"40px", margin:"0 auto"}} />

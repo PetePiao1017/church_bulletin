@@ -5,6 +5,9 @@
     padding-top: 20px; 
     height: 80px;
     border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
 .input-tag {
@@ -29,4 +32,8 @@
     align-items: center;
     border-radius: 5px;
     margin-top: 10px;
+}
+.label-group{
+    margin: 0;
+    text-align: center;
 }

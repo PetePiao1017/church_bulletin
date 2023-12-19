@@ -3,7 +3,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import {connect} from 'react-redux';
 import { isEmpty} from "lodash";
 import { v4 as uuidv6 } from 'uuid';
-import { Toolbar } from '../../components';
+import { Toolbar, Group } from '../../components';
 import { Dropdown,Checkbox,notification} from "antd";
 import { DeleteFilled } from "@ant-design/icons";
 import * as S from "./Styles";
@@ -194,8 +194,9 @@ const BulletIns = (props) => {
     
     const createDraggable = (list) => {
       return list.map((item, index) => {
-        if(item.type === "Add Section"){
-          return(
+        switch(item.type){
+          case "Add Section":
+            return (
             <Draggable
                 key={item.id} 
                 draggableId={item.id} 
@@ -232,16 +233,39 @@ const BulletIns = (props) => {
                     </div>
                     </div>
                 )}
-            </Draggable>
-        )
-        }
-        else{
-          return (
-            <Draggable
+            </Draggable>)
+          case "add_group":
+            return (
+              <Draggable
                 key={item.id} 
                 draggableId={item.id} 
                 index={index}
             >
+                {(provided, snapshot) => (
+                    <div
+                        {...provided.draggableProps}
+                        ref={provided.innerRef}
+                        {...provided.dragHandleProps}
+                        style={
+                            getItemStyle(
+                              snapshot.isDragging,
+                              provided.draggableProps.style
+                            )
+                        }
+                    >
+                      <Group />
+                    </div>
+                )}
+            </Draggable>
+              
+            )
+          default:
+            return (
+              <Draggable
+                key={item.id} 
+                draggableId={item.id} 
+                index={index}
+              >
                 {(provided, snapshot) => (
                     <div
                         {...provided.draggableProps}
@@ -342,9 +366,125 @@ const BulletIns = (props) => {
                     </div>
                 </div>
                 )}
-            </Draggable>
-            );
+              </Draggable>
+            )
+
         }
+        // if(item.type === "Add Section"){
+        //   return(
+            
+        // )
+        // }
+        // else{
+        //   return (
+        //     <Draggable
+        //         key={item.id} 
+        //         draggableId={item.id} 
+        //         index={index}
+        //     >
+        //         {(provided, snapshot) => (
+        //             <div
+        //                 {...provided.draggableProps}
+        //                 ref={provided.innerRef}
+        //                 {...provided.dragHandleProps}
+        //                 style={
+        //                     getItemStyle(
+        //                     snapshot.isDragging,
+        //                     provided.draggableProps.style
+        //                     )
+        //                 }
+        //             >
+        //             <div className="list"
+        //                 onClick={() => {
+        //                   if( admin || checkExistence(editable, item.id)){
+        //                     props.setEditingpanelCallback(item)
+        //                   }
+        //                 }}
+        //                 style = {
+        //                   props.bulletins.section_backgorund.includes("#") 
+        //                   ? { 
+        //                       background : props.bulletins.section_backgorund,
+        //                       fontSize:"10px",
+        //                       color:"black",
+        //                       display:"flex", 
+        //                       justifyContent:"space-between",
+        //                     } 
+        //                   : { 
+        //                       backgroundImage : 'url(' + props.bulletins.section_backgorund + ')',
+        //                       fontSize:"10px",
+        //                       color:"black",
+        //                       display:"flex", 
+        //                       justifyContent:"space-between",
+        //                     }
+        //                 }
+        //             >
+        //                 <p className="bulletin-title" style={{color: props.bulletins.title_text}}>
+        //                   {
+        //                     showTitle(item.type, item.id)
+        //                   }
+        //                 </p>
+        //                 {
+        //                   checkExistence(editable, item.id) || admin
+        //                   ?
+        //                     <div className="icon-group">
+        //                       <Dropdown
+        //                         dropdownRender={() => (
+        //                           <div>
+        //                             {items.map(item1 => 
+        //                               <div style={{backgroundColor: "white", padding: '10px'}}>
+        //                                 <div 
+        //                                   style={{
+        //                                     display: "flex", 
+        //                                     justifyContent: "space-between",
+        //                                     borderColor: "red"
+        //                                   }}
+        //                                   onClick={(e) => e.stopPropagation()}
+        //                                 >
+        //                                   <p>
+        //                                     {item1.name}
+        //                                   </p>
+        //                                   <Checkbox
+        //                                     defaultChecked = {checkExistence(item1.editable, item.id)}
+        //                                     onChange={(e) =>onCheckboxChange(e, item1.id, item.id)} 
+        //                                     style={{marginLeft: "10px"}} 
+        //                                   />
+        //                                 </div>
+        //                               </div>  
+        //                             )}
+        //                           </div>
+        //                         )}
+        //                         trigger={['click']}
+        //                       >
+        //                           <img 
+        //                             src="/invite.png" 
+        //                             className="invite_icon"
+        //                             onClick={(e) => {
+        //                               e.stopPropagation();
+        //                             }}
+        //                           />
+        //                       </Dropdown>
+        //                     <DeleteFilled 
+        //                       className="delete-icon" 
+        //                       onClick={(e) => {
+        //                         e.stopPropagation();
+        //                         let temp = props.todoList.filter(element => element.id !== item.id);
+        //                         props.setTodoList(temp)
+        //                       }}
+        //                     />
+        //                   </div>
+        //                   :
+        //                   <>
+        //                     <img src = "./lock.png" style={{width: "20px"}}/>
+        //                   </>
+
+        //                 }
+                        
+        //             </div>
+        //         </div>
+        //         )}
+        //     </Draggable>
+        //     );
+        // }
       })
     }
 

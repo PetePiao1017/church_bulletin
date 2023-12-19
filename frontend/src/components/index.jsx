@@ -19,6 +19,7 @@ import UserTable from "./UserTable/UserTable";
 import ColorCustomize from "./ColorCustomize/ColorCustomize";
 import EditDesign from "./EditDesign/EditDesign";
 import PreviewBulletins from "./PreviewBulletins/PreviewBulletins";
+import Group from "./Group/Group";
 
 export {
     Addsection,
@@ -42,4 +43,5 @@ export {
     ColorCustomize,
     EditDesign,
     PreviewBulletins,
+    Group
 }

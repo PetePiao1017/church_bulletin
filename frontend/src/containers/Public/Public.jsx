@@ -45,6 +45,7 @@ import {
 import {ExclamationCircleFilled, PlusCircleFilled} from "@ant-design/icons";
 
 import "./Public.scss";
+import { indexOf } from 'lodash';
 
 const {TabPane} = Tabs;
 const { confirm } = Modal;
@@ -52,6 +53,7 @@ const { confirm } = Modal;
 // const originData = [];
 
 const Public = (props) => {
+  const category = ["add_group", "Announcement", "Video", "Order Of Service", "Event", "Connect Card", "Online Giving"];
   const [api, contextHolder] = notification.useNotification();
 
   const openNotificationWithIcon = (type) => {
@@ -168,15 +170,24 @@ const Public = (props) => {
   }
 
   const onDrop = (ev, method) => {
-    if(method == "add") {
-      
-      let type = ev.dataTransfer.getData("id");
+    let type = ev.dataTransfer.getData("id");
+    if(category.indexOf(type) !== -1) {
       let id = uuidv6();
-      let temp = {
-        id, 
-        type,
-        icon: "",
-        data: []
+      let temp;
+      if(type === "add_group"){
+        temp = {
+          id,
+          type,
+          data: []
+        }
+      }
+      else{
+        temp = {
+          id, 
+          type,
+          icon: "",
+          data: []
+        }
       }
       setBulletinItem(temp)
     }
@@ -395,37 +406,51 @@ const Public = (props) => {
                                   (!editingPanel || editingPanel === "Headerediting") && (color === "theme" || color === "new")
                                   
                                   ?
-                                    <div className='scroll-bar' 
-                                          style = {
-                                            props.bulletins.background.includes("#") 
-                                            ? { 
-                                                background : props.bulletins.background,
-                                                overflow : 'hidden'
-                                            } 
-                                            : { 
-                                                backgroundImage : 'url(' + props.bulletins.background + ')', 
-                                                overflow: "hidden"
+                                  <div className='device-component'>
+                                    <div className='border-screen-extra'>
+                                        <div className='tool-right' />
+                                        <div className='tool-up' />
+                                        <div className='tool-down' />
+                                        <div className='border-screen' style={{overflow: "hidden"}}>
+                                          <div className='device__screen'
+                                                style = {
+                                                  props.bulletins.background.includes("#") 
+                                                  ? { background : props.bulletins.background } 
+                                                  : { backgroundImage : 'url(' + props.bulletins.background + ')' }
+                                                }
+                                          >
+                                            {
+                                              editingPanel === "Headerediting"
+                                              ?
+                                              <PreviewSecton
+                                                category = {editingPanel.type} 
+                                                id = {editingPanel.id} 
+                                              />
+                                              : 
+                                              <div className='scroll-bar'>
+                                                <div onClick={() => setEditingPanel(
+                                                  {
+                                                    type: "Headerediting",
+                                                    title: "Headerediting",
+                                                    id:'1'
+                                                  }
+                                                  )}>
+                                                  <Headerpreview />
+                                                </div>
+                                                <div className='bulletins'>
+                                                  <BulletIns
+                                                    bulletInOneItem = {bulletinItem}
+                                                    setEditingpanelCallback = {setEditingpanelCallback}
+                                                    handleEditorChangeCallback = {handleEditorChange}
+                                                    toolbarvisible = {toolbarvisible}
+                                                  />
+                                                </div>
+                                              </div>
                                             }
-                                          }
-                                    >
-                                      <div onClick={() => setEditingPanel(
-                                        {
-                                          type: "Headerediting",
-                                          title: "Headerediting",
-                                          id:'1'
-                                        }
-                                        )}>
-                                        <Headerpreview />
-                                      </div>
-                                      <div className='bulletins'>
-                                        <BulletIns
-                                          bulletInOneItem = {bulletinItem}
-                                          setEditingpanelCallback = {setEditingpanelCallback}
-                                          handleEditorChangeCallback = {handleEditorChange}
-                                          toolbarvisible = {toolbarvisible}
-                                        />
-                                      </div>
+                                          </div>
+                                        </div>
                                     </div>
+                                  </div>
                                   : 
                                   <div className='device-component'>
                                     <div className='border-screen-extra'>
@@ -459,7 +484,7 @@ const Public = (props) => {
                                                   <Headerpreview />
                                                 </div>
                                                 <div className='bulletins'>
-                                                  <PreviewBulletins
+                                                  <BulletIns
                                                     bulletInOneItem = {bulletinItem}
                                                     setEditingpanelCallback = {setEditingpanelCallback}
                                                     handleEditorChangeCallback = {handleEditorChange}
@@ -468,7 +493,6 @@ const Public = (props) => {
                                                 </div>
                                               </div>
                                             }
-                                            
                                           </div>
                                         </div>
                                     </div>
