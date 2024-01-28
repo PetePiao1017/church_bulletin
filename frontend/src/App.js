@@ -8,6 +8,9 @@ import store from './store';
 import { LOGOUT } from './actions/types';
 import { loadUser } from './actions/auth';
 
+
+// asfjaslfjdsljljflasd
+
 class App extends Component {
   componentWillMount() {
     // check for token in LS when app first runs
